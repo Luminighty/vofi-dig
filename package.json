@@ -1,0 +1,29 @@
+{
+  "name": "dig",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "start": "webpack serve --mode development",
+    "build-dev": "webpack --mode development",
+    "build-prod": "webpack --mode production"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1",
+    "xml-loader": "^1.2.1"
+  },
+  "dependencies": {
+    "pixi.js": "^7.1.4"
+  },
+  "keywords": [],
+  "author": "Luminight (http://luminight.dev/)",
+  "license": "ISC"
+}
