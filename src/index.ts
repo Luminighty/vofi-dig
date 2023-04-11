@@ -19,7 +19,7 @@ const app = new Application({
 function Resize() {
 	const scaleY = Math.floor(window.innerHeight / AppConfig.height);
 	const scaleX = Math.floor(window.innerWidth / AppConfig.width);
-	const scale = Math.min(scaleY, scaleX);
+	const scale = Math.max(Math.min(scaleY, scaleX), 1);
 	app.renderer.resize(AppConfig.width * scale, AppConfig.height * scale);
 	app.stage.scale.set(scale);
 }

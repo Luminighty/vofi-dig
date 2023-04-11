@@ -4,27 +4,21 @@ import { createMiner } from "./sprites/miner";
 import { Controls } from "./systems/controls";
 import { GameConfig, toWorldPosition } from "./config";
 import { intersects } from "./systems/collision";
-import { updatePlayer } from "./systems/player";
+import { initPlayer, updatePlayer } from "./systems/player";
 
 export async function Init(app: Application) {
-	const tileset = generateTileset();
+	const world = generateTileset();
 	const miner = createMiner();
-	const graphics = new Graphics();
 
-	app.stage.addChild(tileset.airLayer);
-	app.stage.addChild(tileset.groundLayer);
+	app.stage.addChild(world.airLayer);
+	app.stage.addChild(world.groundLayer);
 	app.stage.addChild(miner.sprite);
-	app.stage.addChild(graphics);
+
+	await initPlayer(app);
 
 
 	app.ticker.add((dt) => {
-		updatePlayer(miner, tileset.groundSprites, dt);
+		updatePlayer(miner, world, dt);
 
-		const position = toWorldPosition(miner.gridPosition);
-		// graphics.clear();
-		// graphics.lineStyle(1, 0xff0000, 1);
-		// graphics.beginFill(0x000000, 0);
-		// graphics.drawRect(position.x, position.y, GameConfig.gridSize, GameConfig.gridSize)
-		// graphics.endFill();
 	})
 }

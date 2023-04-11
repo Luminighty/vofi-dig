@@ -4,6 +4,7 @@ export const Controls = {
 	up: false,
 	down: false,
 	digging: false,
+	building: false,
 	jumping: false,
 	get x() {
 		return +this.right- +this.left
@@ -20,6 +21,7 @@ const KeyBinds = {
 	"ArrowDown": "down",
 	"KeyC": "digging",
 	"KeyX": "jumping",
+	"KeyV": "building",
 }
 
 window.addEventListener('keydown', (event) => {

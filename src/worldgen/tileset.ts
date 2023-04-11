@@ -2,13 +2,20 @@ import { Container, Sprite, Texture } from "pixi.js";
 import { TileType } from "../assets";
 import { GameConfig } from "../config";
 import { IRect } from "../systems/collision";
+import { generateCaves } from "./caves";
 
 interface IGroundSprite {
 	sprite: Sprite,
 	rect: IRect,
 }
 
-export type IWorld = (IGroundSprite | null)[][]
+export type IGrid = (IGroundSprite | null)[][]
+
+export type IWorld = {
+	groundLayer: Container,
+	airLayer: Container,
+	groundSprites: IGrid,
+}
 
 export function generateTileset() {
   const groundLayer = new Container();
@@ -21,10 +28,12 @@ export function generateTileset() {
 	const ROWS = GameConfig.world.y;
 	const COLUMNS = GameConfig.world.x;
 	
-	const groundSprites: IWorld = new Array(ROWS);
+	const groundSprites: IGrid = new Array(ROWS);
   for (let i = 0; i < ROWS; i++) {
       groundSprites[i] = new Array(COLUMNS);
   }
+
+	const cave = generateCaves();
 
   for (let i = 0; i < ROWS; i++) {
 		for (let j = 0; j < COLUMNS; j++) {
@@ -34,6 +43,9 @@ export function generateTileset() {
 				airLayer.addChild(air);
 
 				if (Math.abs(j - COLUMNS / 2) < 2 && i == ROWS / 2)
+					continue;
+
+				if (cave[i][j] == 0)
 					continue;
 
 				const ground = new Sprite(groundTexture);

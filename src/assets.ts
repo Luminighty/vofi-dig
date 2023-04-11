@@ -7,6 +7,7 @@ export enum TileType {
 
 export enum Sprites {
 	Miner = "MINER",
+	Gem = "GEM",
 }
 
 export const assetsManifest: ResolverManifest = {
@@ -17,6 +18,7 @@ export const assetsManifest: ResolverManifest = {
 				[TileType.Air]: `assets/air.png`,
 				[TileType.Dirt]: `assets/dirt.png`,
 				[Sprites.Miner]: `assets/miner.png`,
+				[Sprites.Gem]: `assets/gem.png`,
 			}
 		}
 	]
