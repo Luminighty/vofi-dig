@@ -1,23 +1,22 @@
-import { Application, Assets } from "pixi.js";
-import { TestCave, generateTileset } from "./worldgen";
-import { createMiner } from "./sprites/miner";
-import { initPlayer } from "./systems/player";
+import { Application, Assets, Container } from "pixi.js";
 import { registerComponents } from "./components/registry";
 import { createWorld, registerEntity } from "./entities";
 import { ParseEntity } from "./entities/parser";
 import { baseEvent } from "./events";
 import { generateCave } from "./worldgen/caves";
+import { GameConfig } from "./config";
+import { initControls } from "./systems/controls";
 
 export async function Init(app: Application) {
-
 	registerComponents();
+	initControls(app);
 
 	await loadEntityBlueprint(`assets/entities/Player.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Tile.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Debug.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Air.entity.xml`);
 	const world = createWorld(app);
-	const cave = TestCave || generateCave();
+	const cave = generateCave();
 
 	for (let y = 0; y < cave.length; y++) {
 		const row = cave[y];

@@ -5,6 +5,8 @@ import { PositionComponent } from "./Position.component";
 import { SpriteComponent } from "./Sprite.component";
 import { CollisionComponent } from "./Collision.component";
 import { DebugRectComponent } from "./DebugRect.component";
+import { DiggableComponent } from "./Diggable.component";
+import { TileTagComponent } from "./TileTag.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -13,4 +15,6 @@ export function registerComponents() {
 	registerComponent(VelocityComponent);
 	registerComponent(CollisionComponent);
 	registerComponent(DebugRectComponent);
+	registerComponent(DiggableComponent);
+	registerComponent(TileTagComponent);
 }

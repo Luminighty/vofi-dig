@@ -44,5 +44,10 @@ export class DebugRectComponent {
 		this.graphics.endFill();
 	}
 
+	onDestroy() {
+		this.graphics.removeFromParent();
+		this.graphics.destroy();
+	}
+
 
 }

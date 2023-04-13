@@ -10,6 +10,16 @@ export const GameConfig = {
 		x: 25,
 		y: 14,
 	},
+	renderLayers: [
+		"farBackground",
+		"background",
+		"default",
+		"entity",
+		"tile",
+		"foreground",
+		"farForeground",
+		"UI",
+	],
 	get center() {
 		return {
 			x: this.world.x / 2,

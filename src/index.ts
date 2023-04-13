@@ -24,6 +24,8 @@ function Resize() {
 	app.stage.scale.set(scale);
 }
 
+document.addEventListener("contextmenu", event => event.preventDefault());
+
 (async () =>{
 	Resize();
 	await Assets.init({ manifest: assetsManifest })

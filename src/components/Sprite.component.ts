@@ -10,12 +10,14 @@ export class SpriteComponent {
 	position?: PositionComponent;
 	anchorX = 0;
 	anchorY = 0;
+	layer="default";
 
 	onInit({}) {
 		const texture = Texture.from(this.src);
 		this.sprite = new Sprite(texture);
 		this.sprite.anchor.set(this.anchorX, this.anchorY);
-		this.world.app.stage.addChild(this.sprite);
+
+		this.world.renderContainers[this.layer].addChild(this.sprite);
 
 		this.position = this.parent.getComponent(PositionComponent);
 	}

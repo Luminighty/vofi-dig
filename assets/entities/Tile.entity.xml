@@ -1,10 +1,12 @@
 <Entity id="Tile">
 	<PositionComponent />
-	<SpriteComponent src="assets/dirt.png" />
+	<SpriteComponent src="assets/textures/dirt.png" layer="tile" />
 	<CollisionComponent shape="rect 0 0 16 16" />
 	<DebugRectComponent 
 		enabled="1"
 		width="16" height="16" 
 		lineColor="0xff0000" lineWidth="1" fillAlpha="0.3" 
 	/>
+	<DiggableComponent hardness="10" />
+	<TileTagComponent />
 </Entity>

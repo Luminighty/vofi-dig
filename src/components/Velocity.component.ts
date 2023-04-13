@@ -6,7 +6,7 @@ export class VelocityComponent {
 	parent!: Entity;
 	velocity = { x: 0, y: 0 };
 	gravity = 0.1;
-	maxFallSpeed = 1.5;
+	maxFallSpeed = 4;
 	position!: PositionComponent;
 
 	onInit() {
@@ -14,7 +14,7 @@ export class VelocityComponent {
 	}
 
 	onUpdate({dt}) {
-		this.velocity.y = Math.min(this.velocity.y + this.gravity, this.maxFallSpeed);
+		this.velocity.y = Math.min(this.velocity.y + this.gravity * dt, this.maxFallSpeed);
 
 		this.parent.fireEvent(baseEvent("onMove", { x: this.velocity.x, y: this.velocity.y } ));
 	}
