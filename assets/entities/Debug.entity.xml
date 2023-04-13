@@ -1,0 +1,9 @@
+<Entity id="Debug">
+	<PositionComponent />
+	<CollisionComponent shape="rect 0 0 64 16" />
+	<DebugRectComponent 
+		enabled="1"
+		width="64" height="16" 
+		fillColor="0x0000ff" fillAlpha="0.7" 
+	/>
+</Entity>

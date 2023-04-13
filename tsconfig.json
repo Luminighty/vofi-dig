@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-			"outDir": "./dist/",
+			"outDir": "./public_html/",
 			"sourceMap": true,
 			"strict": true,
 			"noImplicitReturns": true,

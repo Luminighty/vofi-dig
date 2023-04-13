@@ -7,8 +7,8 @@ export const GameConfig = {
 	gravity: 0.1,
 	maxFallSpeed: 1.5,
 	world: {
-		x: 50,
-		y: 28,
+		x: 25,
+		y: 14,
 	},
 	get center() {
 		return {

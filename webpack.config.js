@@ -6,8 +6,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = {
   entry: './src/index.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'public_html'),    
+    filename: '[name].bundle.js',
+  },
+  externals: {
+    pixijs: {
+      commonjs: 'pixijs',
+      commonjs2: 'pixijs',
+      amd: 'pixijs',
+      root: 'PIXI',
+    },
   },
   module: {
     rules: [

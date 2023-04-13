@@ -1,5 +1,6 @@
 .cache/
 coverage/
+public_html/
 dist/
 !dist/index.html
 node_modules/

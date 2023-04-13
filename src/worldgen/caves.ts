@@ -10,7 +10,7 @@ function generateTile() {
 
 export type Cave = (1 | 0)[][];
 
-export function generateCaves() {
+export function generateCave() {
 
 	const cols = GameConfig.world.x;
 	const rows = GameConfig.world.y;

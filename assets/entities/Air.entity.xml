@@ -1,0 +1,9 @@
+<Entity id="Air">
+	<PositionComponent />
+	<SpriteComponent src="assets/air.png" />
+	<DebugRectComponent 
+		enabled="1"
+		width="16" height="16" 
+		lineColor="0xff0000" lineWidth="1" fillAlpha="0.3" 
+	/>
+</Entity>
