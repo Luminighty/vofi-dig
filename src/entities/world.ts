@@ -53,7 +53,7 @@ export function createWorld(app: Application): World {
 			this.entities.splice(index, 1);
 		},
 		queryEntity<T extends Constructor<any>[]>(...componentType: (new() => any)[]): ComponentTypeTuple<T> {
-			const componentGroups = componentType.map((c) => this._components[c.name] ?? []);
+			const componentGroups = componentType.map((c) => this._components[c["COMPONENT_ID"]] ?? []);
 			if (componentGroups.length === 0)
 				return [...componentType.map(() => [])] as ComponentTypeTuple<T>;
 

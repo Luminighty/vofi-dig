@@ -14,6 +14,7 @@ export class Entity {
 	}
 
 	addComponent(componentId, props = {}) {
+		componentId = componentId.COMPONENT_ID ?? componentId;
 		const component = new Components[componentId]();
 		for (const key in props) {
 			const value = props[key];
@@ -32,14 +33,14 @@ export class Entity {
 			return;
 		this.components.splice(index, 1);
 		
-		const componentId = component.constructor.name;
+		const componentId = component.constructor["COMPONENT_ID"];
 		const worldIndex = this.world._components[componentId]?.findIndex((c) => c === component);
 		if (worldIndex >= 0)
 			this.world._components[componentId]?.splice(worldIndex, 1);
 	}
 
 	getComponent<T>(componentType: new () => T): T {
-		return this.components.find((component) => componentType.name === component.constructor.name) as T;
+		return this.components.find((component) => componentType["COMPONENT_ID"] === component.constructor["COMPONENT_ID"]) as T;
 	}
 }
 
@@ -50,7 +51,7 @@ export function registerEntity(blueprint: EntityBlueprint) {
 		const entity = new Entity();
 		entity.world = world;
 		for (const {type, props} of blueprint.components) {
-			const component = entity.addComponent(type, props);
+			const component = entity.addComponent(Components[type], props);
 			component.parent = entity;
 			component.world = world;
 		}

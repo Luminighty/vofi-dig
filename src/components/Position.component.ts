@@ -1,6 +1,7 @@
 import { GameConfig } from "../config";
 
 export class PositionComponent {
+	static readonly COMPONENT_ID = "PositionComponent" as const;
 	x = 0;
 	y = 0;
 

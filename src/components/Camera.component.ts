@@ -4,6 +4,8 @@ import { PositionComponent } from "./Position.component";
 import { SpriteComponent } from "./Sprite.component";
 
 export class CameraComponent {
+	static readonly COMPONENT_ID = "CameraComponent" as const;
+
 	parent!: Entity;
 	world!: World;
 	position!: PositionComponent;

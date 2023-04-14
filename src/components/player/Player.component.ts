@@ -17,6 +17,7 @@ interface IDigData {
 }
 
 export class PlayerComponent {
+	static readonly COMPONENT_ID = "PlayerComponent" as const;
 	world!: World;
 	parent!: Entity;
 	speed = 1;

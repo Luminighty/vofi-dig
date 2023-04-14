@@ -3,6 +3,7 @@ import { Entity, World } from "../entities";
 import { PositionComponent } from "./Position.component";
 
 export class SpriteComponent {
+	static readonly COMPONENT_ID = "SpriteComponent" as const;
 	parent!: Entity;
 	world!: World;
 	src!: string;

@@ -3,6 +3,7 @@ import { baseEvent } from "../events";
 import { PositionComponent } from "./Position.component";
 
 export class VelocityComponent {
+	static readonly COMPONENT_ID = "VelocityComponent" as const;
 	parent!: Entity;
 	velocity = { x: 0, y: 0 };
 	gravity = 0.1;

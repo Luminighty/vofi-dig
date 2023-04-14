@@ -6,6 +6,7 @@ import { PositionComponent } from "./Position.component";
 
 const MAXIMUM_ITERATIONS = 16;
 export class CollisionComponent {
+	static readonly COMPONENT_ID = "CollisionComponent" as const;
 	parent!: Entity;
 	position!: PositionComponent;
 	shape: Polygon = [];

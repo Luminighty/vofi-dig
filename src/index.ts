@@ -18,8 +18,6 @@ const app = new Application({
 app.stage.scale.set(AppConfig.scale);
 
 const fpsElement = document.body.querySelector("#fps");
-const scaleElement = document.body.querySelector("#scale");
-
 
 function Resize() {
 
@@ -28,13 +26,6 @@ function Resize() {
 	app.screen.width = window.innerWidth;
 	app.screen.height = window.innerHeight;
 	app.stage.position.set(app.screen.width/2, app.screen.height/2);
-
-	// const scaleY = Math.floor(window.innerHeight / AppConfig.height);
-	// const scaleX = Math.floor(window.innerWidth / AppConfig.width);
-	// const scale = 3 || Math.max(Math.min(scaleY, scaleX), 1);
-	// app.renderer.resize(AppConfig.width * scale, AppConfig.height * scale);
-	// app.stage.scale.set(scale);
-	// scaleElement!.innerHTML = `${scale}`;
 }
 
 document.addEventListener("contextmenu", event => event.preventDefault());
@@ -48,6 +39,6 @@ document.addEventListener("contextmenu", event => event.preventDefault());
 	Init(app);
 
 	setInterval(() => {
-		fpsElement!.innerHTML = `FPS: ${app.ticker.FPS.toFixed(2)}; Min: ${app.ticker.minFPS}; Max: ${app.ticker.maxFPS}`;
+		fpsElement!.innerHTML = `FPS: ${app.ticker.FPS.toFixed(2)}`;
 	}, 100);
 })();

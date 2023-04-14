@@ -56,7 +56,8 @@ export function initControls(app: Application) {
 		if (key)
 			Controls[key] = false;
 	});
-	
+	window.document.removeEventListener('mousemove', app.renderer.plugins.interaction.onPointerMove, true);
+	window.document.removeEventListener('pointermove', app.renderer.plugins.interaction.onPointerMove, true);
 	app.stage.eventMode = "static"
 	window.addEventListener("pointermove", (event) => {
 		Controls.mouse.screenX = event.x;

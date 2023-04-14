@@ -8,13 +8,14 @@ export interface Component {
 
 export interface ComponentConstructor {
 	new (): Component,
+	COMPONENT_ID: string,
 }
 
 export const Components: { [key: string]: ComponentConstructor} = {};
 
 export function registerComponent(component: ComponentConstructor) {
-	if (Components[component.name])
-		throw { message: `Component ${component.name} already exists.`, other: Components[component.name], component }		
-	Components[component.name] = component;
-	console.log(`Component '${component.name}' registered`);
+	if (Components[component.COMPONENT_ID])
+		throw { message: `Component ${component.COMPONENT_ID} already exists.`, other: Components[component.COMPONENT_ID], component }		
+	Components[component.COMPONENT_ID] = component;
+	console.log(`Component '${component.COMPONENT_ID}' registered`);
 }

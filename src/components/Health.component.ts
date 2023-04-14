@@ -3,6 +3,7 @@ import { Entity, World } from "../entities";
 import { PlayerComponent } from "./player/Player.component";
 
 export class HealthComponent {
+	static readonly COMPONENT_ID = "HealthComponent" as const;
 	world!: World;
 	parent!: Entity;
 
@@ -25,11 +26,11 @@ export class HealthComponent {
 			this.stuck += dt * 0.5;
 		if (this.isPlayer) {
 			this.graphics?.clear();
-			this.graphics?.beginFill(0xffffff, this.stuck / this.oxygen);
+			this.graphics?.beginFill(0xffffff, Math.min(this.stuck / this.oxygen, 0.90));
 			const position = this.world.app.stage.pivot
 			const width = this.world.app.view.width
 			const height = this.world.app.view.height
-			this.graphics?.drawRect(position.x - width / 2, position.y -  width / 2, width, height);
+			this.graphics?.drawRect(position.x - width / 2, position.y -  height / 2, width, height);
 			this.graphics?.endFill();
 		}
 	}
