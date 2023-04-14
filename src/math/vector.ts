@@ -17,6 +17,15 @@ export const Vector2 = {
 	/** A · B = A.x * B.x + A.y * B.y */
 	dot: (left: IVector2, right: IVector2) => left.x * right.x + left.y * right.y,
 
+	/** (-A.y, A.x) */
 	orthogonal: (self: IVector2) => Vector2.new(-self.y, self.x),
+	
+	/** Also known as Manhattan distance ||A|| = |A.x| + |A.y| */
+	blockLength: (self: IVector2) => Math.abs(self.x) + Math.abs(self.y),
+
+	/** A = (|x|, |y|) */
+	abs: (self: IVector2) => Math.abs(self.x) + Math.abs(self.y),
+
+	get zero(): IVector2 { return {x: 0, y: 0} }
 }
 

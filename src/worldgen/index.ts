@@ -1,8 +1,5 @@
 import { GameConfig } from "../config";
 
-export { generateTileset } from "./tileset";
-
-
 export const TestCave = [
 	"0000000000000000000000000",
 	"0000000000000000000000000",

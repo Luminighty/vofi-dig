@@ -1,5 +1,6 @@
 import { Application, FederatedPointerEvent } from "pixi.js";
 
+let appRefence!: Application;
 export const Controls = {
 	left: false,
 	right: false,
@@ -13,7 +14,13 @@ export const Controls = {
 		get middle() { return this.buttons[1]; },
 		get right() { return this.buttons[2]; },
 		buttons: [false, false, false],
-		x: 0, y: 0
+		screenX: 0, screenY: 0,
+		get x() {
+			return (this.screenX - appRefence.stage.position.x) / appRefence.stage.scale.x + appRefence.stage.pivot.x
+		},
+		get y() {
+			return (this.screenY - appRefence.stage.position.y) / appRefence.stage.scale.y + appRefence.stage.pivot.y
+		},
 	},
 
 	get x() {
@@ -22,6 +29,7 @@ export const Controls = {
 	get y() {
 		return +this.down - +this.up
 	},
+	app: null,
 }
 
 const KeyBinds = {
@@ -35,6 +43,7 @@ const KeyBinds = {
 }
 
 export function initControls(app: Application) {
+	appRefence = app;
 
 	window.addEventListener('keydown', (event) => {
 		const key = KeyBinds[event.code];
@@ -49,15 +58,16 @@ export function initControls(app: Application) {
 	});
 	
 	app.stage.eventMode = "static"
-	app.stage.on("pointermove", (event: FederatedPointerEvent) => {
-		Controls.mouse.x = event.globalX / app.stage.scale.x;
-		Controls.mouse.y = event.globalY / app.stage.scale.y;
-	});
+	window.addEventListener("pointermove", (event) => {
+		Controls.mouse.screenX = event.x;
+		Controls.mouse.screenY = event.y;
+	})
+	//app.stage.on("pointermove", (event: FederatedPointerEvent) => {});
 
-	app.stage.on("pointerdown", (event: FederatedPointerEvent) => {
+	window.addEventListener("pointerdown", (event) => {
 		Controls.mouse.buttons[event.button] = true;
 	});
-	app.stage.on("pointerup", (event: FederatedPointerEvent) => {
+	window.addEventListener("pointerup", (event) => {
 		Controls.mouse.buttons[event.button] = false;
 	});
 

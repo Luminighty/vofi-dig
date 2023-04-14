@@ -1,8 +1,8 @@
 import { GameConfig } from "../config";
 
-const ITERATIONS = 10;
-const SMOOTH_ITERS = 4;
-const EMPTY_CHANCE = 0.6;
+const ITERATIONS = 5;
+const SMOOTH_ITERS = 1;
+const EMPTY_CHANCE = 0.3;
 
 function generateTile() {
 	return Math.random() > EMPTY_CHANCE ? 1 : 0;

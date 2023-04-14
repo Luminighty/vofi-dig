@@ -15,10 +15,10 @@ export const assetsManifest: ResolverManifest = {
 		{
 			name: "ALL",
 			assets: {
-				[TileType.Air]: `assets/air.png`,
-				[TileType.Dirt]: `assets/dirt.png`,
-				[Sprites.Miner]: `assets/miner.png`,
-				[Sprites.Gem]: `assets/gem.png`,
+				[TileType.Air]: `assets/textures/air.png`,
+				[TileType.Dirt]: `assets/textures/dirt.png`,
+				[Sprites.Miner]: `assets/textures/miner.png`,
+				[Sprites.Gem]: `assets/textures/gem.png`,
 			}
 		}
 	]

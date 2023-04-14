@@ -1,17 +1,19 @@
 <Entity id="Player">
-	<PlayerComponent />
-	<VelocityComponent />
 	<SpriteComponent 
 		src="assets/textures/miner.png" 
 		anchorX="0.5" 
 		layer="entity" 
 	/>
+	<CameraComponent offsetX="-8" />
+	<PlayerComponent />
+	<VelocityComponent />
 	<CollisionComponent shape="rect -4 6 8 10" />
-	<DebugRectComponent 
+	<!--DebugRectComponent 
 		enabled="0"
 		offsetX="-4" offsetY="6"
 		width="8" height="10" 
 		lineColor="0x00ff00" lineAlpha="0.5" lineWidth="1" 
-	/>
+	/-->
 	<PositionComponent />
+	<HealthComponent />
 </Entity>

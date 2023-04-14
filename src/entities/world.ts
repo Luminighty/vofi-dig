@@ -1,7 +1,7 @@
 import { Application, Container } from "pixi.js";
 import { Entities, Entity } from "./entity";
 import { Event, baseEvent } from "../events";
-import { GameConfig } from "../config";
+import { GameConfig, RenderLayer } from "../config";
 import { Component } from "../components";
 
 type Constructor<T> = new (...args: any[]) => T;
@@ -14,16 +14,15 @@ export interface World {
 	app: Application,
 	entities: Entity[],
 	_components: {[key: string]: Component[]},
-	renderContainers: {[key: string]: Container},
+	renderContainers: {[key in RenderLayer]: Container},
 	fireEvent: (event: Event) => void,
 	addEntity: (entityId: string, ...props) => Entity,
 	removeEntity: (entity: Entity) => void,
-	_removeComponent: (component: Component) => void,
 	queryEntity: <T extends Constructor<any>[]>(...componentType: T) => ComponentTypeTuple<T>;
 }
 
 export function createWorld(app: Application): World {
-	const renderContainers = {};
+	const renderContainers = {} as {[key in RenderLayer]: Container};
 	GameConfig.renderLayers.forEach((layer) => { 
 		const container = new Container(); 
 		app.stage.addChild(container);
@@ -45,19 +44,12 @@ export function createWorld(app: Application): World {
 			entity.fireEvent(baseEvent("onInit", props ?? {}));
 			return entity;
 		},
-		_removeComponent(component) {
-			const componentId = component.constructor.name
-			const index = this._components[componentId].findIndex((c) => c === component)
-			if (index < 0)
-				return;
-			this._components[componentId].splice(index, 1);
-		},
-		removeEntity(entity) {
+		async removeEntity(entity) {
 			const index = this.entities.findIndex((e) => e === entity);
 			if (index < 0)
 				return;
 			entity.fireEvent(baseEvent("onDestroy"));
-			entity.components.forEach((c) => this._removeComponent(c));
+			entity.components.forEach((c) => entity.removeComponent(c));
 			this.entities.splice(index, 1);
 		},
 		queryEntity<T extends Constructor<any>[]>(...componentType: (new() => any)[]): ComponentTypeTuple<T> {

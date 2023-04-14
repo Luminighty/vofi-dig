@@ -1,15 +1,16 @@
-import { Application, Assets, Container } from "pixi.js";
+import { Application, Assets, Container, Graphics } from "pixi.js";
 import { registerComponents } from "./components/registry";
 import { createWorld, registerEntity } from "./entities";
 import { ParseEntity } from "./entities/parser";
 import { baseEvent } from "./events";
 import { generateCave } from "./worldgen/caves";
 import { GameConfig } from "./config";
-import { initControls } from "./systems/controls";
+import { Controls, initControls } from "./systems/controls";
+import { SpriteComponent } from "./components/Sprite.component";
 
 export async function Init(app: Application) {
 	registerComponents();
-	initControls(app);
+	await initControls(app);
 
 	await loadEntityBlueprint(`assets/entities/Player.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Tile.entity.xml`);
@@ -25,16 +26,19 @@ export async function Init(app: Application) {
 			world.addEntity("Air", { x: x*16, y: y*16 });
 			if (tile == 0)
 				continue;
-			if (Math.abs(x - row.length / 2) < 2 && y == cave.length / 2)
+			if (Math.abs(x - row.length / 2) < 2 && y == Math.ceil(cave.length / 2))
 				continue;
 			world.addEntity("Tile", { x: x*16, y: y*16 });
 		}
 	}
-	world.addEntity("Player", { x: cave[0].length * 8, y: cave.length * 8 });
+
+	const graphics = new Graphics();
+	app.stage.addChild(graphics);
+	const player = world.addEntity("Player", { x: cave[0].length * 8, y: cave.length * 8 });
 	app.ticker.add((dt) => {
 		world.fireEvent(baseEvent("onUpdate", {dt}));
-	})
-
+	});
+	app.stage.position.set(app.screen.width/2, app.screen.height/2);
 }
 
 async function loadEntityBlueprint(path) {

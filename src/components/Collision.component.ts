@@ -3,14 +3,20 @@ import { baseEvent } from "../events";
 import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 
+
+const MAXIMUM_ITERATIONS = 16;
 export class CollisionComponent {
 	parent!: Entity;
 	position!: PositionComponent;
 	shape: Polygon = [];
+	boundingBox = 0;
+	isStuck = false;
 
 	onInit() {
 		instances.push(this);
 		this.position = this.parent.getComponent(PositionComponent);
+
+		this.boundingBox = Math.max(...this.shape.map((v) => Math.abs(v.x) + Math.abs(v.y)));
 	}
 
 	worldShape({x, y}: IVector2) {
@@ -21,22 +27,57 @@ export class CollisionComponent {
 	}
 
 	onMove(delta) {
-		for (const other of instances) {
-			if (other === this)
-				continue;
-			const pushVector = SAT(this.worldShape(delta), other.worldShape({x: 0, y: 0}));
-			if (pushVector) {
-				this.position.x -= pushVector.x;
-				this.position.y -= pushVector.y;
-				this.parent.fireEvent(baseEvent("onCollide", pushVector));
-			}
+		this.checkCollision(delta);
+	}
+
+
+	onUpdate() {
+		if (this.isStuck)
+			this.checkCollision({x: 0, y: 0});
+	}
+
+	checkCollision(delta) {
+		let colliders = instances.filter((other) => 
+			this !== other && 
+			Math.abs(other.position.x - this.position.x) + Math.abs(other.position.y - this.position.y) < this.boundingBox + other.boundingBox
+		);
+		
+		let iterations = 0;
+		while(this.collisionStep(delta, colliders) !== 0 && iterations < MAXIMUM_ITERATIONS)
+			iterations++;
+
+		if (iterations >= MAXIMUM_ITERATIONS) {
+			if (!this.isStuck)
+				this.parent.fireEvent(baseEvent("onStuck"));
+			this.isStuck = true;
+		} else if (this.isStuck) {
+			console.log("onUnStuck");
+			this.parent.fireEvent(baseEvent("onUnStuck"));
+			this.isStuck = false;
 		}
 	}
 
-	onUpdate() {
-	}
-
-	checkCollision(rect: IRect, other: CollisionComponent) {
+	collisionStep(delta: IVector2, colliders: CollisionComponent[]) {
+		const currentColliders: Array<CollisionComponent> = [];
+		let mostSignificant: IVector2 | null = null;
+		let mostSignificantLength = 0;
+		for (const other of colliders) {
+			const pushVector = SAT(this.worldShape(delta), other.worldShape({x: 0, y: 0}));
+			if (pushVector) {
+				currentColliders.push(other);
+				const length = Vector2.dot(pushVector, pushVector);
+				if (mostSignificantLength < length) {
+					mostSignificant = pushVector;
+					mostSignificantLength = length;
+				}
+			}
+		}
+		if (mostSignificant) {
+			this.position.x -= mostSignificant.x;
+			this.position.y -= mostSignificant.y;
+			this.parent.fireEvent(baseEvent("onCollide", mostSignificant));
+		}
+		return currentColliders.length
 	}
 
 

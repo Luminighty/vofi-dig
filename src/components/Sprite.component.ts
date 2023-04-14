@@ -18,7 +18,6 @@ export class SpriteComponent {
 		this.sprite.anchor.set(this.anchorX, this.anchorY);
 
 		this.world.renderContainers[this.layer].addChild(this.sprite);
-
 		this.position = this.parent.getComponent(PositionComponent);
 	}
 

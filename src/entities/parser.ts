@@ -31,6 +31,11 @@ function parseAttribute(tag: string, key: string, value: string): any {
 
 	if (value.startsWith("0x"))
 		return parseInt(value);
+	
+	if (value.toLowerCase() === "false")
+		return false;
+	if (value.toLowerCase() === "true")
+		return true;
 
 	const number = parseFloat(value);
 	return isNaN(number) ? value : number;

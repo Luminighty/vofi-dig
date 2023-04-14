@@ -7,8 +7,8 @@ export const GameConfig = {
 	gravity: 0.1,
 	maxFallSpeed: 1.5,
 	world: {
-		x: 25,
-		y: 14,
+		x: 120,
+		y: 60,
 	},
 	renderLayers: [
 		"farBackground",
@@ -26,16 +26,13 @@ export const GameConfig = {
 			y: this.world.y / 2,
 		}
 	}
-}
+} as const
 
-export function toWorldPosition(x: number | {x: number, y: number}, y?: number) {
-	if (typeof(x) == "object")
-		return toWorldPosition(x.x, x.y);
-	return {x: x * GameConfig.gridSize, y: (y ?? 0) * GameConfig.gridSize}
-}
+export type RenderLayer = typeof GameConfig.renderLayers[number];  
 
 export const AppConfig = {
 	width: GameConfig.gridSize * GameConfig.world.x,
 	height: GameConfig.gridSize * GameConfig.world.y,
 	backgroundColor: 0x303030,
+	scale: 3,
 }
