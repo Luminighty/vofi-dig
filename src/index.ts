@@ -30,7 +30,10 @@ function Resize() {
 
 document.addEventListener("contextmenu", event => event.preventDefault());
 
-
+// window.addEventListener("beforeunload", (e) => {
+// 	e.preventDefault();
+// 	e.returnValue = "Are you sure you want to quit the game?";
+// });
 
 (async () =>{
 	Resize();

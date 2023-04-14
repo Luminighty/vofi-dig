@@ -1,6 +1,7 @@
 import { Sprite, Texture } from "pixi.js";
 import { Entity, World } from "../entities";
 import { PositionComponent } from "./Position.component";
+import { PlayerComponent } from "./player/Player.component";
 
 export class SpriteComponent {
 	static readonly COMPONENT_ID = "SpriteComponent" as const;

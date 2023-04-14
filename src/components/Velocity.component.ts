@@ -20,7 +20,7 @@ export class VelocityComponent {
 			return;
 		this.velocity.y = Math.min(this.velocity.y + this.gravity * dt, this.maxFallSpeed);
 
-		this.parent.fireEvent(baseEvent("onMove", { x: this.velocity.x, y: this.velocity.y } ));
+		this.parent.fireEvent(baseEvent("onMove", { x: this.velocity.x * dt, y: this.velocity.y * dt } ));
 	}
 
 	onStuck() {

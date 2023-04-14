@@ -10,9 +10,9 @@ export class PositionComponent {
 		this.y = y;
 	}
 
-	onMove({x, y}) {
-		this.x += x ?? 0;
-		this.y += y ?? 0;
+	onMove({x, y, dt}) {
+		this.x += (x ?? 0);
+		this.y += (y ?? 0);
 	}
 
 	get grid() {

@@ -44,7 +44,7 @@ export function createWorld(app: Application): World {
 			entity.fireEvent(baseEvent("onInit", props ?? {}));
 			return entity;
 		},
-		async removeEntity(entity) {
+		removeEntity(entity) {
 			const index = this.entities.findIndex((e) => e === entity);
 			if (index < 0)
 				return;

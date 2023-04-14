@@ -48,6 +48,7 @@ export function initControls(app: Application) {
 	window.addEventListener('keydown', (event) => {
 		const key = KeyBinds[event.code];
 		if (key && !event.repeat)
+			event.preventDefault();
 			Controls[key] = true;
 	});
 	

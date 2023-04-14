@@ -50,7 +50,7 @@ export class PlayerComponent {
 	}
 
 	move(dt) {
-		this.velocity.velocity.x = Controls.x * dt * this.speed;
+		this.velocity.velocity.x = Controls.x * this.speed;
 		if (Controls.jumping && this.canJump) {
 			this.velocity.velocity.y = this.jumpSize;
 			this.canJump = false;
@@ -102,13 +102,13 @@ export class PlayerComponent {
 		if (isTargetSame) {
 			this.digData.progress += digPower;
 			const progressPercentage = this.digData.progress / (this.digData.target?.hardness ?? this.digData.progress);
-			this.graphics.clear();
-			this.graphics.beginFill(0xffaa00, progressPercentage)
-			this.graphics.drawRect(
-				position.x * 16, position.y * 16,
-				16, 16
-			);
-			this.graphics.endFill();
+			// this.graphics.clear();
+			// this.graphics.beginFill(0xffaa00, progressPercentage)
+			// this.graphics.drawRect(
+			// 	position.x * 16, position.y * 16,
+			// 	16, 16
+			// );
+			// this.graphics.endFill();
 		}
 
 		if (this.digData.target && this.digData.progress >= this.digData.target.hardness) {
