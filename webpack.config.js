@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
-  entry: './src/index.ts',
+  entry: './client/index.ts',
   output: {
     path: path.resolve(__dirname, 'public_html'),    
     filename: '[name].bundle.js',
@@ -54,7 +54,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: "src/index.html"
+      template: "client/index.html"
     })
   ]
 };

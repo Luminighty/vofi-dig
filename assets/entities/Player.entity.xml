@@ -16,4 +16,6 @@
 	/-->
 	<PositionComponent />
 	<HealthComponent />
+	<ChunkLoaderComponent maxChunkDistance="2" />
+	<UpdateComponent />
 </Entity>

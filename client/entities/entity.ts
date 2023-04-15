@@ -1,3 +1,4 @@
+import { Assets } from "pixi.js";
 import { Component, Components } from "../components";
 import { Event } from "../events";
 import { EntityBlueprint } from "./blueprint";
@@ -21,9 +22,9 @@ export class Entity {
 			component[key] = value;
 		}
 		this.components.push(component);
-		if (!this.world._components[componentId])
-			this.world._components[componentId] = [];
-		this.world._components[componentId].push(component)
+		if (!this.world.components[componentId])
+			this.world.components[componentId] = [];
+		this.world.components[componentId].push(component)
 		return component;
 	}
 
@@ -34,9 +35,19 @@ export class Entity {
 		this.components.splice(index, 1);
 		
 		const componentId = component.constructor["COMPONENT_ID"];
-		const worldIndex = this.world._components[componentId]?.findIndex((c) => c === component);
+		const worldIndex = this.world.components[componentId]?.findIndex((c) => c === component);
 		if (worldIndex >= 0)
-			this.world._components[componentId]?.splice(worldIndex, 1);
+			this.world.components[componentId]?.splice(worldIndex, 1);
+	}
+
+	removeAllComponents() {
+		for (const component of this.components) {
+			const componentId = component.constructor["COMPONENT_ID"];
+			const worldIndex = this.world.components[componentId]?.findIndex((c) => c === component);
+			if (worldIndex >= 0)
+				this.world.components[componentId]?.splice(worldIndex, 1);
+		}
+		this.components = [];
 	}
 
 	getComponent<T>(componentType: new () => T): T {

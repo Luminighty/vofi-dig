@@ -9,6 +9,8 @@ import { DiggableComponent } from "./Diggable.component";
 import { TileTagComponent } from "./TileTag.component";
 import { CameraComponent } from "./Camera.component";
 import { HealthComponent } from "./Health.component";
+import { ChunkLoaderComponent } from "./player/ChunkLoader.component";
+import { UpdateComponent } from "./Update.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -21,4 +23,6 @@ export function registerComponents() {
 	registerComponent(TileTagComponent);
 	registerComponent(CameraComponent);
 	registerComponent(HealthComponent);
+	registerComponent(ChunkLoaderComponent);
+	registerComponent(UpdateComponent);
 }

@@ -1,0 +1,11 @@
+<Entity id="Player">
+	<SpriteComponent 
+		src="assets/textures/miner.png" 
+		anchorX="0.5" 
+		layer="entity" 
+	/>
+	<CollisionComponent shape="rect -4 6 8 10" />
+	<PositionComponent />
+	<UpdateComponent />
+	<ServerActorComponent />
+</Entity>

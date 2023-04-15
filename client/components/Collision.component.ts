@@ -1,4 +1,5 @@
 import { Entity, World } from "../entities";
+import { OnChunk } from "../entities/filter";
 import { baseEvent } from "../events";
 import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
@@ -7,14 +8,16 @@ import { PositionComponent } from "./Position.component";
 const MAXIMUM_ITERATIONS = 16;
 export class CollisionComponent {
 	static readonly COMPONENT_ID = "CollisionComponent" as const;
+	world!: World;
 	parent!: Entity;
 	position!: PositionComponent;
 	shape: Polygon = [];
 	boundingBox = 0;
 	isStuck = false;
+	enabled = true;
+	shouldUnload = false;
 
 	onInit() {
-		instances.push(this);
 		this.position = this.parent.getComponent(PositionComponent);
 
 		this.boundingBox = Math.max(...this.shape.map((v) => Math.abs(v.x) + Math.abs(v.y)));
@@ -38,8 +41,14 @@ export class CollisionComponent {
 	}
 
 	checkCollision(delta) {
-		let colliders = instances.filter((other) => 
-			this !== other && 
+		if (!this.enabled)
+			return;
+		let [colliders] = this.world
+			.withFilter(OnChunk(this.position.chunkX, this.position.chunkY, 2))
+			.queryEntity(CollisionComponent, PositionComponent);
+
+		colliders = colliders.filter((other) => 
+			this !== other && other.enabled &&
 			Math.abs(other.position.x - this.position.x) + Math.abs(other.position.y - this.position.y) < this.boundingBox + other.boundingBox
 		);
 		
@@ -52,7 +61,6 @@ export class CollisionComponent {
 				this.parent.fireEvent(baseEvent("onStuck"));
 			this.isStuck = true;
 		} else if (this.isStuck) {
-			console.log("onUnStuck");
 			this.parent.fireEvent(baseEvent("onUnStuck"));
 			this.isStuck = false;
 		}
@@ -80,32 +88,8 @@ export class CollisionComponent {
 		}
 		return currentColliders.length
 	}
-
-
-	onDestroy() {
-		const index = instances.findIndex((component) => component === this);
-		if (index < 0)
-			return;
-		instances.splice(index, 1);
-	}
 }
 
-
-const instances: CollisionComponent[] = [];
-
-export interface IRect {
-	x: number,
-	y: number,
-	width: number,
-	height: number,
-}
-
-export function intersects(rect1: IRect, rect2: IRect) {
-	return rect1.x + rect1.width > rect2.x &&
-		rect1.x < rect2.x + rect2.width &&
-		rect1.y + rect1.height > rect2.y &&
-		rect1.y < rect2.y + rect2.height;
-}
 
 type Polygon = IVector2[];
 type Edge = IVector2;

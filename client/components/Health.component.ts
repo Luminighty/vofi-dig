@@ -26,7 +26,7 @@ export class HealthComponent {
 			this.stuck += dt * 0.5;
 		if (this.isPlayer) {
 			this.graphics?.clear();
-			this.graphics?.beginFill(0xffffff, Math.min(this.stuck / this.oxygen, 0.90));
+			this.graphics?.beginFill(0x112233, Math.min(this.stuck / this.oxygen, 0.80));
 			const position = this.world.app.stage.pivot
 			const width = this.world.app.view.width
 			const height = this.world.app.view.height

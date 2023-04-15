@@ -1,0 +1,4 @@
+<Entity id="Fren">
+	<PositionComponent />
+	<SpriteComponent src="assets/textures/fren.png" layer="entity" />
+</Entity>

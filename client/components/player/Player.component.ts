@@ -6,8 +6,9 @@ import { TileTagComponent } from "../TileTag.component";
 import { VelocityComponent } from "../Velocity.component";
 import { DiggableComponent } from "../Diggable.component";
 import { IVector2, Vector2 } from "../../math";
-import { SpriteComponent } from "../Sprite.component";
 import { CameraComponent } from "../Camera.component";
+import { OnChunk } from "../../entities/filter";
+import { PositionToChunk, PositionToTile } from "../../config";
 
 interface IDigData {
 	strength: number,
@@ -41,12 +42,17 @@ export class PlayerComponent {
 		this.camera = this.parent.getComponent(CameraComponent);
 		this.graphics = new Graphics();
 		this.world.renderContainers["foreground"].addChild(this.graphics);
+		window["player"] = this;
 	}
 
 	onUpdate({dt}) {
 		this.move(dt);
 		this.build();
 		this.dig(dt);
+	}
+
+	onChunkChanged({x, y}) {
+		console.log({x, y});
 	}
 
 	move(dt) {
@@ -61,13 +67,13 @@ export class PlayerComponent {
 	build() {
 		if (!Controls.mouse.right)
 			return;
-		const mouse = {
-			x: Math.floor(Controls.mouse.x / 16),
-			y: Math.floor(Controls.mouse.y / 16),
-		}
+		const mouse = PositionToTile(Controls.mouse);
+		const chunk = PositionToChunk(Controls.mouse);
 		// if (this.position.gridX === mouse.x && this.position.gridY === mouse.y - 1)
 		// 	return;
-		const [positions] = this.world.queryEntity(PositionComponent, TileTagComponent);
+		const [positions] = this.world
+			.withFilter(OnChunk(chunk.x, chunk.y))
+			.queryEntity(PositionComponent, TileTagComponent);
 		const isTileOccupied = positions.some((p) => p.gridX === mouse.x && p.gridY === mouse.y);
 		if (isTileOccupied)
 			return;
@@ -84,10 +90,8 @@ export class PlayerComponent {
 		}
 
 		// Reach
-		const mouse = {
-			x: Math.floor(Controls.mouse.x / 16),
-			y: Math.floor(Controls.mouse.y / 16),
-		};
+		const mouse = PositionToTile(Controls.mouse);
+		const chunk = PositionToChunk(Controls.mouse);
 		const playerPosition = this.position.grid;
 		playerPosition.y += 1;
 		const distance = Vector2.blockLength(Vector2.sub(mouse, playerPosition));
@@ -99,16 +103,16 @@ export class PlayerComponent {
 		const isTargetSame = position?.x === mouse.x && position?.y === mouse.y
 		const digPower = this.digData.strength * dt;
 
-		if (isTargetSame) {
+		if (isTargetSame && this.digData.target) {
 			this.digData.progress += digPower;
 			const progressPercentage = this.digData.progress / (this.digData.target?.hardness ?? this.digData.progress);
-			// this.graphics.clear();
-			// this.graphics.beginFill(0xffaa00, progressPercentage)
-			// this.graphics.drawRect(
-			// 	position.x * 16, position.y * 16,
-			// 	16, 16
-			// );
-			// this.graphics.endFill();
+			this.graphics.clear();
+			this.graphics.beginFill(0xffaa00, progressPercentage)
+			this.graphics.drawRect(
+				position.x * 16, position.y * 16,
+				16, 16
+			);
+			this.graphics.endFill();
 		}
 
 		if (this.digData.target && this.digData.progress >= this.digData.target.hardness) {
@@ -124,7 +128,10 @@ export class PlayerComponent {
 			return;
 
 		// Find dig target
-		const [diggables, positions] = this.world.queryEntity(DiggableComponent, PositionComponent);
+		const [diggables, positions] = this.world
+			.withFilter(OnChunk(chunk.x, chunk.y))
+			.queryEntity(DiggableComponent, PositionComponent);
+
 		for (let i = 0; i < diggables.length; i++) {
 			const grid = positions[i].grid;
 			if (grid.x === mouse.x && grid.y === mouse.y) {

@@ -14,14 +14,15 @@ export class CameraComponent {
 	enabled = true;
 	get offset() { return { x: this.offsetX, y: this.offsetY } }
 
-	onInit() {
-		this.position = this.parent.getComponent(PositionComponent)
+	onInit({ x, y, }) {
+		const pivot = Vector2.add({x, y}, this.offset)
+		this.world.app.stage.pivot.copyFrom(pivot);
 	}
 
-	onUpdate() {
+	onPositionChanged({x, y}) {
 		if (!this.enabled)
 			return;
-		const pivot = Vector2.add(this.position, this.offset)
+		const pivot = Vector2.add({x, y}, this.offset)
 		this.world.app.stage.pivot.copyFrom(pivot);
 	}
 
