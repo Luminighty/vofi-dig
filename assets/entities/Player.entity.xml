@@ -17,5 +17,9 @@
 	<PositionComponent />
 	<HealthComponent />
 	<ChunkLoaderComponent maxChunkDistance="2" />
+	<ClientActorComponent
+		sync="PositionComponent;SpriteComponent"
+		serverEntity="Miner"
+	/>
 	<UpdateComponent />
 </Entity>

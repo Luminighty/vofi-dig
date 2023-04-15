@@ -11,6 +11,8 @@ import { CameraComponent } from "./Camera.component";
 import { HealthComponent } from "./Health.component";
 import { ChunkLoaderComponent } from "./player/ChunkLoader.component";
 import { UpdateComponent } from "./Update.component";
+import { ClientActorComponent } from "./network/ClientActor.component";
+import { ServerActorComponent } from "./network/ServerActor.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -25,4 +27,6 @@ export function registerComponents() {
 	registerComponent(HealthComponent);
 	registerComponent(ChunkLoaderComponent);
 	registerComponent(UpdateComponent);
+	registerComponent(ClientActorComponent);
+	registerComponent(ServerActorComponent);
 }

@@ -41,6 +41,9 @@ function parseAttribute(tag: string, key: string, value: string): any {
 	return isNaN(number) ? value : number;
 }
 
+function parseArray(value: string) {
+	return value.split(";");
+}
 
 function parseShape(value: string): {x: number, y: number}[] {
 	if (value.toLowerCase().startsWith("rect")) {
@@ -64,5 +67,8 @@ const ParseLookup = {
 	},
 	"DebugRectComponent": {
 		"fillColor": parseInt,
+	},
+	"ClientActorComponent": {
+		"sync": parseArray,
 	}
 }

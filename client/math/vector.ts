@@ -7,6 +7,7 @@ export const Vector2 = {
 
 	add: (left: IVector2, right: IVector2): IVector2 => Vector2.new(left.x + right.x, left.y + right.y),
 	scalar: (scale: number, self: IVector2): IVector2 => Vector2.new(self.x * scale, self.y * scale),
+	div: (self: IVector2, scale: number): IVector2 => Vector2.new(self.x / scale, self.y / scale),
 	
 	/** (a, b) => (-a, -b) */
 	neg: (self: IVector2): IVector2 => Vector2.scalar(-1, self),

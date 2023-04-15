@@ -7,6 +7,6 @@ export class DiggableComponent {
 	hardness = 30;
 
 	dig() {
-		this.world.removeEntity(this.parent);
+		this.world.withNetwork().removeEntity(this.parent);
 	}
 }

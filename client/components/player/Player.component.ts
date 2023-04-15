@@ -51,10 +51,6 @@ export class PlayerComponent {
 		this.dig(dt);
 	}
 
-	onChunkChanged({x, y}) {
-		console.log({x, y});
-	}
-
 	move(dt) {
 		this.velocity.velocity.x = Controls.x * this.speed;
 		if (Controls.jumping && this.canJump) {
@@ -77,7 +73,7 @@ export class PlayerComponent {
 		const isTileOccupied = positions.some((p) => p.gridX === mouse.x && p.gridY === mouse.y);
 		if (isTileOccupied)
 			return;
-		this.world.addEntity("Tile", { x: mouse.x * 16, y: mouse.y * 16});
+		this.world.withNetwork().addEntity("Tile", { x: mouse.x * 16, y: mouse.y * 16});
 	}
 
 	dig(dt) {

@@ -1,6 +1,7 @@
 import { GameConfig } from "../config";
 import { Entity } from "../entities";
 import { baseEvent } from "../events";
+import { IVector2 } from "../math";
 
 export class PositionComponent {
 	static readonly COMPONENT_ID = "PositionComponent" as const;
@@ -22,12 +23,17 @@ export class PositionComponent {
 	}
 
 	onMove({x, y}) {
+		this.position = {
+			x: this.x + x ?? 0,
+			y: this.y + y ?? 0,
+		};
+	}
+
+	set position(value: IVector2) {
 		const lastChunkX = this.chunkX;
 		const lastChunkY = this.chunkY;
-		this.x += (x ?? 0);
-		this.y += (y ?? 0);
-		console.log();
-		
+		this.x = value.x;
+		this.y = value.y;
 		if (lastChunkX !== this.chunkX || lastChunkY !== this.chunkY)
 			this.parent.fireEvent(baseEvent("onChunkChanged", { ...this.chunk }));
 		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }))

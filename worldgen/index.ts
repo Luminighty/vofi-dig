@@ -1,4 +1,4 @@
-import { GameConfig } from "../config";
+import { GameConfig } from "../client/config";
 
 export const TestCave = [
 	"0000000000000000000000000",

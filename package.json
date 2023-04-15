@@ -5,28 +5,37 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -r -d public_html/",
-    "start": "node server/index.js",
+    "start": "node dist/server/index.js",
+    "start:dev": "ts-node -P .\\tsconfig.server.json .\\server\\index.ts",
     "serve": "webpack serve --mode development",
     "build:dev": "webpack --mode development",
-    "build:prod": "webpack --mode production"
+    "build:prod": "webpack --mode production",
+    "build:server": "tsc -P .\\tsconfig.server.json"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.22",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "url-loader": "^4.1.1",
     "webpack": "^5.76.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.1",
+    "webpack-remove-debug": "^0.1.0",
     "xml-loader": "^1.2.1"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "pixi.js": "^7.1.4",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
   },
   "keywords": [],
   "author": "Luminight (http://luminight.dev/)",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "18.x.x"
+  }
 }

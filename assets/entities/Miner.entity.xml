@@ -1,4 +1,4 @@
-<Entity id="Player">
+<Entity id="Miner">
 	<SpriteComponent 
 		src="assets/textures/miner.png" 
 		anchorX="0.5" 
@@ -6,6 +6,6 @@
 	/>
 	<CollisionComponent shape="rect -4 6 8 10" />
 	<PositionComponent />
-	<UpdateComponent />
 	<ServerActorComponent />
+	<UpdateComponent />
 </Entity>

@@ -1,4 +1,4 @@
-import { GameConfig } from "../config";
+import { GameConfig } from "../client/config";
 
 const ITERATIONS = 5;
 const SMOOTH_ITERS = 1;
@@ -11,19 +11,17 @@ function generateTile() {
 export type Cave = (1 | 0)[][];
 
 export function generateCave() {
-
 	const cols = GameConfig.world.x;
 	const rows = GameConfig.world.y;
 	let world: Cave = Array.from({length: rows}, () =>
 		Array.from({length: cols}, generateTile));
 	
 	for (let i = 0; i < ITERATIONS; i++)
-		world = step(world);
+		world = step(world);  
 	for (let i = 0; i < SMOOTH_ITERS; i++)
 		world = smooth(world);
 	return world;
 }
-
 
 const smooth = (world: Cave) => applyToCave(world, (world, i, j) => {
 	let count = countNeighbours(world, i, j);
@@ -55,5 +53,4 @@ function applyToCave(world: Cave, func: (world: Cave, i: number, j: number) => (
 		}
 	}
 	return newWorld;
-
 }

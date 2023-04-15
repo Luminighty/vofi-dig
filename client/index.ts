@@ -1,7 +1,8 @@
-import { Application, Assets, UPDATE_PRIORITY } from "pixi.js";
+import { Application, Assets } from "pixi.js";
 import { assetsManifest } from "./assets";
 import { AppConfig } from "./config";
 import { Init } from "./Game";
+import io from 'socket.io-client';
 
 const canvas = document.body.appendChild(document.createElement("canvas"));
 canvas.id = "scene";
@@ -34,14 +35,15 @@ document.addEventListener("contextmenu", event => event.preventDefault());
 // 	e.preventDefault();
 // 	e.returnValue = "Are you sure you want to quit the game?";
 // });
-
+const socket = io('http://localhost:3000');
 (async () =>{
 	Resize();
 	await Assets.init({ manifest: assetsManifest })
 	await Assets.loadBundle("ALL");
-	Init(app);
+	Init(app, socket);
 
 	setInterval(() => {
 		fpsElement!.innerHTML = `FPS: ${app.ticker.FPS.toFixed(2)}`;
 	}, 100);
 })();
+

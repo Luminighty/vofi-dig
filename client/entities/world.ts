@@ -4,6 +4,8 @@ import { Event, baseEvent } from "../events";
 import { GameConfig, RenderLayer } from "../config";
 import { Component } from "../components";
 import { IEntityFilter } from "./filter";
+import { NetworkHandler } from "../network";
+import { Socket } from "socket.io-client";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -12,12 +14,13 @@ type ComponentTypeTuple<T extends Constructor<any>[]> = {
 };
 
 export class World {
-	app!: Application
+	app!: Application;
+	networkHandler!: NetworkHandler;
 	renderContainers!: {[key in RenderLayer]: Container};
-
 	entities: Entity[] = [];
 	components: {[key: string]: Component[]} = {};
-	filters: IEntityFilter[] = [];
+	private filters: IEntityFilter[] = [];
+	private networkSynced = false;
 
 	fireEvent(event: Event) {
 		for (const entity of this.entities) {
@@ -25,8 +28,19 @@ export class World {
 		}
 	}
 
-	addEntity (entityId: string, props: any = {}): Entity {
+	withNetwork() {
+		this.networkSynced = true;
+		return this;
+	}
+
+	addEntity (entityId: string, props: any = {}, networkId?: number): Entity {
+		if (!Entities[entityId])
+			throw `Entity ${entityId} not found!`;
 		const entity = Entities[entityId](this);
+		entity.id = networkId ?? 0;
+		if (this.networkSynced)
+			this.networkHandler.createEntity(entityId, props).then((id) => entity.id = id as number);
+		this.networkSynced = false;
 		this.entities.push(entity);
 		entity.fireEvent(baseEvent("onInit", props));
 		entity.fireEvent(baseEvent("onLateInit", props));
@@ -34,6 +48,9 @@ export class World {
 	}
 
 	removeEntity(entity: Entity) {
+		if (this.networkSynced)
+			this.networkHandler.destroyEntity(entity);
+		this.networkSynced = false;
 		const index = this.entities.findIndex((e) => e === entity);
 		if (index < 0)
 			return;
@@ -46,6 +63,7 @@ export class World {
 		this.filters.push(filter);
 		return this;
 	}
+
 	queryEntity<T extends Constructor<any>[]>(...componentTypes: T): ComponentTypeTuple<T> {
 		const componentGroups = componentTypes.map((c) => this.components[c["COMPONENT_ID"]] ?? []);
 
@@ -74,7 +92,7 @@ export class World {
 	}
 }
 
-export function createWorld(app: Application): World {
+export function createWorld(app: Application, socket: Socket): World {
 	const renderContainers = {} as {[key in RenderLayer]: Container};
 	GameConfig.renderLayers.forEach((layer) => { 
 		const container = new Container(); 
@@ -84,6 +102,7 @@ export function createWorld(app: Application): World {
 	const world = new World();
 	world.renderContainers = renderContainers;
 	world.app = app;
+	world.networkHandler = new NetworkHandler(world, socket);
 	return world;
 }
 

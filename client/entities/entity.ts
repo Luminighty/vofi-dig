@@ -1,10 +1,10 @@
-import { Assets } from "pixi.js";
 import { Component, Components } from "../components";
 import { Event } from "../events";
 import { EntityBlueprint } from "./blueprint";
 import { World } from "./world";
 
 export class Entity {
+	id: number = -1;
 	world!: World;
 	components: Component[] = [];
 
@@ -16,7 +16,10 @@ export class Entity {
 
 	addComponent(componentId, props = {}) {
 		componentId = componentId.COMPONENT_ID ?? componentId;
-		const component = new Components[componentId]();
+		const Component = Components[componentId]
+		if (!Component)
+			throw `Component not found '${componentId}'`;
+		const component = new Component();
 		for (const key in props) {
 			const value = props[key];
 			component[key] = value;
@@ -52,6 +55,9 @@ export class Entity {
 
 	getComponent<T>(componentType: new () => T): T {
 		return this.components.find((component) => componentType["COMPONENT_ID"] === component.constructor["COMPONENT_ID"]) as T;
+	}
+	getComponentByTypeId<T>(componentTypeId: string): T {
+		return this.components.find((component) => componentTypeId === component.constructor["COMPONENT_ID"]) as T;
 	}
 }
 
