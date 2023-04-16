@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VOFI DIGGING</title>
+	<style>
+		html, body {
+			background-color: black;
+			overflow: hidden;
+		}
+		canvas {
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			transform: translate(-50%, -50%);
+		}
+		#controls {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			z-index: 10;
+			color: white;
+		}
+	</style>
+	<script src="env.js"></script>
+</head>
+<body>
+	<div id="controls">
+		<div id="fps"></div>
+		<div id="scale"></div>
+		<div>WASD to move</div>
+		<div>Press 'Space' to jump</div>
+		<div>Left Mouse button to dig</div>
+		<div>Right Mouse button to build</div>
+	</div>
+</body>
+</html>

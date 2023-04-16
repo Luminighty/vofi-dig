@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+			"outDir": "./dist/",
+			"sourceMap": true,
+			"strict": true,
+			"noImplicitReturns": true,
+			"noImplicitAny": false,
+			"module": "es6",
+			"moduleResolution": "node",
+			"target": "es5",
+			"allowJs": true,
+			"allowSyntheticDefaultImports": true,
+			"experimentalDecorators": true
+	},
+	"include": [
+			"./src/index.ts", 
+			"./src/**/*", 
+	]
+}
