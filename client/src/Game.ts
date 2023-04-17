@@ -11,6 +11,7 @@ import { registerEntityBlueprints } from "./entities/registry";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { LocalStorage } from "./systems/storage";
 import { PlayerComponent } from "./components/player/Player.component";
+import { PlayerSkinComponent } from "./components/player/PlayerSkin.component";
 
 export async function Init(app: Application, socket: Socket) {
 	registerComponents();
@@ -87,7 +88,10 @@ function LoadClientEntity(entityId: number, world: World) {
 
 function getOrCreatePlayer(world: World, props: object) {
 	let players = world.queryEntity(PlayerComponent)[0];
-	if (players.length === 0)
-		return world.addEntity("Player", props)
+	if (players.length === 0) {
+		const player = world.addEntity("Player", props);
+		player.getComponent(PlayerSkinComponent).randomize();
+		return player;
+	}
 	return players[0].parent;
 }

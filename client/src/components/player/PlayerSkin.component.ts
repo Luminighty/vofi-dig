@@ -6,10 +6,10 @@ export class PlayerSkinComponent {
 	parent!: Entity
 	sprite!: SpriteSocketComponent;
 
-	hat = generateSources("hat", 5);
-	beard = generateSources("beard", 5);
+	hat = [...generateSources("hat", 5), "null"];
+	beard = [...generateSources("beard", 5), "null"];
 	body = generateSources("body", 5);
-	clothes = generateSources("clothes", 5);
+	clothes = [...generateSources("clothes", 5), "null"];
 
 	onInit() {
 		this.sprite = this.parent.getComponent(SpriteSocketComponent);

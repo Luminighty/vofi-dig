@@ -39,7 +39,7 @@ export class SpriteSocketComponent {
 		const sprite = this.sprites[key];
 		sprite.visible = socket?.src !== "null";
 		if (socket) {
-			if (socket.src)
+			if (socket.src && socket.src !== "null")
 				sprite.texture = Texture.from(socket.src);
 			if (socket.anchorX)
 				sprite.anchor.x = socket.anchorX;

@@ -1,20 +1,14 @@
 <Entity id="Player">
 	<SpriteSocketComponent layer="entity" >
-		<Socket key="beard" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/beard/0000.png" />
-		<Socket key="hat" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/hat/0000.png" />
-		<Socket key="clothes" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/clothes/0000.png" />
-		<Socket key="body" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/body/0000.png" />
+		<Socket key="beard" anchorX="0.5" src="assets/textures/miner/beard/0000.png" />
+		<Socket key="hat" anchorX="0.5" src="assets/textures/miner/hat/0000.png" />
+		<Socket key="clothes" anchorX="0.5" src="assets/textures/miner/clothes/0000.png" />
+		<Socket key="body" anchorX="0.5" src="assets/textures/miner/body/0000.png" />
 	</SpriteSocketComponent>
 	<CameraComponent offsetX="-8" />
 	<PlayerComponent />
 	<VelocityComponent />
 	<CollisionComponent shape="rect -4 6 8 10" />
-	<!--DebugRectComponent 
-		enabled="0"
-		offsetX="-4" offsetY="6"
-		width="8" height="10" 
-		lineColor="0x00ff00" lineAlpha="0.5" lineWidth="1" 
-	/-->
 	<PositionComponent />
 	<HealthComponent />
 	<ChunkLoaderComponent maxChunkDistance="2" />
