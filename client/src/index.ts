@@ -3,6 +3,7 @@ import { assetsManifest } from "./assets";
 import { AppConfig } from "./config";
 import { Init } from "./Game";
 import io from 'socket.io-client';
+import { LocalStorage } from "./systems/storage";
 
 const canvas = document.body.appendChild(document.createElement("canvas"));
 canvas.id = "scene";
@@ -28,7 +29,12 @@ function Resize() {
 
 document.addEventListener("contextmenu", event => event.preventDefault());
 
-const socket = io(process.env.DIG_SERVER_HOST);
+const socket = io(process.env.DIG_SERVER_HOST, {
+	query: {
+		userId: LocalStorage.getUserId()
+	}
+});
+
 (async () =>{
 	Resize();
 	await Assets.init({ manifest: assetsManifest })

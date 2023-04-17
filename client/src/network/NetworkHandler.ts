@@ -3,6 +3,7 @@ import { Entity, World } from "../entities";
 import { ServerActorComponent } from "../components/network/ServerActor.component";
 import { baseEvent } from "../events";
 import { ChunkLoaderComponent } from "../components/player/ChunkLoader.component";
+import { IVector2 } from "../math";
 
 
 export class NetworkHandler {
@@ -11,8 +12,6 @@ export class NetworkHandler {
 		private socket: Socket,
 	) {
 		this.socket = socket;
-		console.log("NetworkHandler");
-
 		socket.on("entity update", this.onEntityUpdate.bind(this));
 		socket.on("entity create", this.onEntityCreate.bind(this));
 		socket.on("entity createAll", this.onEntityCreateAll.bind(this));
@@ -29,6 +28,12 @@ export class NetworkHandler {
 	public getState() {
 		return new Promise((res) => {
 			this.socket.emit("query entities", res);
+		})
+	}
+
+	public initGame(): Promise<{userId: string, entities: number[], spawn: IVector2}> {
+		return new Promise((res) => {
+			this.socket.emit("game init", res);
 		})
 	}
 
@@ -56,8 +61,6 @@ export class NetworkHandler {
 	}
 
 	private onEntityCreate(id, type, props) {
-		console.log({id, type, props});
-		
 		const entity = this.world.addEntity(type, props, id);
 	}
 

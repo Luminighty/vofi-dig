@@ -23,7 +23,6 @@ export function getValueFromPath(object: object, path: string): any {
 export function setValueFromPath(object: object, path: string, value: any) {
 	let current = object;
 	let pathElements = path.split(".");
-	console.log({object, path, value});
 	for (let i = 0; i < pathElements.length - 1; i++) {
 		const key = pathElements[i];
 		current = current ? current[key] : null;

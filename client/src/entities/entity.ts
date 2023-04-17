@@ -59,6 +59,29 @@ export class Entity {
 	getComponentByTypeId<T>(componentTypeId: string): T {
 		return this.components.find((component) => componentTypeId === component.constructor["COMPONENT_ID"]) as T;
 	}
+
+	static serialize(entity: Entity): object {
+		const data = {};
+		for (const component of entity.components) {
+			const serialize = component.constructor["serialize"];
+			if (serialize)
+				data[component.constructor["COMPONENT_ID"]] = serialize(component);
+		}
+		return data;
+	}
+
+	static deserialize(entity: Entity, data: object) {
+		for (const key in data) {
+			const componentData = data[key];
+			const component = entity.getComponentByTypeId<Component>(key);
+			const deserialize = component?.constructor?.["deserialize"];
+			if (!deserialize) {
+				console.warn(`Couldn't deserialize ${key}: ${JSON.stringify(componentData)}`);
+				continue;
+			}
+			deserialize(component, componentData);
+		}
+	}
 }
 
 export const Entities: {[key: string]: (world: World) => Entity } = {}

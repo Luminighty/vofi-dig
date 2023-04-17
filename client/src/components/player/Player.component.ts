@@ -9,6 +9,7 @@ import { IVector2, Vector2 } from "../../math";
 import { CameraComponent } from "../Camera.component";
 import { OnChunk } from "../../entities/filter";
 import { PositionToChunk, PositionToTile } from "../../config";
+import { LocalStorage } from "../../systems/storage";
 
 interface IDigData {
 	strength: number,
@@ -36,13 +37,30 @@ export class PlayerComponent {
 		targetPosition: null,
 	};
 
-	onInit() {
+	onInit(props) {
 		this.velocity = this.parent.getComponent(VelocityComponent);
 		this.position = this.parent.getComponent(PositionComponent);
 		this.camera = this.parent.getComponent(CameraComponent);
 		this.graphics = new Graphics();
 		this.world.renderContainers["foreground"].addChild(this.graphics);
 		window["player"] = this;
+
+		props.name = LocalStorage.getValue("player_name");
+		props.nameColor = LocalStorage.getValue("player_color");
+
+
+		if (!props.name) {
+			props.name = prompt("Username");
+			LocalStorage.setValue("player_name", props.name);
+		}
+
+		if (!props.nameColor) {
+			const hue = `${Math.trunc(Math.random() * 360)}deg`;
+			const saturation = `${Math.trunc(Math.random() * 30 + 70)}%`;
+			const lightness = `${Math.trunc(Math.random() * 20 + 70)}%`;
+			props.nameColor = `hsl(${hue} ${saturation} ${lightness})`;
+			LocalStorage.setValue("player_color", props.nameColor);
+		}
 	}
 
 	onUpdate({dt}) {

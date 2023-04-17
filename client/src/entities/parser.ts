@@ -10,11 +10,9 @@ export function ParseEntity(xml: string): EntityBlueprint {
 	const components: ComponentBlueprint[] = [];
 	for (let i = 0; i < root.children.length; i++) {
 		const component = root.children[i];
-		const props = {};
-		for (let j = 0; j < component.attributes.length; j++) {
-			const attribute = component.attributes[j]
-			props[attribute.name] = parseAttribute(component.tagName, attribute.name, attribute.value);
-		}
+		let props = parseAttributes(component);
+		if (ComponentParser[component.tagName])
+			props = { ...props, ...ComponentParser[component.tagName](component) }
 		components.push({
 			type: component.tagName,
 			props
@@ -22,6 +20,15 @@ export function ParseEntity(xml: string): EntityBlueprint {
 	}
 
 	return { id, components }
+}
+
+function parseAttributes(component: Element): object {
+	const props = {};
+	for (let j = 0; j < component.attributes.length; j++) {
+		const attribute = component.attributes[j]
+		props[attribute.name] = parseAttribute(component.tagName, attribute.name, attribute.value);
+	}
+	return props;
 }
 
 function parseAttribute(tag: string, key: string, value: string): any {
@@ -70,5 +77,22 @@ const ParseLookup = {
 	},
 	"ClientActorComponent": {
 		"sync": parseArray,
+	}
+}
+
+
+const ComponentParser = {
+	"SpriteSocketComponent": (component: Element) => {
+		const sockets = {};
+		const keys: string[] = [];
+		for (let i = 0; i < component.children.length; i++) {
+			const socket = component.children[i];
+			const props = parseAttributes(socket);
+			if (!props["key"])
+				throw new Error(`Socket is missing key prop: ${JSON.stringify(props)}`);
+			keys.push(props["key"]);
+			sockets[props["key"]] = props;
+		}
+		return { sockets, keys: keys.reverse() }
 	}
 }

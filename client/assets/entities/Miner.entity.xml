@@ -1,11 +1,13 @@
 <Entity id="Miner">
-	<SpriteComponent 
-		src="assets/textures/miner.png" 
-		anchorX="0.5" 
-		layer="entity" 
-	/>
+	<SpriteSocketComponent layer="entity" >
+		<Socket key="beard" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/beard/0000.png" />
+		<Socket key="hat" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/hat/0000.png" />
+		<Socket key="clothes" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/clothes/0000.png" />
+		<Socket key="body" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/body/0000.png" />
+	</SpriteSocketComponent>
 	<CollisionComponent shape="rect -4 6 8 10" />
 	<PositionComponent />
 	<ServerActorComponent />
 	<UpdateComponent />
+	<NameTagComponent name="Unknown Miner" />
 </Entity>

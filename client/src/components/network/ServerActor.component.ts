@@ -1,5 +1,6 @@
 import { World, Entity } from "../../entities";
 import { Vector2 } from "../../math";
+import { PositionComponent } from "../Position.component";
 
 export class ServerActorComponent {
 	static readonly COMPONENT_ID = "ServerActorComponent" as const;
@@ -9,12 +10,8 @@ export class ServerActorComponent {
 	targetState = {};
 
 	onLateInit(props) {
-		// for (const componentType in props) {
-		// 	const componentProps = props[componentType];
-		// 	if (!this.components[componentType])
-		// 		this.components[componentType] = this.parent.getComponentByTypeId(componentType);
-		// 	ImmediateSyncComponent[componentType](this.components[componentType], componentProps);
-		// }
+		Entity.deserialize(this.parent, props);
+		this.updateEntity(props);
 	}
 
 	updateEntity(props) {
@@ -22,7 +19,10 @@ export class ServerActorComponent {
 			const componentProps = props[componentType];
 			if (!this.components[componentType])
 				this.components[componentType] = this.parent.getComponentByTypeId(componentType);
-			this.targetState[componentType] = componentProps;
+			this.targetState[componentType] = {
+				...this.targetState[componentType],
+				...componentProps
+			};
 		}
 	}
 
@@ -45,9 +45,11 @@ export class ServerActorComponent {
 }
 
 const InterpolateComponent = {
-	"PositionComponent": (component, props, dt) => {
-		if (props.x == null || props.y == null)
+	"PositionComponent": (component: PositionComponent, props, dt) => {
+		if (props.x == null && props.y == null)
 			return;
+		props.x = props.x ?? component.position.x;
+		props.y = props.y ?? component.position.y;
 		const delta = Vector2.sub(props, component.position);
 		const length = Math.sqrt(Vector2.dot(delta, delta));
 		if (length < 2) {

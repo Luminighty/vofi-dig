@@ -71,7 +71,7 @@ export class World {
 		for (const filter of this.filters)
 			filter(componentTypes, componentGroups);
 		this.filters = [];
-		// 
+
 		if (componentGroups.length === 0)
 			return [...componentTypes.map(() => [])] as ComponentTypeTuple<T>;
 		if (componentGroups.length === 1)
@@ -89,6 +89,9 @@ export class World {
 		const res = possibleEntities
 			.map((entity) => componentTypes.map((type) => entity!.getComponent(type)))
 			.filter((components) => components.every((c) => c));
+			
+		if (componentGroups.length === 0)
+			return [...componentTypes.map(() => [])] as ComponentTypeTuple<T>;
 		return transpose(res) as ComponentTypeTuple<T>;
 	}
 }
@@ -100,11 +103,7 @@ function transpose(arr) {
 export function createWorld(app: Application, socket: Socket): World {
 	const renderContainers = {} as {[key in RenderLayerKey]: Container};
 	GameConfig.renderLayers.forEach((layer) => { 
-		
 		const container = new Container();
-		container.on("childAdded", (child) => {
-
-		});
 		app.stage.addChild(container);
 		renderContainers[layer] = container;
 	});

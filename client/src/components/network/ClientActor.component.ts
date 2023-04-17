@@ -8,15 +8,18 @@ export class ClientActorComponent {
 	sync: string[] = [];
 	components: Component[] = [];
 	serverEntity!: string;
+	clientEntity!: string;
 	delay = 5;
 	currentDelay = 0;
+	lastPayload = {};
 
 	onLateInit(props) {
 		this.components = this.sync.map((s) => this.parent.getComponentByTypeId(s));
 		props.isClientOwned = true;
-		this.world.networkHandler.createEntity(this.serverEntity, props, (id) => {
-			this.parent.id = id;
-		});
+		if (!this.parent.id)
+			this.world.networkHandler.createEntity(this.serverEntity, { isClientOwned: true, ...this.payload }, (id) => {
+				this.parent.id = id;
+			});
 	}
 
 	onUpdate({dt}) {
@@ -43,7 +46,28 @@ export class ClientActorComponent {
 	}
 
 	syncComponents() {
-		this.world.networkHandler.updateEntity(this.parent.id, this.payload);
+		const diff = this.getDifferences();
+		if (Object.keys(diff).length > 0)
+			this.world.networkHandler.updateEntity(this.parent.id, diff);
 	}
 
+	getDifferences(): object {
+		const payload = this.payload;
+		const diff = {};
+		for (let i = 0; i < this.sync.length; i++) {
+			const component = this.sync[i];
+			const last = this.lastPayload[component];
+			const current = payload[component];
+			for (const key in current) {
+				const currentValue = current[key];
+				const lastValue = last?.[key];
+				if (currentValue !== lastValue) {
+					diff[component] = diff[component] ?? {};
+					diff[component][key] = currentValue;
+				}
+			}
+		}
+		this.lastPayload = payload;
+		return diff;
+	}
 }

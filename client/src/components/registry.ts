@@ -13,6 +13,9 @@ import { ChunkLoaderComponent } from "./player/ChunkLoader.component";
 import { UpdateComponent } from "./Update.component";
 import { ClientActorComponent } from "./network/ClientActor.component";
 import { ServerActorComponent } from "./network/ServerActor.component";
+import { NameTagComponent } from "./player/NameTag.component";
+import { SpriteSocketComponent } from "./SpriteSocket.component";
+import { PlayerSkinComponent } from "./player/PlayerSkin.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -29,4 +32,7 @@ export function registerComponents() {
 	registerComponent(UpdateComponent);
 	registerComponent(ClientActorComponent);
 	registerComponent(ServerActorComponent);
+	registerComponent(NameTagComponent);
+	registerComponent(SpriteSocketComponent);
+	registerComponent(PlayerSkinComponent);
 }

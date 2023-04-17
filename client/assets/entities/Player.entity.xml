@@ -1,9 +1,10 @@
 <Entity id="Player">
-	<SpriteComponent 
-		src="assets/textures/miner.png" 
-		anchorX="0.5" 
-		layer="entity" 
-	/>
+	<SpriteSocketComponent layer="entity" >
+		<Socket key="beard" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/beard/0000.png" />
+		<Socket key="hat" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/hat/0000.png" />
+		<Socket key="clothes" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/clothes/0000.png" />
+		<Socket key="body" offsetX="0" offsetY="0" anchorX="0.5" src="assets/textures/miner/body/0000.png" />
+	</SpriteSocketComponent>
 	<CameraComponent offsetX="-8" />
 	<PlayerComponent />
 	<VelocityComponent />
@@ -18,8 +19,11 @@
 	<HealthComponent />
 	<ChunkLoaderComponent maxChunkDistance="2" />
 	<ClientActorComponent
-		sync="PositionComponent;SpriteComponent"
+		sync="PositionComponent;NameTagComponent;SpriteSocketComponent"
 		serverEntity="Miner"
+		clientEntity="Player"
 	/>
 	<UpdateComponent />
+	<PlayerSkinComponent />
+	<NameTagComponent name="Unknown Miner" />
 </Entity>

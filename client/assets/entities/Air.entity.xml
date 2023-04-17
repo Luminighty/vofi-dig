@@ -1,9 +1,4 @@
 <Entity id="Air">
 	<SpriteComponent src="assets/textures/air.png" layer="background" />
-	<!--DebugRectComponent 
-		enabled="0" layer="foreground"
-		width="16" height="16" 
-		lineColor="0xff0000" lineWidth="1" fillAlpha="0.3" 
-	/-->
 	<PositionComponent />
 </Entity>
