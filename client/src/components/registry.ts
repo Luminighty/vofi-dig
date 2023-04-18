@@ -16,6 +16,7 @@ import { ServerActorComponent } from "./network/ServerActor.component";
 import { NameTagComponent } from "./player/NameTag.component";
 import { SpriteSocketComponent } from "./SpriteSocket.component";
 import { PlayerSkinComponent } from "./player/PlayerSkin.component";
+import { PlayerToolbarComponent } from "./player/PlayerToolbar.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -35,4 +36,5 @@ export function registerComponents() {
 	registerComponent(NameTagComponent);
 	registerComponent(SpriteSocketComponent);
 	registerComponent(PlayerSkinComponent);
+	registerComponent(PlayerToolbarComponent);
 }

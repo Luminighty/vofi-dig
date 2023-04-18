@@ -1,0 +1,6 @@
+<Entity id="Toolbar">
+	<PlayerToolbarComponent
+		entities="Dirt;Stone;Iron;Tungsten;Platinum;Ruby;Emerald"
+	/>
+	<UpdateComponent />
+</Entity>

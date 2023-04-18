@@ -10,6 +10,8 @@ import { CameraComponent } from "../Camera.component";
 import { OnChunk } from "../../entities/filter";
 import { PositionToChunk, PositionToTile } from "../../config";
 import { LocalStorage } from "../../systems/storage";
+import { PlayerToolbarComponent } from "./PlayerToolbar.component";
+import { baseEvent } from "../../events";
 
 interface IDigData {
 	strength: number,
@@ -29,6 +31,7 @@ export class PlayerComponent {
 	position!: PositionComponent;
 	camera!: CameraComponent;
 	graphics!: Graphics;
+	toolbar!: Entity;
 
 	digData: IDigData = {
 		strength: 1,
@@ -61,11 +64,12 @@ export class PlayerComponent {
 			props.nameColor = `hsl(${hue} ${saturation} ${lightness})`;
 			LocalStorage.setValue("player_color", props.nameColor);
 		}
+
+		this.toolbar = this.world.addEntity("Toolbar");
 	}
 
 	onUpdate({dt}) {
 		this.move(dt);
-		this.build();
 		this.dig(dt);
 	}
 
@@ -76,22 +80,6 @@ export class PlayerComponent {
 			this.canJump = false;
 			Controls.jumping = false;
 		}
-	}
-
-	build() {
-		if (!Controls.mouse.right)
-			return;
-		const mouse = PositionToTile(Controls.mouse);
-		const chunk = PositionToChunk(Controls.mouse);
-		// if (this.position.gridX === mouse.x && this.position.gridY === mouse.y - 1)
-		// 	return;
-		const [positions] = this.world
-			.withFilter(OnChunk(chunk.x, chunk.y))
-			.queryEntity(PositionComponent, TileTagComponent);
-		const isTileOccupied = positions.some((p) => p.gridX === mouse.x && p.gridY === mouse.y);
-		if (isTileOccupied)
-			return;
-		this.world.withNetwork().addEntity("Tile", { x: mouse.x * 16, y: mouse.y * 16});
 	}
 
 	dig(dt) {

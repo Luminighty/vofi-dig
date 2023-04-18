@@ -1,0 +1,7 @@
+<Entity id="Platinum">
+	<TileTagComponent />
+	<SpriteComponent src="assets/textures/tiles/platinum.png" layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" />
+	<DiggableComponent hardness="70" />
+	<PositionComponent />
+</Entity>

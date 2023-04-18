@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import { registerComponents } from "./components/registry";
 import { Entity, World, createWorld } from "./entities";
-import { initControls } from "./systems/controls";
+import { initControls, updateControls } from "./systems/controls";
 import { PositionComponent } from "./components/Position.component";
 import { GameConfig } from "./config";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
@@ -39,10 +39,11 @@ export async function Init(app: Application, socket: Socket) {
 	app.ticker.add((dt) => {
 		world.queryEntity(UpdateComponent)[0]
 			.map((c) => c.update({dt}));
+		updateControls();
 	});
 
 	document.addEventListener("keydown", (event) => {
-		if (event.code == "KeyP") {
+		if (event.code == "KeyO") {
 			if (ChunkLoaderComponent.main) {
 				ChunkLoaderComponent.main.updateAllChunks(position.chunk);
 			} else {

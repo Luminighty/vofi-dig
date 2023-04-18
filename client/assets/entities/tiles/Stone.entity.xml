@@ -1,0 +1,7 @@
+<Entity id="Stone">
+	<TileTagComponent />
+	<SpriteComponent src="assets/textures/tiles/stone.png" layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" />
+	<DiggableComponent hardness="30" />
+	<PositionComponent />
+</Entity>

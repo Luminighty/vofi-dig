@@ -77,7 +77,10 @@ const ParseLookup = {
 	},
 	"ClientActorComponent": {
 		"sync": parseArray,
-	}
+	},
+	"PlayerToolbarComponent": {
+		"entities": parseArray,
+	},
 }
 
 

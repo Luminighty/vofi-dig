@@ -1,0 +1,7 @@
+<Entity id="Tungsten">
+	<TileTagComponent />
+	<SpriteComponent src="assets/textures/tiles/tungsten.png" layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" />
+	<DiggableComponent hardness="50" />
+	<PositionComponent />
+</Entity>

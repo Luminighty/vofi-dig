@@ -26,7 +26,7 @@ export class Game {
 					continue;
 				if (Math.abs(x - row.length / 2) < 2 && y == Math.ceil(cave.length / 2))
 					continue;
-				this.createEntity("Tile", {x: x * gridSize, y: y * gridSize});
+				this.createEntity("Dirt", {x: x * gridSize, y: y * gridSize});
 			}
 		}
 		for (let i = 0; i < cave.length; i++) {

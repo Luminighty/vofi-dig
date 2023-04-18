@@ -1,0 +1,7 @@
+<Entity id="Ruby">
+	<TileTagComponent />
+	<SpriteComponent src="assets/textures/tiles/ruby.png" layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" />
+	<DiggableComponent hardness="100" />
+	<PositionComponent />
+</Entity>

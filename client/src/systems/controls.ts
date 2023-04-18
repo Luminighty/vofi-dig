@@ -21,6 +21,7 @@ export const Controls = {
 		get y() {
 			return (this.screenY - appRefence.stage.position.y) / appRefence.stage.scale.y + appRefence.stage.pivot.y
 		},
+		scrollY: 0,
 	},
 
 	get x() {
@@ -51,6 +52,10 @@ export function initControls(app: Application) {
 			event.preventDefault();
 			Controls[key] = true;
 	});
+
+	window.addEventListener("wheel", (event) => {
+		Controls.mouse.scrollY = Math.sign(event.deltaY);
+	})
 	
 	window.addEventListener('keyup', (event) => {
 		const key = KeyBinds[event.code];
@@ -73,4 +78,8 @@ export function initControls(app: Application) {
 		Controls.mouse.buttons[event.button] = false;
 	});
 
+}
+
+export function updateControls() {
+	Controls.mouse.scrollY = 0;
 }
