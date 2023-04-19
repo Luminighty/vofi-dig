@@ -35,6 +35,10 @@ export class Game {
 			this.createEntity("Bedrock", { x: i * gridSize, y: cave.length * gridSize });
 			this.createEntity("Bedrock", { x: cave[i].length * gridSize, y: i * gridSize });
 		}
+		this.createEntity("Bedrock", { x: 0, y: 0 });
+		this.createEntity("Bedrock", { x: cave[0].length * gridSize, y: 0 });
+		this.createEntity("Bedrock", { x: 0, y: cave.length * gridSize });
+		this.createEntity("Bedrock", { x: cave[0].length * gridSize, y: cave.length * gridSize });
 	}
 
 
