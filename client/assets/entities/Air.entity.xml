@@ -1,4 +1,4 @@
 <Entity id="Air">
-	<SpriteComponent src="assets/textures/air.png" layer="background" />
+	<SpriteComponent src="assets/textures/tiles/air.png" layer="background" />
 	<PositionComponent />
 </Entity>

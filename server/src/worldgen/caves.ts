@@ -1,4 +1,6 @@
 import { GameConfig } from "../config";
+import { create2DPerlin } from "./perlin";
+
 
 const ITERATIONS = 5;
 const SMOOTH_ITERS = 1;
@@ -11,6 +13,18 @@ function generateTile() {
 export type Cave = (1 | 0)[][];
 
 export function generateCave() {
+	const perlin = create2DPerlin(0, 0.15);
+	const threshold = 0.20;
+
+	const cols = GameConfig.world.x;
+	const rows = GameConfig.world.y;
+	return Array(rows).fill(0).map((_, y) =>
+		Array(cols).fill(0).map((_, x) => perlin(x, y) > threshold ? 0 : 1));
+}
+
+export function cavesMethod() {
+
+
 	const cols = GameConfig.world.x;
 	const rows = GameConfig.world.y;
 	let world: Cave = Array.from({length: rows}, () =>
