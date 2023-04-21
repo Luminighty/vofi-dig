@@ -1,5 +1,5 @@
 import { GameConfig } from "../config";
-import { generateCave } from "../worldgen/caves";
+import { TileType, generateCave } from "../worldgen/caves";
 import { getId } from "./id";
 
 export class Game {
@@ -22,11 +22,11 @@ export class Game {
 			for (let x = 0; x < row.length; x++) {
 				const tile = row[x];
 				this.createEntity("Air", {x: x * gridSize, y: y * gridSize});
-				if (tile == 0)
+				if (tile == TileType.None)
 					continue;
 				if (Math.abs(x - row.length / 2) < 2 && y == Math.ceil(cave.length / 2))
 					continue;
-				this.createEntity("Stone", {x: x * gridSize, y: y * gridSize});
+				this.createEntity(tile, {x: x * gridSize, y: y * gridSize});
 			}
 		}
 		for (let i = 0; i < cave.length; i++) {

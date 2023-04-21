@@ -7,8 +7,12 @@ const PRIME2 = 6542989;
 const toFloat = (number: number) => number / 0xFFFFFFF;
 
 export const Random = {
-	seed: Math.random(),
+	seed: Math.random() * 0xFFFFFF,
 	position: 0,
+
+	getSeed() {
+		return this.get() * 0xFFFFFF;
+	},
 
 	/** @returns Returns a number between 0 and 1 */
 	get1D(position: number) {
