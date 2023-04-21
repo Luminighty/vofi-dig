@@ -1,0 +1,4 @@
+<Entity id="Slime">
+	<SpriteComponent src="assets/textures/actors/slime.png" layer="entity" />
+	<PositionComponent />
+</Entity>

@@ -15,4 +15,5 @@ export async function registerEntityBlueprints() {
 	await loadEntityBlueprint(`assets/entities/Fren.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Miner.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Toolbar.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/Slime.entity.xml`);
 }
