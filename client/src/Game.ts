@@ -36,6 +36,10 @@ export async function Init(app: Application, socket: Socket) {
 		.getComponent(ChunkLoaderComponent)
 		.updateAllChunks({x: position.chunkX, y: position.chunkY});
 
+	world.addEntity("Slime", {x: spawn.x, y: spawn.y});
+	world.addEntity("Slime", {x: spawn.x-4, y: spawn.y});
+	world.addEntity("Slime", {x: spawn.x+4, y: spawn.y});
+
 	app.ticker.add((dt) => {
 		world.queryEntity(UpdateComponent)[0]
 			.map((c) => c.update({dt}));
