@@ -1,4 +1,9 @@
 <Entity id="Slime">
-	<SpriteComponent src="assets/textures/actors/slime.png" layer="entity" />
+	<SpriteComponent src="assets/textures/actors/slime.png" layer="entity" anchorX="0.5"/>
+	<SlimeComponent />
+	<VelocityComponent />
 	<PositionComponent />
+	<CollisionComponent shape="rect -5 8 10 8" /> 
+	<DebugRectComponent enabled="0" layer="foreground" offsetX="-5" offsetY="8" height="8" width="10" fillColor="0xff0000" fillAlpha=".3"/>
+	<UpdateComponent />
 </Entity>

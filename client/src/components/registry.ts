@@ -17,6 +17,7 @@ import { NameTagComponent } from "./player/NameTag.component";
 import { SpriteSocketComponent } from "./SpriteSocket.component";
 import { PlayerSkinComponent } from "./player/PlayerSkin.component";
 import { PlayerToolbarComponent } from "./player/PlayerToolbar.component";
+import { SlimeComponent } from "./Slime.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -37,4 +38,5 @@ export function registerComponents() {
 	registerComponent(SpriteSocketComponent);
 	registerComponent(PlayerSkinComponent);
 	registerComponent(PlayerToolbarComponent);
+	registerComponent(SlimeComponent);
 }
