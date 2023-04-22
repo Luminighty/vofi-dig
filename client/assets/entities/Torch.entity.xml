@@ -1,0 +1,5 @@
+<Entity id="Torch">
+	<LightSourceComponent intensity="60" offsetX="8" offsetY="8" />
+	<SpriteComponent src="assets/textures/torch.png" layer="background" />
+	<PositionComponent />
+</Entity>

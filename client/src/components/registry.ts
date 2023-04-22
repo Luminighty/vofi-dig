@@ -18,6 +18,7 @@ import { SpriteSocketComponent } from "./SpriteSocket.component";
 import { PlayerSkinComponent } from "./player/PlayerSkin.component";
 import { PlayerToolbarComponent } from "./player/PlayerToolbar.component";
 import { SlimeComponent } from "./Slime.component";
+import { LightSourceComponent } from "./LightSource.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -39,4 +40,5 @@ export function registerComponents() {
 	registerComponent(PlayerSkinComponent);
 	registerComponent(PlayerToolbarComponent);
 	registerComponent(SlimeComponent);
+	registerComponent(LightSourceComponent);
 }

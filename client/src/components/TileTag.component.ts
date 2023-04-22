@@ -9,4 +9,13 @@ export class TileTagComponent {
 		if (props.y)
 			props.y -= props.y % GameConfig.gridSize;
 	}
+
+	onPositionChanged({x, y}) {
+		
+	}
+
+
 }
+
+export const Tiles = new Map(); 
+

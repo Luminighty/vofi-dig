@@ -1,6 +1,6 @@
 <Entity id="Toolbar">
 	<PlayerToolbarComponent
-		entities="Dirt;Stone;Iron;Tungsten;Platinum;Ruby;Emerald"
+		entities="Dirt;Stone;Iron;Tungsten;Platinum;Ruby;Emerald;Torch"
 	/>
 	<UpdateComponent />
 </Entity>

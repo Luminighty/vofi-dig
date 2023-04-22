@@ -3,8 +3,6 @@ import { OnChunk } from "../../entities/filter";
 import { baseEvent } from "../../events";
 import { PositionComponent } from "../Position.component";
 
-
-
 export class ChunkLoaderComponent {
 	static readonly COMPONENT_ID = "ChunkLoaderComponent" as const;
 	world!: World;

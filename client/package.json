@@ -22,7 +22,8 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.1",
     "webpack-remove-debug": "^0.1.0",
-    "xml-loader": "^1.2.1"
+    "xml-loader": "^1.2.1",
+    "ts-node": "10.9.1"
   },
   "dependencies": {
     "@pixi-essentials/cull": "^2.0.0",

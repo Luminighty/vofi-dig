@@ -18,27 +18,29 @@ export class DebugRectComponent {
 	lineAlpha = 0;
 
 	fillColor = 0;
-	fillAlpha = 0;
+	fillAlpha = 1;
 	enabled=1
 
-	position?: PositionComponent
 	graphics!: Graphics;
 
 	onInit() {
-		this.position = this.parent.getComponent(PositionComponent);
 		this.graphics = new Graphics();
 		this.world.app.stage.addChild(this.graphics);
 	}
 
-	onUpdate() {
+	onPositionChanged({x, y}) {
+		this.drawDebug(x, y);
+	}
+
+	drawDebug(x, y) {
 		if (!this.enabled)
-			return;
+			return
 		this.graphics.clear();
 		this.graphics.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha); 
 		this.graphics.beginFill(this.fillColor, this.fillAlpha);
 		this.graphics.drawRect(
-			this.offsetX + (this.position?.x ?? 0),
-			this.offsetY + (this.position?.y ?? 0),
+			this.offsetX + (x ?? 0),
+			this.offsetY + (y ?? 0),
 			this.width,
 			this.height
 		);

@@ -24,7 +24,7 @@ export class Game {
 				this.createEntity("Air", {x: x * gridSize, y: y * gridSize});
 				if (tile == TileType.None)
 					continue;
-				if (Math.abs(x - row.length / 2) < 2 && y == Math.ceil(cave.length / 2))
+				if (Math.abs(x - row.length / 2) < 3 && Math.abs(y - cave.length / 2) < 2)
 					continue;
 				this.createEntity(tile, {x: x * gridSize, y: y * gridSize});
 			}
@@ -39,6 +39,7 @@ export class Game {
 		this.createEntity("Bedrock", { x: cave[0].length * gridSize, y: 0 });
 		this.createEntity("Bedrock", { x: 0, y: cave.length * gridSize });
 		this.createEntity("Bedrock", { x: cave[0].length * gridSize, y: cave.length * gridSize });
+		this.createEntity("Torch", { x: gridSize * cave[0].length / 2, y: gridSize * cave.length / 2 });
 	}
 
 

@@ -47,6 +47,7 @@ export class PositionComponent {
 			y: this.y,
 		}
 	}
+	
 	get chunk() {
 		return {
 			x: this.chunkX,
@@ -74,6 +75,4 @@ export class PositionComponent {
 
 	get gridX() { return Math.floor(this.x / GameConfig.gridSize); }
 	get gridY() { return Math.floor(this.y / GameConfig.gridSize); }
-
-
 }

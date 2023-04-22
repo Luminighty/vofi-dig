@@ -20,4 +20,5 @@
 	<UpdateComponent />
 	<PlayerSkinComponent />
 	<NameTagComponent name="Unknown Miner" />
+	<LightSourceComponent offsetY="8" intensity="24" />
 </Entity>
