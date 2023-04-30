@@ -17,4 +17,8 @@ export async function registerEntityBlueprints() {
 	await loadEntityBlueprint(`assets/entities/Toolbar.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Slime.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/Torch.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomCap.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomCapLeft.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomCapRight.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomTrunk.entity.xml`);
 }

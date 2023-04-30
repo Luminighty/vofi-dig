@@ -1,0 +1,7 @@
+<Entity id="MushroomCap">
+	<TileTagComponent />
+	<SpriteComponent src="assets/textures/mushroom/cap_mid.png" layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
+	<DiggableComponent hardness="10" />
+	<PositionComponent />
+</Entity>

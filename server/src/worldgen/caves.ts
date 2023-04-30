@@ -17,6 +17,10 @@ export enum TileType {
 	Iron = "Iron",
 	Ruby = "Ruby",
 	Dirt = "Dirt",
+	MushroomTrunk = "MushroomTrunk",
+	MushroomCap = "MushroomCap",
+	MushroomCapLeft = "MushroomCapLeft",
+	MushroomCapRight = "MushroomCapRight",
 }
 
 const onGrey = (value, threshold) => Math.abs(value) > threshold;
@@ -46,21 +50,21 @@ export function generateCave() {
 	const rows = GameConfig.world.y;
 	return Array(rows).fill(0).map((_, y) =>
 		Array(cols).fill(0).map((_, x) => {
-      const chamberValue = config.ground.method(groundPerlin(x, y), config.ground.threshold);
-      const dirtValue = config.dirt.method(dirtPerlin(x, y), config.dirt.threshold);
-      const tunnelValue = config.tunnel.method(tunnelPerlin(x, y), config.tunnel.threshold);
-      const oreValue = config.ore.method(orePerlin(x, y), config.ore.threshold);
-      const rubyValue = config.ruby.method(rubyPerlin(x, y), config.ruby.threshold);
+			const chamberValue = config.ground.method(groundPerlin(x, y), config.ground.threshold);
+			const dirtValue = config.dirt.method(dirtPerlin(x, y), config.dirt.threshold);
+			const tunnelValue = config.tunnel.method(tunnelPerlin(x, y), config.tunnel.threshold);
+			const oreValue = config.ore.method(orePerlin(x, y), config.ore.threshold);
+			const rubyValue = config.ruby.method(rubyPerlin(x, y), config.ruby.threshold);
 			if (!chamberValue)
 				return TileType.None;
 			if (!dirtValue)
 				return TileType.Dirt;
-      if (!tunnelValue)
-        return TileType.Dirt;
-      if (oreValue)
-				return TileType.Iron;
-      if (rubyValue)
-				return TileType.Ruby;
+			if (!tunnelValue)
+				return TileType.Dirt;
+			if (oreValue)
+					return TileType.Iron;
+			if (rubyValue)
+					return TileType.Ruby;
 			return TileType.Stone;
 		}));
 }

@@ -1,4 +1,6 @@
 import { GameConfig } from "../config";
+import { TileType, generateCave } from "./caves";
+import { generateFeatures } from "./features";
 
 export const TestCave = [
 	"0000000000000000000000000",
@@ -15,3 +17,11 @@ export const TestCave = [
 	"0000000001111111100000000",
 	"0000000000000000000000000",
 ].map((line) => line.split("").map((v) => parseInt(v)));
+
+export type World = TileType[][];
+
+export function generateWorld() {
+	const map = generateCave();
+	generateFeatures(map);
+	return map;
+}

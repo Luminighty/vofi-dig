@@ -1,4 +1,5 @@
 import { GameConfig } from "../config";
+import { generateWorld } from "../worldgen";
 import { TileType, generateCave } from "../worldgen/caves";
 import { getId } from "./id";
 
@@ -11,7 +12,7 @@ export class Game {
 	}
 
 	initMap() {
-		const cave = generateCave();
+		const cave = generateWorld();
 		const gridSize = GameConfig.gridSize;
 		this.spawn = {
 			x: cave[0].length / 2 * gridSize,
