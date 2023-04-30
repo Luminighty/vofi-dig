@@ -13,9 +13,9 @@ export class SpriteComponent {
 	anchorY = 0;
 	layer="default";
 
-	onInit({x, y}) {
+	onInit({x, y, sprite}) {
 		const texture = Texture.from(this.src);
-		this.sprite = new Sprite(texture);
+		this.sprite = new Sprite(sprite ?? texture);
 		this.sprite.anchor.set(this.anchorX, this.anchorY);
 		this.sprite.position.set(x, y);
 		this.world.renderContainers[this.layer].addChild(this.sprite);

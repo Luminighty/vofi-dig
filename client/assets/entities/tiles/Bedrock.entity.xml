@@ -1,5 +1,5 @@
 <Entity id="Bedrock">
 	<PositionComponent />
-	<CollisionComponent shape="rect 0 0 16 16" />
+	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
 	<SpriteComponent src="assets/textures/bedrock.png" layer="tile" />
 </Entity>

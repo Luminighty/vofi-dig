@@ -4,7 +4,11 @@ import { baseEvent } from "../events";
 import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 
-
+const CollisionMatrix = postProcess({
+	"item": ["tile"],
+	"player": ["entity"],
+	"entity": ["tile"],
+});
 const MAXIMUM_ITERATIONS = 16;
 export class CollisionComponent {
 	static readonly COMPONENT_ID = "CollisionComponent" as const;
@@ -16,6 +20,7 @@ export class CollisionComponent {
 	isStuck = false;
 	enabled = true;
 	shouldUnload = false;
+	layer = "entity";
 
 	onInit() {
 		this.position = this.parent.getComponent(PositionComponent);
@@ -49,6 +54,7 @@ export class CollisionComponent {
 
 		colliders = colliders.filter((other) => 
 			this !== other && other.enabled &&
+			CollisionMatrix[this.layer][other.layer] &&
 			Math.abs(other.position.x - this.position.x) + Math.abs(other.position.y - this.position.y) < this.boundingBox + other.boundingBox
 		);
 		
@@ -88,6 +94,22 @@ export class CollisionComponent {
 		}
 		return currentColliders.length
 	}
+}
+
+
+function postProcess(matrix: {[key: string]: string[]}): {[key: string]: {[key: string]: boolean}} {
+	const m = {};
+	for (const key in matrix) {
+		const element = matrix[key];
+		m[key] = {};
+		for (const other of element) {
+			if (!m[other])
+				m[other] = {};
+			m[key][other] = true;
+			m[other][key] = true;
+		}
+	}
+	return m;
 }
 
 

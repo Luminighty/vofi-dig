@@ -1,0 +1,5 @@
+<Entity id="ItemPickup">
+	<SpriteComponent layer="tile" />
+	<CollisionComponent shape="rect 6 6 4 4" layer="item" />
+	<PositionComponent />
+</Entity>

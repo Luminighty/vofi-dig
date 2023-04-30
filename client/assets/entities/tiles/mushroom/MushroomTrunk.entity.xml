@@ -1,6 +1,6 @@
-<Entity id="Stone">
+<Entity id="MushroomTrunk">
 	<TileTagComponent />
-	<SpriteComponent src="assets/textures/tiles/stone.png" layer="tile" />
+	<SpriteComponent src="assets/textures/mushroom/trunk.png" layer="tile" />
 	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
 	<DiggableComponent hardness="30" />
 	<PositionComponent />
