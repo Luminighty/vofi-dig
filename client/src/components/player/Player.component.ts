@@ -152,9 +152,6 @@ export class PlayerComponent {
 	onCollide({x, y}) {
 		if (Math.abs(y) < 0.15)
 			return;
-		if (y * this.velocity.velocity.y > 0) {
-			this.velocity.velocity.y = 0;
-		}
 		this.canJump = this.canJump || y > 0;
 	}
 

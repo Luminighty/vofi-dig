@@ -21,4 +21,5 @@ export async function registerEntityBlueprints() {
 	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomCapLeft.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomCapRight.entity.xml`);
 	await loadEntityBlueprint(`assets/entities/tiles/mushroom/MushroomTrunk.entity.xml`);
+	await loadEntityBlueprint(`assets/entities/ItemPickup.entity.xml`);
 }

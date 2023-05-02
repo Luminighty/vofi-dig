@@ -36,4 +36,12 @@ export class VelocityComponent {
 	onUnStuck() {
 		this.enabled = true;
 	}
+
+	onCollide({y}) {
+		if (Math.abs(y) < 0.15)
+			return;
+		if (y * this.velocity.y > 0) {
+			this.velocity.y = 0;
+		}
+	}
 }

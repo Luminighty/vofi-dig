@@ -2,6 +2,6 @@
 	<TileTagComponent />
 	<SpriteComponent src="assets/textures/mushroom/cap_left.png" layer="tile" />
 	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
-	<DiggableComponent hardness="10" />
+	<DiggableComponent hardness="10" drop="ItemPickup" />
 	<PositionComponent />
 </Entity>

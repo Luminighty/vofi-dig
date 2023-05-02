@@ -19,6 +19,7 @@ import { PlayerSkinComponent } from "./player/PlayerSkin.component";
 import { PlayerToolbarComponent } from "./player/PlayerToolbar.component";
 import { SlimeComponent } from "./Slime.component";
 import { LightSourceComponent } from "./LightSource.component";
+import { PickupComponent } from "./Pickup.component";
 
 export function registerComponents() {
 	registerComponent(SpriteComponent);
@@ -41,4 +42,5 @@ export function registerComponents() {
 	registerComponent(PlayerToolbarComponent);
 	registerComponent(SlimeComponent);
 	registerComponent(LightSourceComponent);
+	registerComponent(PickupComponent);
 }

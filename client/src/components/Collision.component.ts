@@ -6,7 +6,7 @@ import { PositionComponent } from "./Position.component";
 
 const CollisionMatrix = postProcess({
 	"item": ["tile"],
-	"player": ["entity"],
+	"player": ["entity", "player"],
 	"entity": ["tile"],
 });
 const MAXIMUM_ITERATIONS = 16;
