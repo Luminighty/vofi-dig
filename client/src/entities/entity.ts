@@ -97,4 +97,5 @@ export function registerEntity(blueprint: EntityBlueprint) {
 		}
 		return entity;
 	}
+	console.log(`Entity "${blueprint.id}" registered`);
 }

@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const EntityPlugin = require("./utils/EntityPlugin");
 
 const config = {
   entry: './src/index.ts',
@@ -19,6 +20,18 @@ const config = {
   },
   module: {
     rules: [
+      {
+        include: path.resolve("src/entities/registry.js"),
+        use: [
+          {
+            loader: path.resolve('utils/EntityRegistryLoader.js'),
+            options: {
+              path: 'assets/entities',
+              dir: __dirname,
+            }
+          }
+        ]
+      },
       {
         test: /\.ts(x)?$/,
         loader: 'ts-loader',
