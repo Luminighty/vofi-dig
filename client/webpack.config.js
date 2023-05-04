@@ -2,13 +2,18 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const EntityPlugin = require("./utils/EntityPlugin");
 
 const config = {
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),    
     filename: '[name].bundle.js',
+  },
+  devServer: {
+    watchFiles: [
+      'src/**/*',
+      'assets/**/*'
+    ]
   },
   externals: {
     pixijs: {
@@ -27,6 +32,18 @@ const config = {
             loader: path.resolve('utils/EntityRegistryLoader.js'),
             options: {
               path: 'assets/entities',
+              dir: __dirname,
+            }
+          }
+        ]
+      },
+      {
+        include: path.resolve("src/components/registry.js"),
+        use: [
+          {
+            loader: path.resolve('utils/ComponentLoader.js'),
+            options: {
+              path: 'src/components',
               dir: __dirname,
             }
           }

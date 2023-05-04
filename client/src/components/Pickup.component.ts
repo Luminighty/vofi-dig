@@ -24,7 +24,6 @@ export class PickupComponent {
 		if (this.player) {
 			const delta = Vector2.sub(this.player.position.position, this.position.position);
 			const distance = Vector2.dot(delta, delta);
-			console.log({distance, pick: this.pickupDistance});
 			if (distance < this.pickupDistance)
 				this.pickup();
 		}
