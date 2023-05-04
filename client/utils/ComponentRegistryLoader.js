@@ -41,5 +41,6 @@ module.exports = function () {
 		.map((file, i) => generateImport(components[i], file))
 		.join("\n");
 
+	console.log(`Generated registry for ${components.length} components.`);
 	return generateFile(imports, registers);
 }

@@ -41,7 +41,7 @@ const config = {
         include: path.resolve("src/components/registry.js"),
         use: [
           {
-            loader: path.resolve('utils/ComponentLoader.js'),
+            loader: path.resolve('utils/ComponentRegistryLoader.js'),
             options: {
               path: 'src/components',
               dir: __dirname,

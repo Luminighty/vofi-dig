@@ -25,5 +25,7 @@ module.exports = function () {
 		})
 		.map(generateLine)
 		.join("\n");
+		
+	console.log(`Generated registry for ${files.length} entity blueprints.`);
 	return generateFile(file);
 }
