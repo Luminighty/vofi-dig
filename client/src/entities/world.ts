@@ -114,9 +114,3 @@ export function createWorld(app: Application, socket: Socket): World {
 	world.networkHandler = new NetworkHandler(world, socket);
 	return world;
 }
-
-
-export class RenderLayer {
-
-
-}

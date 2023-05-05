@@ -1,6 +1,9 @@
 import { Entity, World } from "../entities";
+import { baseEvent } from "../events";
 import { Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
+import { ItemComponent } from "./item/Item.component";
+import { ItemDBComponent } from "./item/ItemDB.component";
 import { PlayerComponent } from "./player/Player.component";
 
 export class PickupComponent {
@@ -9,13 +12,15 @@ export class PickupComponent {
 	world!: World;
 	player?: PlayerComponent;
 	position!: PositionComponent;
-
 	pickupDistance = 8;
 
-	onInit() {
+	onLateInit(props) {
 		this.position = this.parent.getComponent(PositionComponent);
 		// No need to calculate squareroot of distance
 		this.pickupDistance *= this.pickupDistance;
+		const itemDb = this.world.queryEntity(ItemDBComponent)[0][0];
+		const item = itemDb.get(props.item).getComponent(ItemComponent);
+		this.parent.fireEvent(baseEvent("onSetSprite", { sprite: item.icon }));
 	}
 
 	onUpdate() {

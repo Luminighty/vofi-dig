@@ -1,0 +1,3 @@
+<Entity id="StoneItem">
+	<ItemComponent name="Stone" icon="assets/textures/items/stone.png" />
+</Entity>

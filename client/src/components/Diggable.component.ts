@@ -15,8 +15,9 @@ export class DiggableComponent {
 			const props = { 
 				x: position.x + GameConfig.gridSize / 2,
 				y: position.y,
+				item: this.drop,
 			};
-			this.world.withNetwork().addEntity(this.drop, props);
+			this.world.withNetwork().addEntity("ItemPickup", props);
 		}
 		this.world.withNetwork().removeEntity(this.parent);
 	}

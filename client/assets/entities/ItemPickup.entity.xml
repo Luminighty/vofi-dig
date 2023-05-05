@@ -1,8 +1,8 @@
 <Entity id="ItemPickup">
-	<SpriteComponent anchorX="0.5" layer="tile" src="assets/textures/mushroom/item.png" />
+	<PickupComponent />
+	<SpriteComponent anchorX="0.5" layer="tile" />
 	<VelocityComponent />
 	<CollisionComponent shape="rect -2 6 4 4" layer="item" />
 	<PositionComponent />
-	<PickupComponent />
 	<UpdateComponent />
 </Entity>

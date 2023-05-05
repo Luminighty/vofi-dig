@@ -15,8 +15,8 @@ export async function Init(app: Application, socket: Socket) {
 	registerComponents();
 	await loadEntityBlueprintRegistry();
 	await initControls(app);
-
 	const world = createWorld(app, socket);
+	world.addEntity("DataStorage");
 
 	const mapSize = 150;
 

@@ -1,5 +1,5 @@
 <Entity id="MushroomCapLeft">
 	<SpriteComponent src="assets/textures/mushroom/cap_left.png" />
-	<DiggableComponent hardness="10" drop="ItemPickup" />
+	<DiggableComponent hardness="10" drop="MushroomItem" />
 	<Include from="Tile" />
 </Entity>
