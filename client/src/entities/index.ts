@@ -17,8 +17,11 @@ export async function loadEntityBlueprint(path) {
 
 let currentUnwrapBlueprints = {};
 function unwrapIncludes(blueprint: EntityBlueprint) {
-	if (currentUnwrapBlueprints[blueprint.id])
-		throw new Error(`Circular dependecy in entity blueprints: ${JSON.stringify(currentUnwrapBlueprints)}`);
+	if (currentUnwrapBlueprints[blueprint.id]) {
+		const entityDependencies = Object.keys(currentUnwrapBlueprints)
+			.filter((key) => currentUnwrapBlueprints[key])
+		throw new Error(`Circular dependecy in entity blueprints: ${JSON.stringify(entityDependencies)}`);
+	}
 	
 	currentUnwrapBlueprints[blueprint.id] = true;
 	blueprint.components
@@ -63,10 +66,7 @@ function registerBlueprints() {
 
 export async function loadEntityBlueprintRegistry() {
 	await registerEntityBlueprints();
-	console.log(blueprints);
-	console.log(Object.values(blueprints));
 	postProcessBlueprints();
 	registerBlueprints();
-	console.log(blueprints);
 	blueprints = {};
 }

@@ -1,7 +1,5 @@
 <Entity id="Iron">
-	<TileTagComponent />
-	<SpriteComponent src="assets/textures/tiles/iron.png" layer="tile" />
-	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
+	<SpriteComponent src="assets/textures/tiles/iron.png" />
 	<DiggableComponent hardness="50" />
-	<PositionComponent />
+	<Include from="Tile" />
 </Entity>
