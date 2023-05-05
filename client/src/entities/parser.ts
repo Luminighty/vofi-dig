@@ -97,5 +97,5 @@ const ComponentParser = {
 			sockets[props["key"]] = props;
 		}
 		return { sockets, keys: keys.reverse() }
-	}
+	},
 }

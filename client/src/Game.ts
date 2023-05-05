@@ -1,12 +1,11 @@
 import { Application } from "pixi.js";
 import { registerComponents } from "./components/registry";
-import { Entity, World, createWorld } from "./entities";
+import { Entity, World, createWorld, loadEntityBlueprintRegistry } from "./entities";
 import { initControls, updateControls } from "./systems/controls";
 import { PositionComponent } from "./components/Position.component";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
 import { UpdateComponent } from "./components/Update.component";
 import { Socket } from "socket.io-client";
-import { registerEntityBlueprints } from "./entities/registry";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { LocalStorage } from "./systems/storage";
 import { PlayerComponent } from "./components/player/Player.component";
@@ -14,7 +13,7 @@ import { PlayerSkinComponent } from "./components/player/PlayerSkin.component";
 
 export async function Init(app: Application, socket: Socket) {
 	registerComponents();
-	await registerEntityBlueprints();
+	await loadEntityBlueprintRegistry();
 	await initControls(app);
 
 	const world = createWorld(app, socket);

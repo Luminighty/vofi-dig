@@ -1,5 +1,5 @@
 import { Application, Container } from "pixi.js";
-import { Entities, Entity } from "./entity";
+import { EntitiesBlueprints, Entity } from "./entity";
 import { Event, baseEvent } from "../events";
 import { GameConfig, RenderLayerKey } from "../config";
 import { Component } from "../components";
@@ -34,13 +34,15 @@ export class World {
 	}
 
 	addEntity (entityId: string, props = {}, networkId?: number): Entity {
-		if (!Entities[entityId])
+		if (!EntitiesBlueprints[entityId])
 			throw `Entity ${entityId} not found!`;
-		const entity = Entities[entityId](this);
+
+		const entity = EntitiesBlueprints[entityId](this);
 		entity.id = networkId ?? 0;
 		if (this.networkSynced)
 			this.networkHandler.createEntity(entityId, props, (id) => entity.id = id as number);
 		this.networkSynced = false;
+
 		this.entities.push(entity);
 		entity.fireEvent(baseEvent("onInit", props));
 		entity.fireEvent(baseEvent("onLateInit", props));

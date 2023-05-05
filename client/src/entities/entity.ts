@@ -84,17 +84,19 @@ export class Entity {
 	}
 }
 
-export const Entities: {[key: string]: (world: World) => Entity } = {}
+export const EntitiesBlueprints: {[key: string]: (world: World) => Entity } = {}
 
 export function registerEntity(blueprint: EntityBlueprint) {
-	Entities[blueprint.id] = (world: World): Entity => {
+	EntitiesBlueprints[blueprint.id] = (world: World): Entity => {
 		const entity = new Entity();
 		entity.world = world;
+		
 		for (const {type, props} of blueprint.components) {
 			const component = entity.addComponent(Components[type], props);
 			component.parent = entity;
 			component.world = world;
 		}
+
 		return entity;
 	}
 	console.log(`Entity "${blueprint.id}" registered`);

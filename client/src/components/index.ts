@@ -3,7 +3,8 @@ import { Entity, World } from "../entities";
 export interface Component {
 	parent?: Entity,
 	world?: World,
-	[key: string]: unknown,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[key: string]: any,
 }
 
 export interface ComponentConstructor {

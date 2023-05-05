@@ -1,0 +1,6 @@
+<Entity id="Tile">
+	<TileTagComponent />
+	<SpriteComponent layer="tile" />
+	<CollisionComponent shape="rect 0 0 16 16" layer="tile" />
+	<PositionComponent />
+</Entity>
