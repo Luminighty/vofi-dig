@@ -1,15 +1,16 @@
 import { Entity, World } from "../entities";
-import { OnChunk } from "../entities/filter";
+import { IEntityFilter, OnChunk } from "../entities/filter";
 import { baseEvent } from "../events";
 import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 
-const CollisionMatrix = postProcess({
+const CollisionMatrix = postProcessLayers({
 	"item": ["tile"],
 	"player": ["entity", "player"],
 	"entity": ["tile"],
 });
 const MAXIMUM_ITERATIONS = 16;
+
 export class CollisionComponent {
 	static readonly COMPONENT_ID = "CollisionComponent" as const;
 	world!: World;
@@ -49,16 +50,10 @@ export class CollisionComponent {
 		if (!this.enabled)
 			return;
 		let [colliders] = this.world
-			.withFilter(OnChunk(this.position.chunkX, this.position.chunkY, 2))
-			.queryEntity(CollisionComponent, PositionComponent);
+			.withFilter(CollisionFilter(this))
+			.queryEntity(CollisionComponent);
 
-		colliders = colliders.filter((other) => 
-			this !== other && other.enabled &&
-			CollisionMatrix[this.layer][other.layer] &&
-			Math.abs(other.position.x - this.position.x) + Math.abs(other.position.y - this.position.y) < this.boundingBox + other.boundingBox
-		);
-		
-		let iterations = 0;
+			let iterations = 0;
 		while(this.collisionStep(delta, colliders) !== 0 && iterations < MAXIMUM_ITERATIONS)
 			iterations++;
 
@@ -97,7 +92,22 @@ export class CollisionComponent {
 }
 
 
-function postProcess(matrix: {[key: string]: string[]}): {[key: string]: {[key: string]: boolean}} {
+function CollisionFilter(self: CollisionComponent): IEntityFilter {
+	const id = CollisionComponent.COMPONENT_ID;
+	return (types, groups) => {
+		const index = types.findIndex((type) => type["COMPONENT_ID"] === id);
+		if (index < 0)
+			return;
+		groups[index] = (groups[index] as CollisionComponent[])
+		.filter((other) => 
+			other !== self && other.enabled &&
+			Math.abs(other.position.x - self.position.x) + Math.abs(other.position.y - self.position.y) < self.boundingBox + other.boundingBox
+		);
+	}
+}
+
+
+function postProcessLayers(matrix: {[key: string]: string[]}): {[key: string]: {[key: string]: boolean}} {
 	const m = {};
 	for (const key in matrix) {
 		const element = matrix[key];
