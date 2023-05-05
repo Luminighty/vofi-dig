@@ -1,5 +1,5 @@
 export function Serializable(...keys: string[]) {
-	return function<T extends new(...args: any[]) => any>(constructor: T) {
+	return function<T extends new(...args: unknown[]) => unknown>(constructor: T) {
 		constructor["serialize"] = (self) => {
 			const data = {};
 			for (const key of keys)
@@ -16,13 +16,13 @@ export function Serializable(...keys: string[]) {
 	}
 }
 
-export function getValueFromPath(object: object, path: string): any {
+export function getValueFromPath(object: object, path: string): unknown {
 	return path.split(".").reduce((prev, key) => prev ? prev[key] : null, object);
 }
 
-export function setValueFromPath(object: object, path: string, value: any) {
+export function setValueFromPath(object: object, path: string, value: unknown) {
 	let current = object;
-	let pathElements = path.split(".");
+	const pathElements = path.split(".");
 	for (let i = 0; i < pathElements.length - 1; i++) {
 		const key = pathElements[i];
 		current = current ? current[key] : null;

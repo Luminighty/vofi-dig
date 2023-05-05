@@ -4,7 +4,7 @@ interface SliderOptions {
 	step: number,
 	value: number,
 }
-export function Slider(parent: HTMLElement, title: string, onChange?: Function, options: Partial<SliderOptions> = {}) {
+export function Slider(parent: HTMLElement, title: string, onChange?: () => void, options: Partial<SliderOptions> = {}) {
 
 	const container = document.createElement("div");
 	container.innerHTML = `

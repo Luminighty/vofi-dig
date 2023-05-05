@@ -1,6 +1,5 @@
 import { Graphics } from "pixi.js";
 import { Entity, World } from "../entities";
-import { PositionComponent } from "./Position.component";
 
 export class DebugRectComponent {
 	static readonly COMPONENT_ID = "DebugRectComponent" as const;

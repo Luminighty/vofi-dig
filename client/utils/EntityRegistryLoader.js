@@ -1,4 +1,5 @@
-const { glob, globSync } = require("glob");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { globSync } = require("glob");
 
 const generateFile = (text) => `
 import { loadEntityBlueprint } from ".";

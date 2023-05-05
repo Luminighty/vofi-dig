@@ -14,8 +14,8 @@ export class PickupComponent {
 
 	onInit() {
 		this.position = this.parent.getComponent(PositionComponent);
-		 // No need to calculate squareroot of distance
-		 this.pickupDistance *= this.pickupDistance;
+		// No need to calculate squareroot of distance
+		this.pickupDistance *= this.pickupDistance;
 	}
 
 	onUpdate() {

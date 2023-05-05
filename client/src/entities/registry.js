@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { loadEntityBlueprint } from ".";
 
 // DO NOT EDIT. This file is AUTO-GENERATED. See /utils/EntityRegistryLoader.js

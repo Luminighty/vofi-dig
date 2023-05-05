@@ -31,7 +31,7 @@ function parseAttributes(component: Element): object {
 	return props;
 }
 
-function parseAttribute(tag: string, key: string, value: string): any {
+function parseAttribute(tag: string, key: string, value: string): unknown {
 	const parser = ParseLookup[tag]?.[key] ?? ParseLookup[key];
 	if (parser)
 		return parser(value);

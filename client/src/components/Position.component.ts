@@ -56,11 +56,12 @@ export class PositionComponent {
 	}
 
 	get x() { return this.localX + this.chunkX * GameConfig.chunkSize; }
-	get y() { return this.localY + this.chunkY * GameConfig.chunkSize; }
 	set x(x) { 
 		this.localX = x % GameConfig.chunkSize;
 		this.chunkX = Math.trunc(x / GameConfig.chunkSize);
 	}
+
+	get y() { return this.localY + this.chunkY * GameConfig.chunkSize; }
 	set y(y) { 
 		this.localY = y % GameConfig.chunkSize;
 		this.chunkY = Math.trunc(y / GameConfig.chunkSize);

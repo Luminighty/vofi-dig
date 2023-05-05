@@ -19,13 +19,13 @@ export class SlimeComponent {
         this.positionComponent = this.parent.getComponent(PositionComponent);
     }
 
-    onUpdate(dt) {
+    onUpdate() {
         if (this.wantsToHop) {
-            this.hop(dt);
+            this.hop();
         }
     }
 
-    onCollide({x, y}) {
+    onCollide({y}) {
 		if (Math.abs(y) < 0.15)
 			return;
 		if (y * this.velocityComponent.velocity.y > 0) {
@@ -34,7 +34,7 @@ export class SlimeComponent {
 		this.wantsToHop = y > 0;
     }
 
-    private hop(dt) {
+    private hop() {
         this.velocityComponent.velocity.y = -1.5;
         this.velocityComponent.velocity.x = this.speed * this.direction * Math.random();
         this.hopCount = (this.hopCount+1)%10;

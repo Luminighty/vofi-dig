@@ -50,7 +50,7 @@ export const Random = {
 	},
 
 	getDirection() {
-    let theta = Math.random() * 2 * Math.PI;
+    const theta = Math.random() * 2 * Math.PI;
     return {x: Math.cos(theta), y: Math.sin(theta)};
 	}
 }

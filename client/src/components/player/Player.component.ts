@@ -2,7 +2,6 @@ import { Graphics } from "pixi.js";
 import { Entity, World } from "../../entities";
 import { Controls } from "../../systems/controls";
 import { PositionComponent } from "../Position.component";
-import { TileTagComponent } from "../TileTag.component";
 import { VelocityComponent } from "../Velocity.component";
 import { DiggableComponent } from "../Diggable.component";
 import { IVector2, Vector2 } from "../../math";
@@ -10,8 +9,6 @@ import { CameraComponent } from "../Camera.component";
 import { OnChunk } from "../../entities/filter";
 import { PositionToChunk, PositionToTile } from "../../config";
 import { LocalStorage } from "../../systems/storage";
-import { PlayerToolbarComponent } from "./PlayerToolbar.component";
-import { baseEvent } from "../../events";
 
 interface IDigData {
 	strength: number,
@@ -69,11 +66,11 @@ export class PlayerComponent {
 	}
 
 	onUpdate({dt}) {
-		this.move(dt);
+		this.move();
 		this.dig(dt);
 	}
 
-	move(dt) {
+	move() {
 		this.velocity.velocity.x = Controls.x * this.speed;
 		if (Controls.jumping && this.canJump) {
 			this.velocity.velocity.y = this.jumpSize;
@@ -85,8 +82,6 @@ export class PlayerComponent {
 	dig(dt) {
 		this.graphics.clear();
 		if (!Controls.mouse.left) {
-			if (this.digData.progress != 0) {
-			}
 			this.digData.progress = 0;
 			return;
 		}
@@ -149,7 +144,7 @@ export class PlayerComponent {
 		}
 	}
 
-	onCollide({x, y}) {
+	onCollide({y}) {
 		if (Math.abs(y) < 0.15)
 			return;
 		this.canJump = this.canJump || y > 0;

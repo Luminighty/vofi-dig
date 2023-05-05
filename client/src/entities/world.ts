@@ -6,11 +6,10 @@ import { Component } from "../components";
 import { IEntityFilter } from "./filter";
 import { NetworkHandler } from "../network";
 import { Socket } from "socket.io-client";
-import { Cull } from "@pixi-essentials/cull";
 
-type Constructor<T> = new (...args: any[]) => T;
+type Constructor<T> = new (...args: unknown[]) => T;
 
-type ComponentTypeTuple<T extends Constructor<any>[]> = {
+type ComponentTypeTuple<T extends Constructor<unknown>[]> = {
   [K in keyof T]: T[K] extends Constructor<infer V> ? V[] : never
 };
 
@@ -34,7 +33,7 @@ export class World {
 		return this;
 	}
 
-	addEntity (entityId: string, props: any = {}, networkId?: number): Entity {
+	addEntity (entityId: string, props = {}, networkId?: number): Entity {
 		if (!Entities[entityId])
 			throw `Entity ${entityId} not found!`;
 		const entity = Entities[entityId](this);
@@ -65,7 +64,7 @@ export class World {
 		return this;
 	}
 
-	queryEntity<T extends Constructor<any>[]>(...componentTypes: T): ComponentTypeTuple<T> {
+	queryEntity<T extends Constructor<unknown>[]>(...componentTypes: T): ComponentTypeTuple<T> {
 		const componentGroups = componentTypes.map((c) => this.components[c["COMPONENT_ID"]] ?? []);
 
 		for (const filter of this.filters)

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { registerComponent } from ".";
 
 // DO NOT EDIT. This file is AUTO-GENERATED. See /utils/ComponentRegistryLoader.js

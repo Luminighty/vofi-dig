@@ -3,7 +3,7 @@ import { Entity, World } from "../entities";
 export interface Component {
 	parent?: Entity,
 	world?: World,
-	[key: string]: any,
+	[key: string]: unknown,
 }
 
 export interface ComponentConstructor {

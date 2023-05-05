@@ -1,4 +1,4 @@
-import { Graphics, Text } from "pixi.js";
+import { Text } from "pixi.js";
 import { Serializable } from "../../network";
 import { World } from "../../entities";
 

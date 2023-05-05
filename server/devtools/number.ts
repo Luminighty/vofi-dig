@@ -1,7 +1,7 @@
 interface NumberOptions {
 	value: number
 }
-export function Number(parent: HTMLElement, title: string, onChange?: Function, options: Partial<NumberOptions> = {}) {
+export function Number(parent: HTMLElement, title: string, onChange?: () => void, options: Partial<NumberOptions> = {}) {
 
 	const container = document.createElement("div");
 	container.innerHTML = `

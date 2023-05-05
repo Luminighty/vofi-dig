@@ -1,5 +1,5 @@
 import { Entity, World } from "../entities";
-import { IEntityFilter, OnChunk } from "../entities/filter";
+import { IEntityFilter } from "../entities/filter";
 import { baseEvent } from "../events";
 import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
@@ -49,7 +49,7 @@ export class CollisionComponent {
 	checkCollision(delta) {
 		if (!this.enabled)
 			return;
-		let [colliders] = this.world
+		const [colliders] = this.world
 			.withFilter(CollisionFilter(this))
 			.queryEntity(CollisionComponent);
 
@@ -100,7 +100,7 @@ function CollisionFilter(self: CollisionComponent): IEntityFilter {
 			return;
 		groups[index] = (groups[index] as CollisionComponent[])
 		.filter((other) => 
-			other !== self && other.enabled &&
+			other !== self && other.enabled && CollisionMatrix[self.layer][other.layer] &&
 			Math.abs(other.position.x - self.position.x) + Math.abs(other.position.y - self.position.y) < self.boundingBox + other.boundingBox
 		);
 	}

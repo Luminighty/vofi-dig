@@ -40,9 +40,6 @@ const rubies = {
 
 const canvas = document.body.appendChild(document.createElement("canvas"));
 
-
-const method = onHigh;
-
 async function generate() {
 	Random.seed = parseInt(seedInput.value);
 

@@ -1,6 +1,6 @@
 import { GameConfig } from "../config";
 import { generateWorld } from "../worldgen";
-import { TileType, generateCave } from "../worldgen/caves";
+import { TileType } from "../worldgen/caves";
 import { getId } from "./id";
 
 export class Game {
@@ -83,9 +83,4 @@ export interface Entity {
 	owner?: string,
 	blueprintId: string,
 	props: object,
-}
-
-interface Component {
-	type: string,
-	props: { [key: string]: any }
 }

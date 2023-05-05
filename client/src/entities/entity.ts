@@ -4,7 +4,7 @@ import { EntityBlueprint } from "./blueprint";
 import { World } from "./world";
 
 export class Entity {
-	id: number = -1;
+	id = -1;
 	world!: World;
 	components: Component[] = [];
 

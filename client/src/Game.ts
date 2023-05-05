@@ -3,7 +3,6 @@ import { registerComponents } from "./components/registry";
 import { Entity, World, createWorld } from "./entities";
 import { initControls, updateControls } from "./systems/controls";
 import { PositionComponent } from "./components/Position.component";
-import { GameConfig } from "./config";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
 import { UpdateComponent } from "./components/Update.component";
 import { Socket } from "socket.io-client";
@@ -88,7 +87,7 @@ function LoadClientEntity(entityId: number, world: World) {
 }
 
 function getOrCreatePlayer(world: World, props: object) {
-	let players = world.queryEntity(PlayerComponent)[0];
+	const players = world.queryEntity(PlayerComponent)[0];
 	if (players.length === 0) {
 		const player = world.addEntity("Player", props);
 		player.getComponent(PlayerSkinComponent).randomize();

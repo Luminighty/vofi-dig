@@ -1,4 +1,4 @@
-import { Application, FederatedPointerEvent } from "pixi.js";
+import { Application } from "pixi.js";
 
 let appRefence!: Application;
 export const Controls = {

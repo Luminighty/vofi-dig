@@ -2,7 +2,6 @@ import { Socket } from "socket.io-client";
 import { Entity, World } from "../entities";
 import { ServerActorComponent } from "../components/network/ServerActor.component";
 import { baseEvent } from "../events";
-import { ChunkLoaderComponent } from "../components/player/ChunkLoader.component";
 import { IVector2 } from "../math";
 
 
@@ -61,7 +60,7 @@ export class NetworkHandler {
 	}
 
 	private onEntityCreate(id, type, props) {
-		const entity = this.world.addEntity(type, props, id);
+		this.world.addEntity(type, props, id);
 	}
 
 	private onEntityCreateAll(entities: NetworkEntity[]) {

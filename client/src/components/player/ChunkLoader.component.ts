@@ -1,4 +1,4 @@
-import { Entity, World } from "../../entities";
+import { World } from "../../entities";
 import { OnChunk } from "../../entities/filter";
 import { baseEvent } from "../../events";
 import { PositionComponent } from "../Position.component";
