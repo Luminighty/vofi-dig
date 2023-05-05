@@ -22,7 +22,8 @@ module.exports = function () {
 
 	const components = files
 		.map((fileName) => fileName.slice(options.dir.length + 1))
-		.map((fileName) => fileName.split("\\"))
+		.map((fileName) => fileName.replaceAll("\\", "/"))
+		.map((fileName) => fileName.split("/"))
 		.map((split) => split[split.length - 1])
 		.map((fileName) => fileName.split(".")[0])
 		.map((fileName) => `${fileName}Component`)
