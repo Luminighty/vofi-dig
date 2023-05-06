@@ -10,17 +10,23 @@ import { ClientActorComponent } from "./components/network/ClientActor.component
 import { LocalStorage } from "./systems/storage";
 import { PlayerComponent } from "./components/player/Player.component";
 import { PlayerSkinComponent } from "./components/player/PlayerSkin.component";
+import { LoadingBar } from "./dialogs/LoadingBar";
 
 export async function Init(app: Application, socket: Socket) {
+	const loadingBar = LoadingBar();
+
+
 	registerComponents();
-	await loadEntityBlueprintRegistry();
+	await loadEntityBlueprintRegistry(loadingBar);
 	await initControls(app);
 	const world = createWorld(app, socket);
 	world.addEntity("DataStorage");
 
 	const mapSize = 150;
 
-	await world.networkHandler.getState();
+	await world.networkHandler.getState(loadingBar);
+	loadingBar.label = "Loading Player";
+	loadingBar.determinate = false;
 	const { userId, entities, spawn } = await world.networkHandler.initGame();
 	LocalStorage.setUserId(userId);
 	LocalStorage.clearEntities(entities);
@@ -60,6 +66,7 @@ export async function Init(app: Application, socket: Socket) {
 		const clientActors = world.queryEntity(ClientActorComponent)[0];
 		clientActors.forEach(SaveClientActor);
 	});
+	loadingBar.finish();
 }
 
 function SaveClientActor(clientActor: ClientActorComponent) {

@@ -3,9 +3,12 @@ import { Entity, World } from "../entities";
 import { ServerActorComponent } from "../components/network/ServerActor.component";
 import { baseEvent } from "../events";
 import { IVector2 } from "../math";
+import { ILoadingBar } from "../dialogs/LoadingBar";
 
 
 export class NetworkHandler {
+	private loadingBar: ILoadingBar | null = null;
+
 	constructor(
 		private world: World,
 		private socket: Socket,
@@ -24,9 +27,16 @@ export class NetworkHandler {
 		this.socket.emit("entity update", id, body);
 	}
 
-	public getState() {
+	public getState(loadingBar: ILoadingBar) {
+		this.loadingBar = loadingBar;
+		this.loadingBar.determinate = false;
+		this.loadingBar.label = "Getting game state";
 		return new Promise((res) => {
 			this.socket.emit("query entities", res);
+		}).then(() => {
+			if (this.loadingBar)
+				this.loadingBar.determinate = true;
+			this.loadingBar = null;
 		})
 	}
 
@@ -64,7 +74,9 @@ export class NetworkHandler {
 	}
 
 	private onEntityCreateAll(entities: NetworkEntity[]) {
+		let progress = 0;
 		for (const entity of entities) {
+			this.loadingBar?.update("Loading entity", ++progress, entities.length);
 			this.world.addEntity(entity.blueprintId, entity.props, entity.id);
 		}
 	}

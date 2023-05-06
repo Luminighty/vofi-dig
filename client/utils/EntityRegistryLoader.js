@@ -2,14 +2,10 @@
 const { globSync } = require("glob");
 
 const generateFile = (text) => `
-import { loadEntityBlueprint } from ".";
-
-export async function registerEntityBlueprints() {
-	${text}
-}
+export const entityBlueprintFiles = [${text}];
 `;
 
-const generateLine = (path) => `await loadEntityBlueprint("${path}");`;
+const generateLine = (path) => `"${path}"`;
 
 module.exports = function () {
   const options = this.getOptions();
@@ -25,7 +21,7 @@ module.exports = function () {
 			return fileName;
 		})
 		.map(generateLine)
-		.join("\n");
+		.join(",");
 		
 	console.log(`Generated registry for ${files.length} entity blueprints.`);
 	return generateFile(file);
