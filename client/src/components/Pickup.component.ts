@@ -13,12 +13,14 @@ export class PickupComponent {
 	player?: PlayerComponent;
 	position!: PositionComponent;
 	pickupDistance = 8;
+	item!: string
 
 	onLateInit(props) {
+		this.item = props.item;
 		this.position = this.parent.getComponent(PositionComponent);
 		// No need to calculate squareroot of distance
 		this.pickupDistance *= this.pickupDistance;
-		const itemDb = this.world.queryEntity(ItemDBComponent)[0][0];
+		const itemDb = this.world.querySingleton(ItemDBComponent);
 		const item = itemDb.get(props.item).getComponent(ItemComponent);
 		this.parent.fireEvent(baseEvent("onSetSprite", { sprite: item.icon }));
 	}
@@ -29,8 +31,10 @@ export class PickupComponent {
 		if (this.player) {
 			const delta = Vector2.sub(this.player.position.position, this.position.position);
 			const distance = Vector2.dot(delta, delta);
-			if (distance < this.pickupDistance)
+			if (distance < this.pickupDistance) {
 				this.pickup();
+				this.player.parent.fireEvent(baseEvent("onAddItem", { item: this.item }))
+			}
 		}
 	}
 

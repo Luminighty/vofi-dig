@@ -1,5 +1,5 @@
 <Entity id="MushroomTrunk">
 	<SpriteComponent src="assets/textures/mushroom/trunk.png" />
-	<DiggableComponent hardness="10" drop="MushroomItem" />
+	<DiggableComponent hardness="20" drop="MushroomItem" />
 	<Include from="MushroomCap" />
 </Entity>

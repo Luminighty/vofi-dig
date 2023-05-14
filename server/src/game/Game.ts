@@ -22,10 +22,7 @@ export class Game {
 			const row = cave[y];
 			for (let x = 0; x < row.length; x++) {
 				const tile = row[x];
-				this.createEntity("Air", {x: x * gridSize, y: y * gridSize});
 				if (tile == TileType.None)
-					continue;
-				if (Math.abs(x - row.length / 2) < 3 && Math.abs(y - cave.length / 2) < 2)
 					continue;
 				this.createEntity(tile, {x: x * gridSize, y: y * gridSize});
 			}

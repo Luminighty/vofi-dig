@@ -40,7 +40,7 @@ export class NetworkHandler {
 		})
 	}
 
-	public initGame(): Promise<{userId: string, entities: number[], spawn: IVector2}> {
+	public initPlayer(): Promise<{userId: string, entities: number[], spawn: IVector2}> {
 		return new Promise((res) => {
 			this.socket.emit("game init", res);
 		})

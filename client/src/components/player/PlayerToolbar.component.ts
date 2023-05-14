@@ -42,6 +42,8 @@ export class PlayerToolbarComponent {
 		const isTileOccupied = positions.some((p) => p.gridX === mouse.x && p.gridY === mouse.y);
 		if (isTileOccupied)
 			return;
+		console.log(`Building ${this.entities[this.selected]}`);
+		
 		this.world.withNetwork().addEntity(this.entities[this.selected], { x: mouse.x * 16, y: mouse.y * 16});
 	}
 

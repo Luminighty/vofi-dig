@@ -1,3 +1,4 @@
 <Entity id="DataStorage">
 	<ItemDBComponent />
+	<RecipeDBComponent />
 </Entity>

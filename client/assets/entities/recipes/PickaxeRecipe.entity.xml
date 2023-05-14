@@ -1,0 +1,7 @@
+<Entity id="PickaxeRecipe">
+	<RecipeComponent>
+		<Input type="Wood" amount="1" slot="handle" />
+		<Input type="Metal;Wood" amount="2" slot="head" />
+		<Output item="Pickaxe" />
+	</RecipeComponent>
+</Entity>

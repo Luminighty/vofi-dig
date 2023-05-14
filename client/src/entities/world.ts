@@ -95,6 +95,10 @@ export class World {
 			return [...componentTypes.map(() => [])] as ComponentTypeTuple<T>;
 		return transpose(res) as ComponentTypeTuple<T>;
 	}
+
+	querySingleton<T>(componentType: new (...args: unknown[]) => T): T {
+		return this.components[componentType["COMPONENT_ID"]][0] as T;
+	}
 }
 
 function transpose(arr) {

@@ -1,8 +1,12 @@
 import { World } from "..";
 import { Random } from "../../math/random";
 import { TileType } from "../caves";
+import { WorldGenTool } from "./tools";
+
+let worldgen!: WorldGenTool;
 
 export function generateFeatures(map: World) {
+  worldgen = new WorldGenTool(map);
   const width = map[0].length;
   const height = map.length;
   const center = {
@@ -13,24 +17,41 @@ export function generateFeatures(map: World) {
   generateTree(map, center.x - 4, center.y + 1);
   generateTree(map, center.x + 10, center.y + 5);
   generateTree(map, center.x - 10, center.y + 3);
+  generateTree(map, center.x - 16, center.y + 3);
+  generateTree(map, center.x - 25, center.y + 3);
+  generateSpawn(center.x, center.y);
 }
 
+function generateSpawn(centerX: number, centerY: number) {
+  const width = 4;
+  const height = 3;
+  worldgen
+    .setFill(TileType.None)
+    .drawRect(centerX - width + 1, centerY - height + 1, width * 2 - 1, height)
+    .end();
+  
+  worldgen
+    .setStroke(TileType.Dirt)
+    .drawLine(centerX - width + 1, centerY + 1, width * 2 - 1, 1)
+    .end();
+}
 
 function generateTree(map: World, x: number, y: number) {
   const MaxDeltaHeight = 3;
-  const MinHeight = 2;
+  const MinHeight = 3;
   
-  const MaxDeltaWidth = 3;
-  const MinWidth = 1;
+  const MaxDeltaWidth = 1;
+  const MinWidth = 2;
   
   const height = Math.floor(Random.get2D(x, y) * MaxDeltaHeight) + MinHeight;
   const width = Math.floor(Random.get3D(x, y, 399912) * MaxDeltaWidth) + MinWidth;
 
-  for (let i = 0; i < height; i++)
-    map[y - i][x] = TileType.MushroomTrunk;
+  worldgen.setStroke(TileType.MushroomTrunk);
+  worldgen.drawLine(x, y - height + 1, 1, height);
 
-  for (let i = 0; i <= width; i++) {
-    map[y - height][x + i] = i < width ? TileType.MushroomCap : TileType.MushroomCapRight;
-    map[y - height][x - i] = i < width ? TileType.MushroomCap : TileType.MushroomCapLeft;
-  }
+  worldgen.setStroke(TileType.MushroomCap);
+  worldgen.drawLine(x - width, y - height, width * 2 + 1, 1);
+  map[y - height][x + width] = TileType.MushroomCapRight
+  map[y - height][x - width] = TileType.MushroomCapLeft
+  worldgen.end();
 }

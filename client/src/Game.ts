@@ -6,15 +6,18 @@ import { PositionComponent } from "./components/Position.component";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
 import { UpdateComponent } from "./components/Update.component";
 import { Socket } from "socket.io-client";
-import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { LocalStorage } from "./systems/storage";
 import { PlayerComponent } from "./components/player/Player.component";
 import { PlayerSkinComponent } from "./components/player/PlayerSkin.component";
 import { LoadingBar } from "./dialogs/LoadingBar";
+import { initDebug } from "./debug";
+import { ClientActorComponent } from "./components/network/ClientActor.component";
+import { ItemContainerDialog } from "./dialogs/ItemContainerDialog";
+import { RecipeDBComponent } from "./components/item/RecipeDB.component";
 
 export async function Init(app: Application, socket: Socket) {
+	ItemContainerDialog();
 	const loadingBar = LoadingBar();
-
 
 	registerComponents();
 	await loadEntityBlueprintRegistry(loadingBar);
@@ -22,17 +25,16 @@ export async function Init(app: Application, socket: Socket) {
 	const world = createWorld(app, socket);
 	world.addEntity("DataStorage");
 
-	const mapSize = 150;
-
 	await world.networkHandler.getState(loadingBar);
 	loadingBar.label = "Loading Player";
 	loadingBar.determinate = false;
-	const { userId, entities, spawn } = await world.networkHandler.initGame();
+	const { userId, entities, spawn } = await world.networkHandler.initPlayer();
+
 	LocalStorage.setUserId(userId);
 	LocalStorage.clearEntities(entities);
 	entities.forEach((id) => LoadClientEntity(id, world));
 
-	world.addEntity("Fren", { x: 16, y: mapSize * 16 - 116 });
+	world.addEntity("Fren", { x: 16, y: 16 });
 	
 	const player = getOrCreatePlayer(world, {...spawn});
 	const position = player.getComponent(PositionComponent);
@@ -46,21 +48,12 @@ export async function Init(app: Application, socket: Socket) {
 		updateControls();
 	});
 
-	document.addEventListener("keydown", (event) => {
-		if (event.code == "KeyO") {
-			if (ChunkLoaderComponent.main) {
-				ChunkLoaderComponent.main.updateAllChunks(position.chunk);
-			} else {
-				console.error("ChunkLoaderComponent.main not found!");
-			}
-		}
-		if (event.code == "KeyL") {
-			const clientActors = world.queryEntity(ClientActorComponent)[0];
-			clientActors.forEach(LoadClientActor);
-		}
-	});
+	const recipes = world.querySingleton(RecipeDBComponent);
+	const pickaxe = recipes.get("PickaxeRecipe");
 
-	document.addEventListener("visibilitychange", () =>{
+	initDebug(world, player);
+
+	document.addEventListener("visibilitychange", () => {
 		if (document.visibilityState !== "hidden")
 			return;
 		const clientActors = world.queryEntity(ClientActorComponent)[0];
@@ -77,11 +70,6 @@ function SaveClientActor(clientActor: ClientActorComponent) {
 		entityBlueprint: clientActor.clientEntity
 	};
 	LocalStorage.updateEntity(id, data);
-}
-
-function LoadClientActor(clientActor: ClientActorComponent) {
-	const data = LocalStorage.getEntity(clientActor.parent.id);
-	Entity.deserialize(clientActor.parent, data)
 }
 
 function LoadClientEntity(entityId: number, world: World) {

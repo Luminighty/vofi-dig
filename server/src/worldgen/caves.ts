@@ -30,7 +30,6 @@ const config = {
 };
 
 export function generateCave() {
-	Random.seed = 0;
 	const groundPerlin = create2DPerlin(Random.getSeed(), config.ground.scale);
 	const tunnelPerlin = create2DPerlin(Random.getSeed(), config.tunnel.scale);
 	const orePerlin = create2DPerlin(Random.getSeed(), config.ore.scale);
