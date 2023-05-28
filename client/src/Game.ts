@@ -12,11 +12,9 @@ import { PlayerSkinComponent } from "./components/player/PlayerSkin.component";
 import { LoadingBar } from "./dialogs/LoadingBar";
 import { initDebug } from "./debug";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
-import { ItemContainerDialog } from "./dialogs/ItemContainerDialog";
 import { RecipeDBComponent } from "./components/item/RecipeDB.component";
 
 export async function Init(app: Application, socket: Socket) {
-	ItemContainerDialog();
 	const loadingBar = LoadingBar();
 
 	registerComponents();
