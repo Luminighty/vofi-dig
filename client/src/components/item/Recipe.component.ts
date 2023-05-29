@@ -12,6 +12,7 @@ export interface RecipeOutput {
 export class RecipeComponent {
 	static readonly COMPONENT_ID = "RecipeComponent" as const;
 
+	label!: string;
 	inputs: RecipeInput[] = [];
 	outputs: RecipeOutput[] = [];
 

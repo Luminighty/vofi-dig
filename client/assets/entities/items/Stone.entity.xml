@@ -1,3 +1,7 @@
 <Entity id="StoneItem">
-	<ItemComponent name="Stone" icon="assets/textures/items/stone.png" />
+	<ItemComponent 
+		name="Stone" 
+		icon="assets/textures/items/stone.png" 
+		tags="STONE"
+	/>
 </Entity>

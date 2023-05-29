@@ -1,0 +1,15 @@
+.container {
+	display: flex;
+	justify-items: stretch;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	grid-gap: 5px;
+	padding: 10px;
+}
+
+.item-slot {
+	width: 65px;
+	height: 65px;
+	background-color: #f0f0f0;
+	cursor: move;
+}

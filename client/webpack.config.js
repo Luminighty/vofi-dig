@@ -69,6 +69,14 @@ const config = {
         test: /\.xml$/i,
         use: ['xml-loader'],
       },
+      {
+        test: /\.css$/i,
+        use: ["css-loader"],
+      },
+      {
+        test: /\.html$/i,
+        use: ["html-loader"],
+      },
     ]
   },
   resolve: {

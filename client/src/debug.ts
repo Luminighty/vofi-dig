@@ -1,9 +1,8 @@
 import { PositionComponent } from "./components/Position.component";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
-import { openCraftingDialog } from "./dialogs/CraftingDialog";
-import { createDialog } from "./dialogs/Dialog";
-import { ItemContainerDialog, openItemContainerDialog } from "./dialogs/ItemContainerDialog";
+import { CraftingDialog } from "./dialogs/CraftingDialog";
+import { ItemContainerDialog } from "./dialogs/ItemContainerDialog/ItemContainerDialog";
 import { Entity, World } from "./entities";
 import { LocalStorage } from "./systems/storage";
 
@@ -23,8 +22,8 @@ export function initDebug(world: World, player: Entity) {
 		}
 	});
 
-
-	window["crafting"] = openCraftingDialog({
+/* 
+	window["crafting"] = CraftingDialog.open({
 		onCraft: (recipe, materials) => console.log({recipe, materials}),
 		title: "Crafting",
 		recipes: [
@@ -48,7 +47,7 @@ export function initDebug(world: World, player: Entity) {
 
 	console.log("Creating dialog base");
 	
-	window["inventory"] = openItemContainerDialog({
+	window["inventory"] = ItemContainerDialog.open({
 		title: "Inventory",
 		count: 8,
 		items: [
@@ -56,7 +55,7 @@ export function initDebug(world: World, player: Entity) {
 			{ amount: 2, img: "assets/textures/items/iron.png", tags: ["STEEL"], },
 			{ amount: 2, img: "assets/textures/mushroom/item.png", tags: ["WOOD"], },
 		],
-	})
+	}) */
 	
 }
 

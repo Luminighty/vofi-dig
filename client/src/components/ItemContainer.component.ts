@@ -1,4 +1,7 @@
+import { ItemContainerDialog } from "../dialogs/ItemContainerDialog";
 import { World } from "../entities";
+import { ItemComponent } from "./item/Item.component";
+import { ItemDBComponent } from "./item/ItemDB.component";
 
 interface ItemEntry {
 	item: string;
@@ -8,16 +11,66 @@ interface ItemEntry {
 export class ItemContainerComponent {
 	static readonly COMPONENT_ID = "ItemContainerComponent" as const;
 	world!: World;
-	items: ItemEntry[] = [];
+	itemDb!: ItemDBComponent;
+	items: (ItemEntry | undefined)[] = [];
+	slots = 8;
+	title = "Container";
+	container: ItemContainerDialog | null = null;
+
+	get isOpen() { return this.container !== null; }
+
+	onInit() {
+		this.itemDb = this.world.querySingleton(ItemDBComponent);
+	}
 
 	onAddItem({item, amount = 1}) {
-		console.log(`Adding item ${item} ${amount}`);
-		const entry = this.items.find((i) => i.item === item);
-		if (!entry) {
-			this.items.push({ item, amount});
-			return;
+		const entry = this.items.find((i) => i && i.item === item);
+		for (let i = 0; i < this.slots; i++) {
+			if (!this.items[i]){
+				this.items[i] = { item, amount }
+				break;
+			}
 		}
-		entry.amount += amount;
+		if (this.container)
+			this.container.items = this.items.map(this.toItemProp.bind(this));
+	}
+
+	onOpenDialog() {
+		if (this.container)
+			return;
+		this.container = ItemContainerDialog.open({
+			count: this.slots,
+			title: this.title,
+			items: this.items.map(this.toItemProp.bind(this)),
+			onItemsChanged: (items) => {
+				this.items = items.map((prop) => prop && {
+					amount: prop.amount,
+					item: prop.item
+				});
+			}
+		});
+		this.container.dialog.onClose(() => {
+			this.container = null;
+		});
+	}
+
+	onCloseDialog() {
+		if (this.container) {
+			this.container.dialog.close();
+		}
+	}
+
+	toItemProp(entry: ItemEntry | undefined) {
+		if (!entry)
+			return undefined;
+		const data = this.itemDb.get(entry.item);
+		const item = data.getComponent(ItemComponent);
+		return {
+			item: entry.item,
+			img: item.icon,
+			amount: entry.amount,
+			tags: item.tags,
+		}
 	}
 
 }

@@ -7,6 +7,7 @@
 	</SpriteSocketComponent>
 	<CameraComponent offsetX="-8" />
 	<PlayerComponent />
+	<PlayerDigComponent />
 	<VelocityComponent />
 	<CollisionComponent shape="rect -4 6 8 10" />
 	<PositionComponent />
@@ -21,5 +22,9 @@
 	<PlayerSkinComponent />
 	<NameTagComponent name="Unknown Miner" />
 	<LightSourceComponent offsetY="8" intensity="24" />
-	<ItemContainerComponent />
+	<ItemContainerComponent title="Inventory" />
+	<CraftingStationComponent 
+		title="Hand Crafting"
+		recipes="PickaxeRecipe" 
+	/>
 </Entity>

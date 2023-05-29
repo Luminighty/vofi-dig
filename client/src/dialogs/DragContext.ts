@@ -24,6 +24,7 @@ export function Drag(event: MouseEvent, element: HTMLElement, options: DragOptio
 	dragContext.current = element;
 	dragContext.x = event.clientX - element.offsetLeft;
 	dragContext.y = event.clientY - element.offsetTop;
+	document.body.style.cursor = "grabbing";
 }
 
 export function Drop(element: HTMLElement) {
@@ -32,6 +33,7 @@ export function Drop(element: HTMLElement) {
 	dragContext.current.classList.remove("dragged");
 	dragContext.current = null;
 	dragContext.options.onDrop?.(dragContext.hover);
+	document.body.style.cursor = "initial";
 	return dragContext.hover;
 }
 

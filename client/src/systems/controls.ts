@@ -9,6 +9,7 @@ export const Controls = {
 	digging: false,
 	building: false,
 	jumping: false,
+	inventory: false,
 	mouse: {
 		get left() { return this.buttons[0]; },
 		get middle() { return this.buttons[1]; },
@@ -41,6 +42,7 @@ const KeyBinds = {
 	"KeyC": "digging",
 	"Space": "jumping",
 	"KeyV": "building",
+	"KeyI": "inventory",
 }
 
 export function initControls(app: Application) {

@@ -1,0 +1,70 @@
+:host {
+	height: 100%;
+	display: flex;
+}
+
+.recipes-container {
+	display: flex;
+	flex-direction: column;
+  align-items: stretch;
+	justify-content: space-between;
+}
+
+#recipes {
+	width: 150px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	overflow: auto;
+}
+
+#recipes > .selected-recipe {
+	background: #333333;
+}
+
+#craft-button {
+	background: grey;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 5px;
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+#craft-button:hover {
+	background: #1a1a1a;
+}
+
+#craft-button:disabled {
+	background: #5a5a5a;
+	color: gray;
+}
+
+#recipes > * {
+	display: block;
+	background: grey;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 10px;
+	cursor: pointer;
+	text-align: right;
+	border: none;
+	border-bottom: 1px solid black;
+}
+
+#recipes > *:hover {
+	background: #1a1a1a;
+}
+
+#slots {
+	display: flex;
+	align-content: space-evenly;
+	justify-content: space-evenly;
+	justify-items: center;
+	flex: 1;
+	background-color: #0005;
+	flex-wrap: wrap;
+}

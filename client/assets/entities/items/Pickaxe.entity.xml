@@ -1,0 +1,7 @@
+<Entity id="Pickaxe">
+	<ItemComponent 
+		name="Pickaxe" 
+		icon="assets/textures/items/pickaxe.png" 
+		tags="TOOL"
+	/>
+</Entity>

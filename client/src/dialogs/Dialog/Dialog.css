@@ -1,0 +1,33 @@
+
+.dialog-base {
+	position: absolute;
+	background-color: grey;
+	z-index: 10;
+	border: 1px solid black;
+	box-shadow: 2px 2px 6px 2px black;
+}
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+  cursor: grab;
+}
+
+.dialog-base.dragged .dialog-header {
+  cursor: grabbing;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}

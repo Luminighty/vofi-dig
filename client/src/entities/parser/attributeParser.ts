@@ -13,4 +13,10 @@ export const ParseLookup = {
 	"PlayerToolbarComponent": {
 		"entities": parseArray,
 	},
+	"CraftingStationComponent": {
+		"recipes": parseArray,
+	},
+	"ItemComponent": {
+		"tags": parseArray,
+	},
 }

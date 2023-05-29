@@ -3,19 +3,11 @@ import { Entity, World } from "../../entities";
 import { Controls } from "../../systems/controls";
 import { PositionComponent } from "../Position.component";
 import { VelocityComponent } from "../Velocity.component";
-import { DiggableComponent } from "../Diggable.component";
-import { IVector2, Vector2 } from "../../math";
 import { CameraComponent } from "../Camera.component";
-import { OnChunk } from "../../entities/filter";
-import { PositionToChunk, PositionToTile } from "../../config";
 import { LocalStorage } from "../../systems/storage";
+import { ItemContainerComponent } from "../ItemContainer.component";
+import { baseEvent } from "../../events";
 
-interface IDigData {
-	strength: number,
-	progress: number,
-	target: DiggableComponent | null,
-	targetPosition: IVector2 | null,
-}
 
 export class PlayerComponent {
 	static readonly COMPONENT_ID = "PlayerComponent" as const;
@@ -30,17 +22,13 @@ export class PlayerComponent {
 	graphics!: Graphics;
 	toolbar!: Entity;
 
-	digData: IDigData = {
-		strength: 1,
-		progress: 0,
-		target: null,
-		targetPosition: null,
-	};
+	inventory!: ItemContainerComponent;
 
 	onInit(props) {
 		this.velocity = this.parent.getComponent(VelocityComponent);
 		this.position = this.parent.getComponent(PositionComponent);
 		this.camera = this.parent.getComponent(CameraComponent);
+		this.inventory = this.parent.getComponent(ItemContainerComponent);
 		this.graphics = new Graphics();
 		this.world.renderContainers["foreground"].addChild(this.graphics);
 		window["player"] = this;
@@ -65,9 +53,21 @@ export class PlayerComponent {
 		this.toolbar = this.world.addEntity("Toolbar");
 	}
 
+	private lastControls = {
+		inventory: false
+	};
 	onUpdate({dt}) {
 		this.move();
-		this.dig(dt);
+		if (!this.lastControls.inventory && Controls.inventory) {
+			if (this.inventory.isOpen) {
+				this.parent.fireEvent(baseEvent("onCloseDialog"));
+			} else {
+				this.parent.fireEvent(baseEvent("onOpenDialog", { source: this.parent }));
+			}
+		}
+
+		
+		this.lastControls = {...Controls};
 	}
 
 	move() {
@@ -76,71 +76,6 @@ export class PlayerComponent {
 			this.velocity.velocity.y = this.jumpSize;
 			this.canJump = false;
 			Controls.jumping = false;
-		}
-	}
-
-	dig(dt) {
-		this.graphics.clear();
-		if (!Controls.mouse.left) {
-			this.digData.progress = 0;
-			return;
-		}
-
-		// Reach
-		const mouse = PositionToTile(Controls.mouse);
-		const chunk = PositionToChunk(Controls.mouse);
-		const playerPosition = this.position.grid;
-		playerPosition.y += 1;
-		const distance = Vector2.blockLength(Vector2.sub(mouse, playerPosition));
-		if (distance > 1.5)
-			return;
-
-		// Dig Progress
-		const position = this.digData.targetPosition;
-		const isTargetSame = position?.x === mouse.x && position?.y === mouse.y
-		const digPower = this.digData.strength * dt;
-
-		if (isTargetSame && this.digData.target) {
-			this.digData.progress += digPower;
-			const progressPercentage = this.digData.progress / (this.digData.target?.hardness ?? this.digData.progress);
-			this.graphics.clear();
-			this.graphics.beginFill(0xffaa00, progressPercentage)
-			this.graphics.drawRect(
-				position.x * 16, position.y * 16,
-				16, 16
-			);
-			this.graphics.endFill();
-		}
-
-		if (this.digData.target && this.digData.progress >= this.digData.target.hardness) {
-			this.graphics.clear();
-			this.digData.target.dig();
-			this.digData.progress = 0;
-			this.digData.target = null;
-			this.digData.targetPosition = null;
-			return
-		}
-
-		if (isTargetSame)
-			return;
-
-		// Find dig target
-		const [diggables, positions] = this.world
-			.withFilter(OnChunk(chunk.x, chunk.y))
-			.queryEntity(DiggableComponent, PositionComponent);
-
-		for (let i = 0; i < diggables.length; i++) {
-			const grid = positions[i].grid;
-			if (grid.x === mouse.x && grid.y === mouse.y) {
-				if (diggables[i].hardness <= digPower) {
-					diggables[i].dig(); // allow 1 frame digs
-					continue;
-				}
-				this.digData.progress = 0;
-				this.digData.target = diggables[i];
-				this.digData.targetPosition = grid;
-				break;
-			}
 		}
 	}
 
