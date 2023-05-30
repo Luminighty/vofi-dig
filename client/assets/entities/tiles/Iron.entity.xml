@@ -1,5 +1,5 @@
 <Entity id="Iron">
-	<SpriteComponent src="assets/textures/tiles/iron.png" />
+	<SpriteComponent src="dynamic/" />
 	<DiggableComponent hardness="50" drop="IronItem" />
 	<Include from="Tile" />
 </Entity>

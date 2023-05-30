@@ -47,7 +47,6 @@ export async function Init(app: Application, socket: Socket) {
 	});
 
 	const recipes = world.querySingleton(RecipeDBComponent);
-	const pickaxe = recipes.get("PickaxeRecipe");
 
 	initDebug(world, player);
 

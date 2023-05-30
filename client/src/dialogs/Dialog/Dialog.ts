@@ -3,6 +3,7 @@ import CSS from "./Dialog.css";
 import { Drag, Drop } from "../DragContext";
 import { injectCustomElement } from "../utils";
 import { EventEmitter } from "../../utils/EventEmitter";
+import { LocalStorage } from "../../systems/storage";
 
 export interface DialogProps {
 	title?: string;
@@ -10,6 +11,7 @@ export interface DialogProps {
 	height?: number;
 	x?: number;
 	y?: number;
+	key?: string;
 }
 
 const DIALOG_Z_OFFSET = 200;
@@ -30,7 +32,6 @@ function moveToFront(dialog: BaseDialog) {
 }
 
 window.addEventListener("resize", () => {
-	console.log("resize");
 	openDialogs.forEach((dialog) => {
 		dialog.bindToWindow();
 	});
@@ -40,7 +41,7 @@ export function withDialog<T>(defaultProps: DialogProps = {}) {
   return function <C extends {
 		open(props: any): HTMLElement; 
 		new (...args: any[]): HTMLElement 
-}>(constructor: C) {
+	}>(constructor: C) {
     return class extends constructor {
       static open(props: T) {
         const dialog = createDialog({ ...defaultProps, ...props });
@@ -60,8 +61,11 @@ export function createDialog(props: DialogProps = {}) {
 		dialog.title = props.title;
 	dialog.height = props.height ?? 200;
 	dialog.width = props.width ?? 300;
-	dialog.baseElement.style.left = `${props.x ?? 0}px`;
-	dialog.baseElement.style.top = `${props.y ?? 0}px`;
+	const x = (props.key && LocalStorage.getValue(`dialog-${props.key}-x`)) ?? props.x ?? 10;
+	const y = (props.key && LocalStorage.getValue(`dialog-${props.key}-y`)) ?? props.y ?? 10;
+	dialog.baseElement.style.left = `${x}px`;
+	dialog.baseElement.style.top = `${y}px`;
+	dialog.key = props.key;
 	openDialogs.push(dialog);
 	updateDialogZIndex();
 	return dialog;
@@ -72,6 +76,7 @@ export class BaseDialog extends HTMLElement {
 	private contentElement: HTMLElement;
 	private titleElement: HTMLElement;
 	private closeListeners = new EventEmitter<void>();
+	key?: string;
 
 	constructor() {
 		super();
@@ -120,6 +125,10 @@ export class BaseDialog extends HTMLElement {
 	}
 
 	close() {
+		if (this.key) {
+			LocalStorage.setValue(`dialog-${this.key}-x`, this.baseElement.offsetLeft);
+			LocalStorage.setValue(`dialog-${this.key}-y`, this.baseElement.offsetTop);
+		}
 		this.closeListeners.notify();
 		document.body.removeChild(this);
 		const index = openDialogs.indexOf(this);

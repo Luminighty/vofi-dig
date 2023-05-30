@@ -6,16 +6,16 @@
   "scripts": {
     "clean": "rm -r -d dist/",
     "start": "node index.js",
-    "start:dev": "webpack serve --mode development",
+    "start:dev": "concurrently \"node index.js\" \"webpack serve --mode development\"",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development"
   },
   "author": "Luminight (http://luminight.dev/)",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
-    "glob": "^10.2.2",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.4.2",
@@ -34,6 +34,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "pixi.js": "^7.1.4",
+    "glob": "^10.2.2",
     "socket.io-client": "^4.6.1"
   },
   "engines": {

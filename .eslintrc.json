@@ -9,6 +9,15 @@
 		"plugin:@typescript-eslint/recommended"
 	],
 	"overrides": [
+		{
+			"files": [
+				"client/index.js",
+				"client/routes/**/*.js"
+			],
+			"rules": {
+				"@typescript-eslint/no-var-requires": "off"
+			}
+		}
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {

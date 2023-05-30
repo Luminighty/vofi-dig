@@ -27,10 +27,12 @@ export function createItemSlot({allowedTags, item, label}: ItemSlotProps = {}) {
 
 export class ItemSlot extends HTMLElement {
 	private image: HTMLImageElement;
-	item?: ItemProp;
+	private imageContainer: HTMLElement;
 	private labelElement: HTMLElement;
-	allowedTags?: string[];
+	private amountElement: HTMLElement;
 	private itemChangedEmitter = new EventEmitter<void>();
+	allowedTags?: string[];
+	item?: ItemProp;
 
 	constructor() {
 		super();
@@ -39,6 +41,9 @@ export class ItemSlot extends HTMLElement {
 
 		this.image = root.querySelector("img") as HTMLImageElement;
 		this.labelElement = root.querySelector("span") as HTMLElement;
+		this.imageContainer = root.querySelector(".image-container") as HTMLElement;
+		this.amountElement = root.querySelector(".amount") as HTMLElement;
+
 		
 		slot.addEventListener("mousedown", this.drag.bind(this));
 		slot.addEventListener("mouseleave", () => ClearHover(this));
@@ -48,14 +53,14 @@ export class ItemSlot extends HTMLElement {
 	drag(e: MouseEvent) {
 		if (!this.item)
 			return;
-		Drag(e, this.image, {
+		Drag(e, this.imageContainer, {
 			onDrop: this.drop.bind(this),
 		})
 	}
 
 	drop(hovering: HTMLElement | null) {
-		this.image.style.left = "";
-		this.image.style.top = "";
+		this.imageContainer.style.left = "";
+		this.imageContainer.style.top = "";
 		if (!hovering || !this.item)
 			return;
 		if (!(hovering instanceof ItemSlot))
@@ -82,9 +87,11 @@ export class ItemSlot extends HTMLElement {
 		if (item) {
 			this.image.classList.add("draggable");
 			this.image.src = item.img;
+			this.amountElement.innerText = item.amount > 1 ? `${item.amount}` : "";
 		} else {
 			this.image.classList.remove("draggable");
 			this.image.src = "";
+			this.amountElement.innerText = "";
 		}
 	}
 

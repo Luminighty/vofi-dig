@@ -11,7 +11,7 @@ interface ItemContainerProps {
 	onItemsChanged: (items: (ItemProp | undefined)[]) => void;
 }
 
-@withDialog({title: "Container", width: 300})
+@withDialog({title: "Container", width: 300, key: "container"})
 export class ItemContainerDialog extends HTMLElement {
 	private container: HTMLElement;
 	dialog!: BaseDialog;

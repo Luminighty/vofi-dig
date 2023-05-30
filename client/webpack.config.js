@@ -10,10 +10,14 @@ const config = {
     filename: '[name].bundle.js',
   },
   devServer: {
+    port: 8080,
     watchFiles: [
       'src/**/*',
       'assets/**/*'
-    ]
+    ],
+    proxy: {
+      '/assets': 'http://localhost:8081',
+    },
   },
   externals: {
     pixijs: {

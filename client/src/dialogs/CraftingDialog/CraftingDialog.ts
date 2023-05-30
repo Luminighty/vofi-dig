@@ -19,7 +19,7 @@ export interface CraftingDialogProps {
 	onDropItem: (item: ItemProp) => void,
 }
 
-@withDialog({ title: "Crafting", height: 300, width: 400 })
+@withDialog({ title: "Crafting", height: 300, width: 400, y: 200, key: "crafting" })
 export class CraftingDialog extends HTMLElement {
 	private _recipes: RecipeProps[] = [];
 	dialog!: BaseDialog;

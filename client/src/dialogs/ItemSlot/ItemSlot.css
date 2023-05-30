@@ -1,30 +1,45 @@
 
 .item-slot {
   position: relative;
-	width: 65px;
-	height: 65px;
+	width: 64px;
+	height: 64px;
 	background-color: #f0f0f0;
 }
+
 .item-slot img {
-	width: 65px;
-	height: 65px;
+	width: 64px;
+	height: 64px;
 	image-rendering: pixelated;
 }
+
 .item-slot img[src=""] {
   visibility: hidden;
 }
-.item-slot img.dragged {
+
+.dragged {
 	position: absolute;
 	pointer-events: none;
 	z-index: 9999;
 }
+
 .draggable {
 	cursor: grab;
 }
+
 .item-slot .label {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
+  color: black;
+  padding: 2px 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.item-slot .amount {
+  position: absolute;
+  top: 48px;
+  right: 0px;
   color: black;
   padding: 2px 4px;
   font-size: 12px;

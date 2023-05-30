@@ -42,7 +42,7 @@ const KeyBinds = {
 	"KeyC": "digging",
 	"Space": "jumping",
 	"KeyV": "building",
-	"KeyI": "inventory",
+	"KeyE": "inventory",
 }
 
 export function initControls(app: Application) {
