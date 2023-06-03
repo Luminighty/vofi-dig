@@ -1,5 +1,5 @@
+import { Random } from "@dig/math";
 import { World } from "..";
-import { Random } from "../../math/random";
 import { TileType } from "../caves";
 import { WorldGenTool } from "./tools";
 

@@ -1,6 +1,6 @@
+import { Vector2 } from "@dig/math";
 import { Entity, World } from "../entities";
 import { baseEvent } from "../events";
-import { Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 import { ItemComponent } from "./item/Item.component";
 import { ItemDBComponent } from "./item/ItemDB.component";
@@ -15,13 +15,13 @@ export class PickupComponent {
 	pickupDistance = 8;
 	item!: string
 
-	onLateInit(props) {
+	async onLateInit(props) {
 		this.item = props.item;
 		this.position = this.parent.getComponent(PositionComponent);
 		// No need to calculate squareroot of distance
 		this.pickupDistance *= this.pickupDistance;
 		const itemDb = this.world.querySingleton(ItemDBComponent);
-		const item = itemDb.get(props.item).getComponent(ItemComponent);
+		const item = (await itemDb.get(props.item)).getComponent(ItemComponent);
 		this.parent.fireEvent(baseEvent("onSetSprite", { sprite: item.icon }));
 	}
 

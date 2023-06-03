@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+    "declaration": true,
+		"sourceMap": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noImplicitAny": false,
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"target": "es2015",
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+	},
+	"include": [ "src" ],
+	"exclude": ["node_modules", "dist"]
+}

@@ -36,6 +36,7 @@ export class Client {
 	addEventListeners() {
 		this.socket.on("game init", this.onGameInit.bind(this));
 		this.socket.on("query entities", this.onQueryEntities.bind(this));
+		this.socket.on("query chunk", this.onQueryChunk.bind(this));
 		this.socket.on("entity update", this.onEntityUpdate.bind(this));
 		this.socket.on("entity create", this.onEntityCreate.bind(this));
 		this.socket.on("entity destroy", this.onEntityDestroy.bind(this));
@@ -46,15 +47,30 @@ export class Client {
 		this.socket.broadcast.emit("sync entity action", id, event, props);
 	}
 
-	onQueryEntities(res) {
+	onQueryEntities(chunk, res) {
 		const entities: Entity[] = [];
-		this.app.game.entities.forEach((value) => value.owner !== this.userId ? entities.push(value) : null);
-		this.socket.emit("entity createAll", entities);
-		res();
+		const maxDistance = 2;
+		this.app.game.forEachEntities((value) => {
+			if (value.owner === this.userId)
+				return;
+			const delta = value.chunk
+				? Math.abs(value.chunk.x - chunk.x) + Math.abs(value.chunk.y - chunk.y)
+				: 0;
+			if (delta > maxDistance)
+				return;
+			entities.push(value);
+		});
+		res(entities);
+	}
+
+	onQueryChunk(chunkX, chunkY, res) {
+		console.log(`Querying chunk ${chunkX};${chunkY}`);
+		const entities = this.game.getEntitiesOnChunk(chunkX, chunkY);
+		res?.(entities);
 	}
 
 	onEntityDestroy(id) {
-		this.game.entities.delete(id);
+		this.game.deleteById(id);
 		this.socket.broadcast.emit("entity destroy", id);
 	}
 
@@ -78,7 +94,9 @@ export class Client {
 	}
 
 	onGameInit(ack) {
-		const entities = this.entities.filter((id) => this.game.entities.get(id)?.owner === this.userId)
+		const entities = this.entities.filter((id) => 
+			this.game.getById(id)?.owner === this.userId
+		);
 		this.entities = entities;
 		console.log({entities});
 		

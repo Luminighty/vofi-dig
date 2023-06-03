@@ -1,5 +1,4 @@
-import { GameConfig } from "../config";
-import { Random } from "../math/random";
+import { Random } from "@dig/math";
 import { create2DPerlin } from "./perlin";
 
 export enum TileType {
@@ -29,15 +28,15 @@ const config = {
 	ruby: { scale: 0.15, threshold: -0.47, method: onLow },
 };
 
-export function generateCave() {
+export function generateCave(width, height) {
 	const groundPerlin = create2DPerlin(Random.getSeed(), config.ground.scale);
 	const tunnelPerlin = create2DPerlin(Random.getSeed(), config.tunnel.scale);
 	const orePerlin = create2DPerlin(Random.getSeed(), config.ore.scale);
 	const rubyPerlin = create2DPerlin(Random.getSeed(), config.ruby.scale);
 	const dirtPerlin = create2DPerlin(Random.getSeed(), config.dirt.scale);
 
-	const cols = GameConfig.world.x;
-	const rows = GameConfig.world.y;
+	const cols = width;
+	const rows = height;
 	return Array(rows).fill(0).map((_, y) =>
 		Array(cols).fill(0).map((_, x) => {
 			const chamberValue = config.ground.method(groundPerlin(x, y), config.ground.threshold);
@@ -57,4 +56,33 @@ export function generateCave() {
 					return TileType.Ruby;
 			return TileType.Stone;
 		}));
+}
+
+const pipeline = [
+	{ name: "chambers", tile: TileType.None, scale: 0.1, threshold: -0.22, method: onHigh },
+	{ name: "dirt", tile: TileType.Dirt, scale: 0.15, threshold: -0.35, method: onHigh },
+	{ name: "tunnel", tile: TileType.Dirt, scale: 0.060, threshold: 0.035, method: onGrey },
+	{ name: "ore", tile: TileType.Iron, scale: 0.15, threshold: -0.47, method: onHigh },
+	{ name: "gem", tile: TileType.Ruby, scale: 0.15, threshold: -0.47, method: onHigh },
+]
+
+export class TileGenerator {
+	private generators: Map<string, (x: number, y: number) => number> = new Map();
+
+	constructor() {
+		pipeline.forEach((p) => {
+			const generator = create2DPerlin(Random.getSeed(), p.scale);
+			this.generators.set(p.name, generator)
+		})
+	}
+
+	generate(x, y) {
+		for (const pipe of pipeline) {
+			const generator = this.generators.get(pipe.name)!;
+			const value = pipe.method(generator(x, y), pipe.threshold);
+			if (!value)
+				return pipe.tile;
+		}
+		return TileType.Stone;
+	}
 }

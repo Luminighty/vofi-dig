@@ -1,0 +1,25 @@
+{
+  "name": "@dig/worldgen",
+  "version": "0.1.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@dig/math": "file:../math"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1",
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.4.2",
+    "ts-node": "10.9.1"
+  },
+  "author": "Luminight (http://luminight.dev/)",
+  "license": "ISC"
+}

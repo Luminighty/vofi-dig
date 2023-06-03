@@ -1,0 +1,16 @@
+{
+  "name": "@dig/math",
+  "version": "0.1.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -r -d dist/",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "author": "Luminight (http://luminight.dev/)",
+  "license": "ISC"
+}

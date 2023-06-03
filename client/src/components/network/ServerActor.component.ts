@@ -1,5 +1,5 @@
+import { Vector2 } from "@dig/math";
 import { World, Entity } from "../../entities";
-import { Vector2 } from "../../math";
 import { PositionComponent } from "../Position.component";
 
 export class ServerActorComponent {

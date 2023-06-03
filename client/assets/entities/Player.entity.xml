@@ -23,8 +23,10 @@
 	<NameTagComponent name="Unknown Miner" />
 	<LightSourceComponent offsetY="8" intensity="24" />
 	<ItemContainerComponent title="Inventory" />
+	<ToolbarComponent />
 	<CraftingStationComponent 
 		title="Hand Crafting"
 		recipes="PickaxeRecipe" 
 	/>
+	<MouseDebugComponent />
 </Entity>

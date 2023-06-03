@@ -13,6 +13,7 @@ import { LoadingBar } from "./dialogs/LoadingBar";
 import { initDebug } from "./debug";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { RecipeDBComponent } from "./components/item/RecipeDB.component";
+import { ChunkHandlerComponent } from "./components/ChunkHandler.component";
 
 export async function Init(app: Application, socket: Socket) {
 	const loadingBar = LoadingBar();
@@ -23,10 +24,10 @@ export async function Init(app: Application, socket: Socket) {
 	const world = createWorld(app, socket);
 	world.addEntity("DataStorage");
 
-	await world.networkHandler.getState(loadingBar);
 	loadingBar.label = "Loading Player";
 	loadingBar.determinate = false;
 	const { userId, entities, spawn } = await world.networkHandler.initPlayer();
+	await world.networkHandler.getState(loadingBar, spawn);
 
 	LocalStorage.setUserId(userId);
 	LocalStorage.clearEntities(entities);
@@ -34,7 +35,7 @@ export async function Init(app: Application, socket: Socket) {
 
 	world.addEntity("Fren", { x: 16, y: 16 });
 	
-	const player = getOrCreatePlayer(world, {...spawn});
+	const player = await getOrCreatePlayer(world, {...spawn});
 	const position = player.getComponent(PositionComponent);
 	player
 		.getComponent(ChunkLoaderComponent)
@@ -69,18 +70,18 @@ function SaveClientActor(clientActor: ClientActorComponent) {
 	LocalStorage.updateEntity(id, data);
 }
 
-function LoadClientEntity(entityId: number, world: World) {
+async function LoadClientEntity(entityId: number, world: World) {
 	const data = LocalStorage.getEntity(entityId);
 	if (!data)
 		return;
-	const entity = world.addEntity(data.entityBlueprint, {}, entityId);
+	const entity = await world.addEntity(data.entityBlueprint, {}, entityId);
 	Entity.deserialize(entity, data.components);
 }
 
-function getOrCreatePlayer(world: World, props: object) {
+async function getOrCreatePlayer(world: World, props: object) {
 	const players = world.queryEntity(PlayerComponent)[0];
 	if (players.length === 0) {
-		const player = world.addEntity("Player", props);
+		const player = await world.addEntity("Player", props);
 		player.getComponent(PlayerSkinComponent).randomize();
 		return player;
 	}

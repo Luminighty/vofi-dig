@@ -1,7 +1,7 @@
+import { IVector2, Vector2 } from "@dig/math";
 import { Entity, World } from "../entities";
 import { IEntityFilter } from "../entities/filter";
 import { baseEvent } from "../events";
-import { IVector2, Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 
 const CollisionMatrix = postProcessLayers({
@@ -53,7 +53,7 @@ export class CollisionComponent {
 			.withFilter(CollisionFilter(this))
 			.queryEntity(CollisionComponent);
 
-			let iterations = 0;
+		let iterations = 0;
 		while(this.collisionStep(delta, colliders) !== 0 && iterations < MAXIMUM_ITERATIONS)
 			iterations++;
 

@@ -6,9 +6,9 @@ export class RecipeDBComponent {
 	world!: World;
 	private db: { [key: string]: RecipeComponent } = {};
 
-	get(id: string): RecipeComponent {
+	async get(id: string) {
 		if (!this.db[id])
-			this.db[id] = this.world.addEntity(id).getComponent(RecipeComponent);
+			this.db[id] = (await this.world.addEntity(id)).getComponent(RecipeComponent);
 		return this.db[id];
 	}
 

@@ -5,8 +5,9 @@ import { PositionComponent } from "../Position.component";
 import { VelocityComponent } from "../Velocity.component";
 import { CameraComponent } from "../Camera.component";
 import { LocalStorage } from "../../systems/storage";
-import { ItemContainerComponent } from "../ItemContainer.component";
+import { ItemContainerComponent } from "../item/ItemContainer.component";
 import { baseEvent } from "../../events";
+import { ChunkHandlerComponent } from "../ChunkHandler.component";
 
 
 export class PlayerComponent {
@@ -23,12 +24,14 @@ export class PlayerComponent {
 	toolbar!: Entity;
 
 	inventory!: ItemContainerComponent;
+	chunkHandler!: ChunkHandlerComponent;
 
-	onInit(props) {
+	async onInit(props) {
 		this.velocity = this.parent.getComponent(VelocityComponent);
 		this.position = this.parent.getComponent(PositionComponent);
 		this.camera = this.parent.getComponent(CameraComponent);
 		this.inventory = this.parent.getComponent(ItemContainerComponent);
+		this.chunkHandler = this.world.querySingleton(ChunkHandlerComponent);
 		this.graphics = new Graphics();
 		this.world.renderContainers["foreground"].addChild(this.graphics);
 		window["player"] = this;
@@ -50,7 +53,7 @@ export class PlayerComponent {
 			LocalStorage.setValue("player_color", props.nameColor);
 		}
 
-		this.toolbar = this.world.addEntity("Toolbar");
+		this.toolbar = await this.world.addEntity("Toolbar");
 	}
 
 	private lastControls = {
@@ -58,6 +61,7 @@ export class PlayerComponent {
 	};
 	onUpdate({dt}) {
 		this.move();
+
 		if (!this.lastControls.inventory && Controls.inventory) {
 			if (this.inventory.isOpen) {
 				this.parent.fireEvent(baseEvent("onCloseDialog"));
@@ -65,7 +69,6 @@ export class PlayerComponent {
 				this.parent.fireEvent(baseEvent("onOpenDialog", { source: this.parent }));
 			}
 		}
-
 		
 		this.lastControls = {...Controls};
 	}
@@ -93,5 +96,9 @@ export class PlayerComponent {
 	onUnStuck() {
 		this.velocity.enabled = true;
 		this.camera.enabled = true;
+	}
+
+	onChunkChanged({x, y}) {
+		this.chunkHandler.setActiveChunk(x, y);
 	}
 }

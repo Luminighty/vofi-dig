@@ -17,13 +17,13 @@ export class World {
 	app!: Application;
 	networkHandler!: NetworkHandler;
 	renderContainers!: {[key in RenderLayerKey]: Container};
-	entities: Entity[] = [];
+	entities: Set<Entity> = new Set();
 	components: {[key: string]: Component[]} = {};
 	private filters: IEntityFilter[] = [];
 	private networkSynced = false;
 
 	fireEvent(event: Event) {
-		for (const entity of this.entities) {
+		for (const entity of this.entities.values()) {
 			entity.fireEvent(event);
 		}
 	}
@@ -33,7 +33,7 @@ export class World {
 		return this;
 	}
 
-	addEntity (entityId: string, props = {}, networkId?: number): Entity {
+	async addEntity (entityId: string, props = {}, networkId?: number): Promise<Entity> {
 		if (!EntitiesBlueprints[entityId])
 			throw `Entity ${entityId} not found!`;
 
@@ -43,22 +43,19 @@ export class World {
 			this.networkHandler.createEntity(entityId, props, (id) => entity.id = id as number);
 		this.networkSynced = false;
 
-		this.entities.push(entity);
+		this.entities.add(entity);
 		entity.fireEvent(baseEvent("onInit", props));
 		entity.fireEvent(baseEvent("onLateInit", props));
 		return entity;
 	}
 
-	removeEntity(entity: Entity) {
+	async removeEntity(entity: Entity) {
 		if (this.networkSynced)
 			this.networkHandler.destroyEntity(entity);
 		this.networkSynced = false;
-		const index = this.entities.findIndex((e) => e === entity);
-		if (index < 0)
-			return;
+		this.entities.delete(entity);
 		entity.fireEvent(baseEvent("onDestroy"));
 		entity.removeAllComponents();
-		this.entities.splice(index, 1);
 	}
 
 	withFilter(filter: IEntityFilter) {
@@ -91,7 +88,7 @@ export class World {
 			.map((entity) => componentTypes.map((type) => entity!.getComponent(type)))
 			.filter((components) => components.every((c) => c));
 			
-		if (componentGroups.length === 0)
+		if (res.length === 0)
 			return [...componentTypes.map(() => [])] as ComponentTypeTuple<T>;
 		return transpose(res) as ComponentTypeTuple<T>;
 	}

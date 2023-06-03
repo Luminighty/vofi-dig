@@ -2,8 +2,9 @@ import { Socket } from "socket.io-client";
 import { Entity, World } from "../entities";
 import { ServerActorComponent } from "../components/network/ServerActor.component";
 import { baseEvent } from "../events";
-import { IVector2 } from "../math";
 import { ILoadingBar } from "../dialogs/LoadingBar";
+import { IVector2 } from "@dig/math";
+import { PositionToChunk } from "../config";
 
 
 export class NetworkHandler {
@@ -27,17 +28,33 @@ export class NetworkHandler {
 		this.socket.emit("entity update", id, body);
 	}
 
-	public getState(loadingBar: ILoadingBar) {
+	public getState(loadingBar: ILoadingBar, spawn: IVector2) {
 		this.loadingBar = loadingBar;
 		this.loadingBar.determinate = false;
 		this.loadingBar.label = "Getting game state";
+		const chunk = PositionToChunk(spawn);
 		return new Promise((res) => {
-			this.socket.emit("query entities", res);
+			this.socket.emit("query entities", chunk, (entities: NetworkEntity[]) => res(entities));
+		}).then((entities) => {
+			Promise.all(
+				(entities as NetworkEntity[]).map((entity) =>
+					this.world.addEntity(entity.blueprintId, entity.props, entity.id)				
+			))
 		}).then(() => {
 			if (this.loadingBar)
 				this.loadingBar.determinate = true;
 			this.loadingBar = null;
 		})
+	}
+
+	public getChunk(chunkX: number, chunkY: number) {
+		this.socket.emit("query chunk", chunkX, chunkY, (entities) => {
+			entities.forEach((entity) => {
+				requestIdleCallback(() => {
+					this.world.addEntity(entity.blueprintId, entity.props, entity.id);
+				})
+			})
+		});
 	}
 
 	public initPlayer(): Promise<{userId: string, entities: number[], spawn: IVector2}> {
@@ -51,12 +68,13 @@ export class NetworkHandler {
 	}
 
 	private onSyncEntityAction(id, event, props) {
-		const entity = this.world.entities.find((entity) => entity.id === id);
-		if (!entity) {
-			console.log(`Entity ${id} not found! (${event}, ${props})`);
-			return
+		for (const entity of this.world.entities.values()) {
+			if (entity.id !== id)
+				continue;
+				entity.fireEvent(baseEvent(event, props));
+			return;
 		}
-		entity.fireEvent(baseEvent(event, props));
+		console.log(`Entity ${id} not found! (${event}, ${props})`);
 	}
 	
 	private onEntityUpdate(id, props) {
@@ -82,9 +100,12 @@ export class NetworkHandler {
 	}
 	
 	private onEntityDestroy(id) {
-		const entity = this.world.entities.find((entity) => entity.id === id);
-		if (entity)
+		for (const entity of this.world.entities.values()) {
+			if (entity.id !== id)
+				continue;
 			this.world.removeEntity(entity);
+			return;
+		}
 	}
 
 	async createEntity(type, props, ack) {

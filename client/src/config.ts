@@ -1,5 +1,5 @@
+import { IVector2 } from "@dig/math";
 import * as PIXI from "pixi.js";
-import { IVector2 } from "./math";
 
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 

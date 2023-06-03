@@ -1,16 +1,19 @@
 import { World } from "../../entities";
 import { OnChunk } from "../../entities/filter";
 import { baseEvent } from "../../events";
+import { ChunkHandlerComponent } from "../ChunkHandler.component";
 import { PositionComponent } from "../Position.component";
 
 export class ChunkLoaderComponent {
 	static readonly COMPONENT_ID = "ChunkLoaderComponent" as const;
 	world!: World;
 	maxChunkDistance = 2;
+	chunkHandler!: ChunkHandlerComponent;
 
 	onInit() {
 		if (!this.isMain)
 			ChunkLoaderComponent.main = this;
+		this.chunkHandler = this.world.querySingleton(ChunkHandlerComponent);
 	}
 
 	get isMain() { return ChunkLoaderComponent.main === this; }
@@ -38,6 +41,7 @@ export class ChunkLoaderComponent {
 	}
 
 	onChunkChanged({x, y}) {
+		this.chunkHandler.setActiveChunk(x, y);
 		const [positions] = this.world
 			.withFilter(OnChunk(x, y, this.maxChunkDistance + 2))
 			.queryEntity(PositionComponent);

@@ -1,5 +1,5 @@
+import { Vector2 } from "@dig/math";
 import { Entity, World } from "../entities";
-import { Vector2 } from "../math";
 import { PositionComponent } from "./Position.component";
 
 export class CameraComponent {

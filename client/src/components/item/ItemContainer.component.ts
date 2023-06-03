@@ -1,7 +1,7 @@
-import { ItemContainerDialog } from "../dialogs/ItemContainerDialog";
-import { World } from "../entities";
-import { ItemComponent } from "./item/Item.component";
-import { ItemDBComponent } from "./item/ItemDB.component";
+import { ItemContainerDialog } from "../../dialogs/ItemContainerDialog";
+import { World } from "../../entities";
+import { ItemComponent } from "./Item.component";
+import { ItemDBComponent } from "./ItemDB.component";
 
 interface ItemEntry {
 	item: string;
@@ -16,6 +16,7 @@ export class ItemContainerComponent {
 	slots = 8;
 	title = "Container";
 	container: ItemContainerDialog | null = null;
+	width = 300;
 
 	get isOpen() { return this.container !== null; }
 
@@ -23,7 +24,7 @@ export class ItemContainerComponent {
 		this.itemDb = this.world.querySingleton(ItemDBComponent);
 	}
 
-	onAddItem({item, amount = 1}) {
+	async onAddItem({item, amount = 1}) {
 		const entry = this.items.find((i) => i && i.item === item);
 		for (let i = 0; i < this.slots; i++) {
 			if (!this.items[i]){
@@ -32,16 +33,16 @@ export class ItemContainerComponent {
 			}
 		}
 		if (this.container)
-			this.container.items = this.items.map(this.toItemProp.bind(this));
+			this.container.items = await Promise.all(this.items.map(this.toItemProp.bind(this)));
 	}
 
-	onOpenDialog() {
+	async onOpenDialog() {
 		if (this.container)
 			return;
 		this.container = ItemContainerDialog.open({
 			count: this.slots,
 			title: this.title,
-			items: this.items.map(this.toItemProp.bind(this)),
+			items: await Promise.all(this.items.map(this.toItemProp.bind(this))),
 			onItemsChanged: (items) => {
 				this.items = items.map((prop) => prop && {
 					amount: prop.amount,
@@ -60,10 +61,10 @@ export class ItemContainerComponent {
 		}
 	}
 
-	toItemProp(entry: ItemEntry | undefined) {
+	async toItemProp(entry: ItemEntry | undefined) {
 		if (!entry)
 			return undefined;
-		const data = this.itemDb.get(entry.item);
+		const data = await this.itemDb.get(entry.item);
 		const item = data.getComponent(ItemComponent);
 		return {
 			item: entry.item,

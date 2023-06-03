@@ -5,9 +5,9 @@ export class ItemDBComponent {
 	world!: World;
 	private db: { [key: string]: Entity } = {};
 
-	get(id: string): Entity {
+	async get(id: string): Promise<Entity> {
 		if (!this.db[id])
-			this.db[id] = this.world.addEntity(id);
+			this.db[id] = await this.world.addEntity(id);
 		return this.db[id];
 	}
 

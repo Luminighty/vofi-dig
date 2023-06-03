@@ -3,4 +3,7 @@
 		entities="Dirt;Stone;Iron;Tungsten;Platinum;Ruby;Emerald;Torch;MushroomCap;MushroomTrunk"
 	/>
 	<UpdateComponent />
+	<ItemContainerComponent
+		title="Inventory" 
+	/>
 </Entity>

@@ -1,7 +1,7 @@
-import { CraftingDialog, RecipeProps } from "../dialogs/CraftingDialog";
-import { Entity, World } from "../entities";
-import { baseEvent } from "../events";
-import { RecipeDBComponent } from "./item/RecipeDB.component";
+import { CraftingDialog, RecipeProps } from "../../dialogs/CraftingDialog";
+import { Entity, World } from "../../entities";
+import { baseEvent } from "../../events";
+import { RecipeDBComponent } from "./RecipeDB.component";
 
 export class CraftingStationComponent {
 	static readonly COMPONENT_ID = "CraftingStationComponent" as const;
@@ -18,12 +18,12 @@ export class CraftingStationComponent {
 		this.recipeDb = this.world.querySingleton(RecipeDBComponent);
 	}
 
-	onOpenDialog({source}: {source?: Entity}) {
+	async onOpenDialog({source}: {source?: Entity}) {
 		if (this.container)
 			return;
 		this.container = CraftingDialog.open({
 			title: this.title,
-			recipes: this.recipes.map(this.toRecipe.bind(this)),
+			recipes: await Promise.all(this.recipes.map(this.toRecipe.bind(this))),
 			craftLabel: this.craftLabel,
 			onCraft: (recipe, materials) => {
 				console.log({recipe, materials});
@@ -47,8 +47,8 @@ export class CraftingStationComponent {
 			this.container.dialog.close();
 	}
 
-	toRecipe(entry: string): RecipeProps {
-		const data = this.recipeDb.get(entry);
+	async toRecipe(entry: string): Promise<RecipeProps> {
+		const data = await this.recipeDb.get(entry);
 		return {
 			inputs: data.inputs,
 			outputs: data.outputs,

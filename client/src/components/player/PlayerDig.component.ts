@@ -1,11 +1,11 @@
 import { Graphics } from "pixi.js";
 import { PositionToTile, PositionToChunk } from "../../config";
 import { OnChunk } from "../../entities/filter";
-import { IVector2, Vector2 } from "../../math";
 import { Controls } from "../../systems/controls";
 import { DiggableComponent } from "../Diggable.component";
 import { PositionComponent } from "../Position.component";
 import { World, Entity } from "../../entities";
+import { IVector2, Vector2 } from "@dig/math";
 
 interface IDigData {
 	strength: number,
@@ -42,6 +42,7 @@ export class PlayerDigComponent {
 		this.graphics.clear();
 		if (!Controls.mouse.left) {
 			this.digData.progress = 0;
+			this.digData.target = null;
 			return;
 		}
 
@@ -87,8 +88,7 @@ export class PlayerDigComponent {
 		const [diggables, positions] = this.world
 			.withFilter(OnChunk(chunk.x, chunk.y))
 			.queryEntity(DiggableComponent, PositionComponent);
-
-		for (let i = 0; i < diggables.length; i++) {
+ 		for (let i = 0; i < diggables.length; i++) {
 			const grid = positions[i].grid;
 			if (grid.x === mouse.x && grid.y === mouse.y) {
 				if (diggables[i].hardness <= digPower) {

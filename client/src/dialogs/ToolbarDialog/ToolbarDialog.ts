@@ -1,22 +1,22 @@
-import HTML from "./ItemContainerDialog.html";
-import CSS from "./ItemContainerDialog.css";
+import HTML from "./ToolbarDialog.html";
+import CSS from "./ToolbarDialog.css";
 import { BaseDialog, withDialog } from "../Dialog/Dialog";
 import { ItemProp, ItemSlot, createItemSlot } from "../ItemSlot/ItemSlot";
 import { injectCustomElement } from "../utils";
 
 interface ItemContainerProps {
-	title: string;
-	count: number;
+	slots: number;
 	items: (ItemProp | undefined)[];
 	width?: number,
 	allowedTags?: string[],
 	onItemsChanged: (items: (ItemProp | undefined)[]) => void;
 }
 
-@withDialog({title: "Container", width: 300, key: "container"})
-export class ItemContainerDialog extends HTMLElement {
+@withDialog({title: "Toolbar", width: 300, height: 122, key: "toolbar"})
+export class ToolbarDialog extends HTMLElement {
 	private container: HTMLElement;
 	private _allowedTags: string[] = [];
+	private _selected = 0;
 	dialog!: BaseDialog;
 	onItemChanged?: (items: (ItemProp | undefined)[]) => void;
 	
@@ -28,12 +28,26 @@ export class ItemContainerDialog extends HTMLElement {
 	}
 
 	static open(props: ItemContainerProps) {
-		const container = document.createElement("item-container") as ItemContainerDialog;
-		container.slotCount = props.count;
+		const container = document.createElement("toolbar-dialog") as ToolbarDialog;
+		container.slotCount = props.slots;
 		container.allowedTags = props.allowedTags ?? [];
 		container.items = props.items;
 		container.onItemChanged = props.onItemsChanged;
+		container.selected = 0;
 		return container;
+	}
+
+	get selected() { return this._selected; }
+	set selected(value) {
+		this._selected = value;
+		for (let i = 0; i < this.container.childElementCount; i++) {
+			const slot = this.container.children[i] as ItemSlot;
+			if (i === this.selected) {
+				slot.classList.add("selected")
+			} else {
+				slot.classList.remove("selected")
+			}
+		}
 	}
 	
 	get allowedTags() { return this._allowedTags; }
@@ -87,4 +101,4 @@ export class ItemContainerDialog extends HTMLElement {
 	}
 }
 
-customElements.define("item-container", ItemContainerDialog);
+customElements.define("toolbar-dialog", ToolbarDialog);

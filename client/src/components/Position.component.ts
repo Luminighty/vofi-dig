@@ -1,14 +1,16 @@
+import { IVector2 } from "@dig/math";
 import { GameConfig } from "../config";
-import { Entity } from "../entities";
+import { Entity, World } from "../entities";
 import { baseEvent } from "../events";
-import { IVector2 } from "../math";
 import { Serializable } from "../network";
+import { ChunkHandlerComponent } from "./ChunkHandler.component";
 
 @Serializable("x", "y")
 export class PositionComponent {
 	static readonly COMPONENT_ID = "PositionComponent" as const;
-
+	world!: World;
 	parent!: Entity;
+	chunkHandler!: ChunkHandlerComponent;
 
 	localX = 0;
 	localY = 0;
@@ -18,10 +20,15 @@ export class PositionComponent {
 	onInit({x, y}) {
 		this.x = x;
 		this.y = y;
+		this.chunkHandler = this.world.querySingleton(ChunkHandlerComponent);
 	}
 
 	onLateInit() {
-		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }))
+		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }));
+		const chunkX = this.chunk.x;
+		const chunkY = this.chunk.y;
+		if (!isNaN(chunkX) && !isNaN(chunkY))
+			this.chunkHandler.add(this, this.chunk.x, this.chunk.y);
 	}
 
 	onMove({x, y}) {
@@ -36,8 +43,11 @@ export class PositionComponent {
 		const lastChunkY = this.chunkY;
 		this.x = value.x;
 		this.y = value.y;
-		if (lastChunkX !== this.chunkX || lastChunkY !== this.chunkY)
+		if (lastChunkX !== this.chunkX || lastChunkY !== this.chunkY) {
+			this.chunkHandler.remove(this, lastChunkX, lastChunkY);
 			this.parent.fireEvent(baseEvent("onChunkChanged", { ...this.chunk }));
+			this.chunkHandler.add(this, this.chunkX, this.chunkY);
+		}
 		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }))
 	}
 
@@ -74,6 +84,6 @@ export class PositionComponent {
 		}
 	}
 
-	get gridX() { return Math.floor(this.x / GameConfig.gridSize); }
-	get gridY() { return Math.floor(this.y / GameConfig.gridSize); }
+	get gridX() { return Math.trunc(this.x / GameConfig.gridSize); }
+	get gridY() { return Math.trunc(this.y / GameConfig.gridSize); }
 }

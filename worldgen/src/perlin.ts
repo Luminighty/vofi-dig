@@ -1,4 +1,4 @@
-import { Random } from "../math/random";
+import { Random } from "@dig/math";
 
 function randomGradient(ix: number, iy: number, seed: number) {
   const angle = Random.get3D(ix, iy, seed) * 2 * Math.PI;
