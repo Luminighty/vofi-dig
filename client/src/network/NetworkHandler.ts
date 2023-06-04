@@ -28,23 +28,20 @@ export class NetworkHandler {
 		this.socket.emit("entity update", id, body);
 	}
 
-	public getState(loadingBar: ILoadingBar, spawn: IVector2) {
+	public async getState(loadingBar: ILoadingBar, spawn: IVector2) {
 		this.loadingBar = loadingBar;
 		this.loadingBar.determinate = false;
 		this.loadingBar.label = "Getting game state";
 		const chunk = PositionToChunk(spawn);
-		return new Promise((res) => {
-			this.socket.emit("query entities", chunk, (entities: NetworkEntity[]) => res(entities));
-		}).then((entities) => {
-			Promise.all(
-				(entities as NetworkEntity[]).map((entity) =>
-					this.world.addEntity(entity.blueprintId, entity.props, entity.id)				
-			))
-		}).then(() => {
-			if (this.loadingBar)
-				this.loadingBar.determinate = true;
-			this.loadingBar = null;
-		})
+		const entities = await new Promise((res) => this.socket.emit("query entities", chunk, (entities: NetworkEntity[]) => res(entities)));
+		await Promise.all(
+			(entities as NetworkEntity[]).map(async (entity) => {
+				await this.world.addEntity(entity.blueprintId, entity.props, entity.id);
+			})
+		);
+		if (this.loadingBar)
+			this.loadingBar.determinate = true;
+		this.loadingBar = null;
 	}
 
 	public getChunk(chunkX: number, chunkY: number) {

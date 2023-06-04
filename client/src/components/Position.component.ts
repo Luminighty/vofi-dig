@@ -67,14 +67,14 @@ export class PositionComponent {
 
 	get x() { return this.localX + this.chunkX * GameConfig.chunkSize; }
 	set x(x) { 
-		this.localX = x % GameConfig.chunkSize;
-		this.chunkX = Math.trunc(x / GameConfig.chunkSize);
+		this.localX = ((x % GameConfig.chunkSize) + GameConfig.chunkSize) % GameConfig.chunkSize;
+		this.chunkX = Math.floor(x / GameConfig.chunkSize);
 	}
 
 	get y() { return this.localY + this.chunkY * GameConfig.chunkSize; }
 	set y(y) { 
-		this.localY = y % GameConfig.chunkSize;
-		this.chunkY = Math.trunc(y / GameConfig.chunkSize);
+		this.localY = ((y % GameConfig.chunkSize) + GameConfig.chunkSize) % GameConfig.chunkSize;
+		this.chunkY = Math.floor(y / GameConfig.chunkSize);
 	}
 
 	get grid() {
@@ -84,6 +84,6 @@ export class PositionComponent {
 		}
 	}
 
-	get gridX() { return Math.trunc(this.x / GameConfig.gridSize); }
-	get gridY() { return Math.trunc(this.y / GameConfig.gridSize); }
+	get gridX() { return Math.floor(this.x / GameConfig.gridSize); }
+	get gridY() { return Math.floor(this.y / GameConfig.gridSize); }
 }

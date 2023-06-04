@@ -10,7 +10,7 @@ export class ChunkHandlerComponent {
 	chunks: Map<string, PositionComponent[]> = new Map();
 	world!: World;
 
-	setActiveChunk(x: number, y: number) {
+	async setActiveChunk(x: number, y: number) {
 		if (this.activeChunk?.x === x && this.activeChunk?.y === y)
 			return;
 		this.unloadChunks(x, y);
@@ -40,6 +40,7 @@ export class ChunkHandlerComponent {
 			const key = ChunkHandlerComponent.key(chunkX, chunkY);
 			if (this.chunks.has(key))
 				continue;
+			this.chunks.set(key, []);
 			this.world.networkHandler.getChunk(chunkX, chunkY);
 		}
 	}

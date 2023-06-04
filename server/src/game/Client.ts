@@ -64,7 +64,6 @@ export class Client {
 	}
 
 	onQueryChunk(chunkX, chunkY, res) {
-		console.log(`Querying chunk ${chunkX};${chunkY}`);
 		const entities = this.game.getEntitiesOnChunk(chunkX, chunkY);
 		res?.(entities);
 	}

@@ -1,10 +1,10 @@
-import { TileType, generateWorld, WorldGenerator } from "@dig/worldgen";
+import { TileType, WorldGenerator } from "@dig/worldgen";
 import { GameConfig, PositionToChunk } from "../config";
 import { getId } from "./id";
 import { Chunks } from "./Chunks";
 
 export class Game {
-	spawn = { x: 0, y: 0 };
+	spawn = { x: GameConfig.chunkSize / 2, y: GameConfig.chunkSize / 2 };
 	private entities: Map<number, Entity> = new Map();
 	private chunks = new Chunks();
 	private generatedChunks: Set<string> = new Set();
@@ -37,11 +37,10 @@ export class Game {
 	}
 
 	initMap() {
-		this.generateChunk(0, 0);
-		this.generateChunk(1, 0);
-		this.generateChunk(-1, 0);
-		this.generateChunk(0, 1);
-		this.generateChunk(0, -1);
+		const spawnSize = 2;
+		for (let i = -spawnSize; i <= spawnSize; i++)
+		for (let j = -spawnSize; j <= spawnSize; j++)
+			this.generateChunk(i, j);
 		this.createEntity("Torch", { x: 0, y: 0 });
 	}
 

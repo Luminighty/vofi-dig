@@ -28,5 +28,4 @@
 		title="Hand Crafting"
 		recipes="PickaxeRecipe" 
 	/>
-	<MouseDebugComponent />
 </Entity>

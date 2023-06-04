@@ -42,7 +42,6 @@ export class PlayerDigComponent {
 		this.graphics.clear();
 		if (!Controls.mouse.left) {
 			this.digData.progress = 0;
-			this.digData.target = null;
 			return;
 		}
 
@@ -88,7 +87,7 @@ export class PlayerDigComponent {
 		const [diggables, positions] = this.world
 			.withFilter(OnChunk(chunk.x, chunk.y))
 			.queryEntity(DiggableComponent, PositionComponent);
- 		for (let i = 0; i < diggables.length; i++) {
+		for (let i = 0; i < diggables.length; i++) {
 			const grid = positions[i].grid;
 			if (grid.x === mouse.x && grid.y === mouse.y) {
 				if (diggables[i].hardness <= digPower) {

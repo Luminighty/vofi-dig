@@ -13,7 +13,7 @@ import { LoadingBar } from "./dialogs/LoadingBar";
 import { initDebug } from "./debug";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { RecipeDBComponent } from "./components/item/RecipeDB.component";
-import { ChunkHandlerComponent } from "./components/ChunkHandler.component";
+import { GameConfig } from "./config";
 
 export async function Init(app: Application, socket: Socket) {
 	const loadingBar = LoadingBar();
@@ -27,20 +27,23 @@ export async function Init(app: Application, socket: Socket) {
 	loadingBar.label = "Loading Player";
 	loadingBar.determinate = false;
 	const { userId, entities, spawn } = await world.networkHandler.initPlayer();
-	await world.networkHandler.getState(loadingBar, spawn);
 
 	LocalStorage.setUserId(userId);
 	LocalStorage.clearEntities(entities);
 	entities.forEach((id) => LoadClientEntity(id, world));
 
-	world.addEntity("Fren", { x: 16, y: 16 });
+	world.addEntity("Fren", { x: GameConfig.chunkSize * 10, y: GameConfig.chunkSize * -4 });
 	
 	const player = await getOrCreatePlayer(world, {...spawn});
 	const position = player.getComponent(PositionComponent);
 	player
 		.getComponent(ChunkLoaderComponent)
 		.updateAllChunks({x: position.chunkX, y: position.chunkY});
+	
+	await world.networkHandler.getState(loadingBar, position.position);
 
+	console.log("Starting ticker");
+		
 	app.ticker.add((dt) => {
 		world.queryEntity(UpdateComponent)[0]
 			.map((c) => c.update({dt}));
@@ -57,6 +60,11 @@ export async function Init(app: Application, socket: Socket) {
 		const clientActors = world.queryEntity(ClientActorComponent)[0];
 		clientActors.forEach(SaveClientActor);
 	});
+
+	setInterval(() => {
+		const clientActors = world.queryEntity(ClientActorComponent)[0];
+		clientActors.forEach(SaveClientActor);
+	}, 10000);
 	loadingBar.finish();
 }
 

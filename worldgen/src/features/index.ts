@@ -3,7 +3,29 @@ import { World } from "..";
 import { TileType } from "../caves";
 import { WorldGenTool } from "./tools";
 
-let worldgen!: WorldGenTool;
+export type FeatureGenerator = (tiles: World, chunkX: number, chunkY: number) => World;
+
+export const Features = [
+  generateSpawn,
+].reverse();
+
+export function generateSpawn(tiles: World, chunkX: number, chunkY: number): World {
+  if (chunkX !== 0 || chunkY !== 0)
+    return tiles;
+
+  const center = tiles.length / 2;
+  const sizeX = 2;
+  const sizeY = 1;
+  for (let i = -sizeX; i <= sizeX; i++)
+  for (let j = -sizeY; j <= sizeY; j++)
+    tiles[center + i][center + j] = TileType.None;
+
+  for (let i = -sizeX; i <= sizeX; i++)
+    tiles[center + i][center + sizeY + 1] = TileType.Dirt;
+  return tiles;
+}
+
+/* let worldgen!: WorldGenTool;
 
 export function generateFeatures(map: World) {
   worldgen = new WorldGenTool(map);
@@ -55,3 +77,4 @@ function generateTree(map: World, x: number, y: number) {
   map[y - height][x - width] = TileType.MushroomCapLeft
   worldgen.end();
 }
+ */
