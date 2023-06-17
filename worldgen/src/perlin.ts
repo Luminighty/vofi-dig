@@ -41,3 +41,5 @@ export const create2DPerlin = (seed: number, scale: number) => (x: number, y: nu
 
   return interpolate(ix0, ix1, sy);
 };
+
+export type Perlin2D = (x: number, y: number) => number;

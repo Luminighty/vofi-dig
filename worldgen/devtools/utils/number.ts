@@ -1,12 +1,13 @@
 interface NumberOptions {
-	value: number
+	value: number,
+	step?: number,
 }
 export function Number(parent: HTMLElement, title: string, onChange?: () => void, options: Partial<NumberOptions> = {}) {
 
 	const container = document.createElement("div");
 	container.innerHTML = `
 		<span>${title}: </span>
-		<input type="number" value="${options.value ?? 1}" />
+		<input type="number" value="${options.value ?? 1}" step="${options.step ?? 1}" />
 	`;
 
 	parent.appendChild(container);

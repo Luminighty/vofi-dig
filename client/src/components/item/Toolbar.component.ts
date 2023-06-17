@@ -1,5 +1,6 @@
 import { ToolbarDialog } from "../../dialogs/ToolbarDialog/ToolbarDialog";
-import { World } from "../../entities";
+import { Entity, World } from "../../entities";
+import { baseEvent } from "../../events";
 import { Controls } from "../../systems/controls";
 import { ItemComponent } from "./Item.component";
 import { ItemContainerComponent } from "./ItemContainer.component";
@@ -13,11 +14,15 @@ interface ItemEntry {
 export class ToolbarComponent {
 	static readonly COMPONENT_ID = "ToolbarComponent" as const;
 	world!: World;
+	parent!: Entity;
 	itemDb!: ItemDBComponent;
 	toolbar: ToolbarDialog | null = null;
 	title = "Toolbar";
 	slots = 4;
-	items: (ItemEntry | undefined)[] = [];
+	items: (ItemEntry | undefined)[] = [
+		{item: "TorchItem", amount: 1}
+	];
+	selected = 0;
 	width = 300;
 
 	get isOpen() { return this.toolbar !== null; }
@@ -29,13 +34,24 @@ export class ToolbarComponent {
 
 	onUpdate() {
 		this.select();
+		if (Controls.mouse.right)
+			this.use();
 	}
 
 	select() {
-		if (Controls.mouse.scrollY && this.toolbar) {
-			const selected = this.toolbar.selected - Controls.mouse.scrollY;
-			this.toolbar.selected = (selected + this.slots) % this.slots;
-		}
+		if (!Controls.mouse.scrollY || !this.toolbar)
+			return;
+		const selected = this.toolbar.selected - Controls.mouse.scrollY;
+		this.selected = (selected + this.slots) % this.slots;
+		this.toolbar.selected = this.selected;
+	}
+
+	async use() {
+		const selectedItem = this.items[this.selected];
+		if (!selectedItem)
+			return;
+		const item = await this.itemDb.get(selectedItem.item);
+		item.fireEvent(baseEvent("onUse"));
 	}
 
 	async onOpenDialog() {
@@ -45,6 +61,7 @@ export class ToolbarComponent {
 		this.toolbar = ToolbarDialog.open({
 			slots: this.slots,
 			items,
+			allowedTags: ["TOOL"],
 			onItemsChanged: (items) => {
 				this.items = items.map((prop) => prop && {
 					amount: prop.amount,

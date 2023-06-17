@@ -79,7 +79,7 @@ export class ItemSlot extends HTMLElement {
 	}
 
 	allowsItem(item: ItemProp) {
-		return !this.allowedTags || this.allowedTags.some((tag) => item.tags.includes(tag));
+		return !this.allowedTags || this.allowedTags.length == 0 || this.allowedTags.some((tag) => item.tags.includes(tag));
 	}
 
 	setItem(item?: ItemProp) {

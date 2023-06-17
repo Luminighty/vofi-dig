@@ -1,4 +1,5 @@
 import { TileGenerator, TileType } from "./caves";
+import { Chunk } from "./chunk";
 import { Features } from "./features";
 
 export type World = TileType[][];
@@ -16,22 +17,23 @@ export class WorldGenerator {
 	}
 
 	getChunk(chunkX, chunkY): World {
-		const tiles = this.generateTiles(chunkX, chunkY);
-		this.generateFeatures(tiles, chunkX, chunkY);
-		return tiles;
+		const chunk = new Chunk(chunkX, chunkY);
+		this.generateTiles(chunk);
+		this.generateFeatures(chunk);
+		return chunk.tiles;
 	}
 
-	private generateTiles(chunkX, chunkY) {
-		return Array(this.chunkSize).fill(0).map((_, y) =>
+	private generateTiles(chunk: Chunk) {
+		chunk.tiles = Array(this.chunkSize).fill(0).map((_, y) =>
 			Array(this.chunkSize).fill(0).map((_, x) => {
-				return this.tileGenerator.generate(chunkX * this.chunkSize + x, chunkY * this.chunkSize + y)
+				return this.tileGenerator.generate(chunk.x * this.chunkSize + x, chunk.y * this.chunkSize + y)
 			})
 		);
 	}
 
-	private generateFeatures(tiles: World, chunkX, chunkY) {
+	private generateFeatures(chunk: Chunk) {
 		for (const feature of Features)
-			tiles = feature(tiles, chunkX, chunkY);
+			feature(chunk);
 	}
 }
 

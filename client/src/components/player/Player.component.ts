@@ -52,8 +52,6 @@ export class PlayerComponent {
 			props.nameColor = `hsl(${hue} ${saturation} ${lightness})`;
 			LocalStorage.setValue("player_color", props.nameColor);
 		}
-
-		this.toolbar = await this.world.addEntity("Toolbar");
 	}
 
 	private lastControls = {

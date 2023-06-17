@@ -1,0 +1,8 @@
+<Entity id="TorchItem">
+	<ItemComponent 
+		name="Torch" 
+		icon="assets/textures/torch.png" 
+		tags="TOOL"
+	/>
+	<BuildableItemComponent entity="Torch" />
+</Entity>
