@@ -1,0 +1,8 @@
+<Entity id="LadderItem">
+	<ItemComponent 
+		name="Chest" 
+		icon="assets/textures/mushroom/ladder.png"
+		tags="TOOL"
+	/>
+	<BuildableItemComponent entity="Ladder" />
+</Entity>

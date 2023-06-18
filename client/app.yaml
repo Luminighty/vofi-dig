@@ -4,6 +4,3 @@ instance_class: F1
 
 network:
   session_affinity: true
-
-env_variables:
-  DIG_SERVER_HOST: "https://server-dot-vofi-dig.lm.r.appspot.com"

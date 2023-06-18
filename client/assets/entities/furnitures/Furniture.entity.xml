@@ -1,0 +1,5 @@
+<Entity id="Furniture">
+	<TileTagComponent />
+	<SpriteComponent layer="background" />
+	<PositionComponent />
+</Entity>

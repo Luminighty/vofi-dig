@@ -29,7 +29,7 @@ function Resize() {
 
 document.addEventListener("contextmenu", event => event.preventDefault());
 
-const socket = io(process.env.DIG_SERVER_HOST, {
+const socket = io(process.env.DIG_SERVER_HOST as string, {
 	query: {
 		userId: LocalStorage.getUserId()
 	}

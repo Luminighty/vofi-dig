@@ -26,6 +26,13 @@
 	<ToolbarComponent />
 	<CraftingStationComponent 
 		title="Hand Crafting"
-		recipes="PickaxeRecipe" 
+		recipes="
+			PickaxeRecipe;
+			WallRecipe;
+			LadderRecipe;
+			RemoveRecipe;
+			TorchRecipe;
+			ChestRecipe
+		" 
 	/>
 </Entity>

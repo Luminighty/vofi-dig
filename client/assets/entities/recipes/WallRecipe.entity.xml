@@ -1,0 +1,6 @@
+<Entity id="WallRecipe">
+	<RecipeComponent label="Wall">
+		<Input type="WOOD" amount="1" />
+		<Output item="MushroomWallItem" />
+	</RecipeComponent>
+</Entity>

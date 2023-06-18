@@ -1,0 +1,4 @@
+<Entity id="Chest">
+	<SpriteComponent src="assets/textures/mushroom/chest.png" />
+	<Include from="Furniture" />
+</Entity>

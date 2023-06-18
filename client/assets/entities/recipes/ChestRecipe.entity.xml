@@ -1,0 +1,7 @@
+<Entity id="ChestRecipe">
+	<RecipeComponent label="Chest">
+		<Input type="WOOD" amount="1" slot="base" />
+		<Input type="METAL;WOOD" amount="1" slot="hinges" />
+		<Output item="ChestItem" />
+	</RecipeComponent>
+</Entity>

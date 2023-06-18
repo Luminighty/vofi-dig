@@ -25,10 +25,8 @@ export class CraftingStationComponent {
 			title: this.title,
 			recipes: await Promise.all(this.recipes.map(this.toRecipe.bind(this))),
 			craftLabel: this.craftLabel,
-			onCraft: (recipe, materials) => {
-				console.log({recipe, materials});
+			onCraft: (recipe) => {
 				recipe.outputs.forEach(({item, amount}) => {
-
 					source?.fireEvent(baseEvent("onAddItem", { item: item, amount: amount }));
 				})
 			},

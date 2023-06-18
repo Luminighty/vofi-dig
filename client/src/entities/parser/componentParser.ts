@@ -21,7 +21,7 @@ export const ComponentParser = {
 			const tag = component.children[i];
 			if (tag.tagName === "Input") {
 				inputs.push({
-					type: parseArray(tag.getAttribute("type") ?? ""),
+					type: parseArray(tag.getAttribute("type") ?? "").filter((v) => v.length > 0),
 					amount: tryParseInt(tag.getAttribute("amount")) ?? 1,
 					slot: tag.getAttribute("slot") ?? "base",
 				});

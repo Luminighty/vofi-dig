@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const config = {
   entry: './src/index.ts',
@@ -88,13 +89,15 @@ const config = {
       '.tsx',
       '.ts',
       '.js'
-    ]
+    ],
   },
   plugins: [
+    new Dotenv({
+      path: webpack.mode
+    }),
     new CopyPlugin({
       patterns: [
         { from: 'assets/**' },
-        { from: 'src/env.js' }
       ],
     }),
     new HtmlWebpackPlugin({
@@ -104,4 +107,10 @@ const config = {
   ]
 };
 
-module.exports = config;
+module.exports = (env, argv) => {
+  const isProduction = argv.mode === "production";
+  config.plugins.push(new Dotenv({
+    path: isProduction ? ".env" : ".env.local"
+  }));
+  return config;
+}

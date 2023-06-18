@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "gcloud app deploy app.yaml",
     "clean": "rm -r -d dist/",
     "start": "node index.js",
     "start:dev": "concurrently \"node index.js\" \"webpack serve --mode development\"",
@@ -16,6 +17,7 @@
     "concurrently": "^8.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "dotenv-webpack": "^8.0.1",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.4.2",
@@ -29,13 +31,13 @@
     "xml-loader": "^1.2.1"
   },
   "dependencies": {
+    "@dig/math": "^0.1.1",
     "@pixi-essentials/cull": "^2.0.0",
-    "@dig/math": "file:../math",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "pixi.js": "^7.1.4",
     "glob": "^10.2.2",
+    "pixi.js": "^7.1.4",
     "socket.io-client": "^4.6.1"
   },
   "engines": {

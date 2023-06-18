@@ -16,9 +16,4 @@ export class RecipeComponent {
 	inputs: RecipeInput[] = [];
 	outputs: RecipeOutput[] = [];
 
-	onInit() {
-		console.log({in: this.inputs, out: this.outputs});
-	}
-
-
 }

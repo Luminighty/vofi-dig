@@ -1,0 +1,6 @@
+<Entity id="TorchRecipe">
+	<RecipeComponent label="Torch">
+		<Input type="WOOD" amount="1" />
+		<Output item="TorchItem" />
+	</RecipeComponent>
+</Entity>

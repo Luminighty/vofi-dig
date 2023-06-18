@@ -1,0 +1,5 @@
+<Entity id="RemoveRecipe">
+	<RecipeComponent label="Destroy Item">
+		<Input amount="1" />
+	</RecipeComponent>
+</Entity>

@@ -1,0 +1,8 @@
+<Entity id="MushroomWallItem">
+	<ItemComponent 
+		name="Mushroom Wall" 
+		icon="assets/textures/mushroom/wall.png"
+		tags="TOOL"
+	/>
+	<BuildableItemComponent entity="MushroomWall" />
+</Entity>

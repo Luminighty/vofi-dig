@@ -1,0 +1,6 @@
+<Entity id="LadderRecipe">
+	<RecipeComponent label="Ladder">
+		<Input type="WOOD" amount="1" />
+		<Output item="LadderItem" amount="3" />
+	</RecipeComponent>
+</Entity>

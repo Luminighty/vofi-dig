@@ -1,0 +1,5 @@
+<Entity id="MushroomWall">
+	<SpriteComponent src="assets/textures/mushroom/wall.png" />
+	<DiggableComponent hardness="30" />
+	<Include from="Tile" />
+</Entity>

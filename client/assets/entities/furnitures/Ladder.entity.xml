@@ -1,0 +1,4 @@
+<Entity id="Ladder">
+	<SpriteComponent src="assets/textures/mushroom/ladder.png" />
+	<Include from="Furniture" />
+</Entity>

@@ -1,0 +1,8 @@
+<Entity id="ChestItem">
+	<ItemComponent 
+		name="Chest" 
+		icon="assets/textures/mushroom/chest.png"
+		tags="TOOL"
+	/>
+	<BuildableItemComponent entity="Chest" />
+</Entity>

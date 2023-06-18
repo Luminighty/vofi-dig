@@ -27,7 +27,7 @@ export function parseAttribute(tag: string, key: string, value: string): unknown
 }
 
 export function parseArray(value: string) {
-	return value.split(";");
+	return value.split(";").map((v) => v.trim());
 }
 
 export function tryParseInt(value: string | null, radix?: number) : number | null {

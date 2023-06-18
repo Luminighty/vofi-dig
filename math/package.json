@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -r -d dist/",
-    "build": "tsc"
+    "build": "tsc",
+    "gar:login": "npx google-artifactregistry-auth"
   },
   "devDependencies": {
     "typescript": "^4.9.5"

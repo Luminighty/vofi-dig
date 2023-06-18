@@ -1,6 +1,6 @@
 {
   "name": "@dig/worldgen",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,10 +8,12 @@
     "build": "tsc",
     "update:local": "npm install @dig/math",
     "start:dev": "webpack serve --mode development",
-    "start:debug": "ts-node debug.ts"
+    "start:debug": "ts-node debug.ts",
+    "gar:login": "npx google-artifactregistry-auth",
+    "gar:publish": "npm run gar:login && npm publish"
   },
   "dependencies": {
-    "@dig/math": "file:../math",
+    "@dig/math": "^0.1.1",
     "simplex-noise": "^4.0.1"
   },
   "devDependencies": {

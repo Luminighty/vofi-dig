@@ -10,7 +10,10 @@
 			"target": "es6",
 			"allowJs": true,
 			"allowSyntheticDefaultImports": true,
-			"experimentalDecorators": true
+			"experimentalDecorators": true,
+			"paths": {
+				"@dig/math/*": ["../math/src/*"],
+			}
 	},
 	"include": [
 			"./src/index.ts", 

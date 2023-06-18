@@ -4,7 +4,4 @@ export class ItemComponent {
 	icon!: string;
 	tags: string[] = [];
 
-	onInit() {
-		console.log(this.tags);
-	}
 }
