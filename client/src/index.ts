@@ -1,5 +1,4 @@
 import { Application, Assets } from "pixi.js";
-import { assetsManifest } from "./assets";
 import { AppConfig } from "./config";
 import { Init } from "./Game";
 import io from 'socket.io-client';
@@ -37,8 +36,6 @@ const socket = io(process.env.DIG_SERVER_HOST as string, {
 
 (async () =>{
 	Resize();
-	await Assets.init({ manifest: assetsManifest })
-	await Assets.loadBundle("ALL");
 	Init(app, socket);
 
 	setInterval(() => {

@@ -1,5 +1,5 @@
 import { IVector2 } from "@dig/math";
-import { World } from "../entities";
+import { Entity, World } from "../entities";
 import { PositionComponent } from "./Position.component";
 
 export class ChunkHandlerComponent {
@@ -26,8 +26,7 @@ export class ChunkHandlerComponent {
 			const delta = Math.abs(chunkX - x) + Math.abs(chunkY - y);
 			if (delta < this.unloadDistance)
 				continue;
-			for (const p of chunk)
-				requestIdleCallback(() => this.world.removeEntity(p.parent));
+			unloadChunkTask(this.world, chunk);
 			this.chunks.delete(key);
 		}
 	}
@@ -74,4 +73,17 @@ export class ChunkHandlerComponent {
 		return key.split(",").map((value) => parseInt(value));
 	}
 
+}
+
+function unloadChunkTask(world: World, chunk: PositionComponent[], offset = 0) {
+	requestIdleCallback((deadline) => {
+		let i;
+		for (i = offset; i < chunk.length; i++) {
+			if (!(deadline.timeRemaining() > 0 || deadline.didTimeout))
+				break;
+			world.removeEntity(chunk[i].parent);
+		}
+		if (i < chunk.length)
+			unloadChunkTask(world, chunk, i);
+	})
 }

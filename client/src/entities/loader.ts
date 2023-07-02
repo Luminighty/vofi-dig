@@ -1,9 +1,7 @@
-import { Assets } from "pixi.js";
 import { IProgressCallback, ILoadingBar } from "../dialogs/LoadingBar";
 import { EntityBlueprint } from "./blueprint";
 import { registerEntity } from "./entity";
 import { ParseEntity } from "./parser";
-import { entityBlueprintFiles } from "./registry";
 
 let blueprints: { [key: string]: EntityBlueprint } = {};
 
@@ -14,18 +12,19 @@ export async function loadEntityBlueprintRegistry(loadingBar: ILoadingBar) {
 	blueprints = {};
 }
 
-async function loadEntityBlueprint(path) {
-	const xml = await Assets.load(path);
+async function loadEntityBlueprint(id) {
+	const xml = await (await fetch(`assets/entity/${id}`)).text();
 	const entity = ParseEntity(xml);
 	blueprints[entity.id] = entity;
 }
 
 async function registerEntityBlueprints(update: IProgressCallback) {
 	let progress = 0;
+	const entities = await (await fetch("/assets/entity")).json();
 	return Promise.all(
-		entityBlueprintFiles.map((file) => 
+		entities.map((file) => 
 			loadEntityBlueprint(file)
-				.then(() => update(++progress, entityBlueprintFiles.length))
+				.then(() => update(++progress, entities.length))
 		)
 	)
 }

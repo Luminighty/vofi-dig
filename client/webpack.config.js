@@ -31,18 +31,6 @@ const config = {
   module: {
     rules: [
       {
-        include: path.resolve("src/entities/registry.js"),
-        use: [
-          {
-            loader: path.resolve('utils/EntityRegistryLoader.js'),
-            options: {
-              path: 'assets/entities',
-              dir: __dirname,
-            }
-          }
-        ]
-      },
-      {
         include: path.resolve("src/components/registry.js"),
         use: [
           {
@@ -69,10 +57,6 @@ const config = {
             }
           }
         ]
-      },
-      {
-        test: /\.xml$/i,
-        use: ['xml-loader'],
       },
       {
         test: /\.css$/i,
