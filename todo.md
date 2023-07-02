@@ -2,7 +2,7 @@ Neon
  - [ ] Bombs
 
 Lumi
- - [ ] Ladders
+ - [X] Ladders
  - [X] Inventory
  - [X] Ores
  - [X] Building from inventory
