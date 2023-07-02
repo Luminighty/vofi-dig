@@ -1,5 +1,5 @@
 import { Entity } from "../entities";
-import { baseEvent } from "../events";
+import { OnCollideEventProps } from "../events";
 import { PositionComponent } from "./Position.component";
 
 export class VelocityComponent {
@@ -20,10 +20,11 @@ export class VelocityComponent {
 			return;
 		this.velocity.y = Math.min(this.velocity.y + this.gravity * dt, this.maxFallSpeed);
 
-		this.parent.fireEvent(baseEvent("onMove", { 
+		const delta = { 
 			x: this.velocity.x * dt, 
 			y: this.velocity.y * dt 
-		}));
+		}
+		this.parent.fireEvent("onMove", delta);
 	}
 
 	onStuck() {
@@ -37,7 +38,7 @@ export class VelocityComponent {
 		this.enabled = true;
 	}
 
-	onCollide({y}) {
+	onCollide({y}: OnCollideEventProps) {
 		if (Math.abs(y) < 0.15)
 			return;
 		if (y * this.velocity.y > 0) {

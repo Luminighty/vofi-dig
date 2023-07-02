@@ -1,5 +1,4 @@
 import { Component, Components } from "../components";
-import { Event } from "../events";
 import { EntityBlueprint } from "./blueprint";
 import { World } from "./world";
 
@@ -8,9 +7,9 @@ export class Entity {
 	world!: World;
 	components: Component[] = [];
 
-	fireEvent(event: Event) {
+	fireEvent(type: string, params = {}) {
 		for (const component of this.components) {
-			event.call(component);
+			component[type]?.(params)
 		}
 	}
 

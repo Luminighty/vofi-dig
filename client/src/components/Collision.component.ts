@@ -1,8 +1,9 @@
 import { IVector2, Vector2 } from "@dig/math";
 import { Entity, World } from "../entities";
 import { IEntityFilter } from "../entities/filter";
-import { baseEvent } from "../events";
 import { PositionComponent } from "./Position.component";
+import { TriggerColliderComponent } from "./TriggerCollider.component";
+import { OnMoveProps } from "../events";
 
 const CollisionMatrix = postProcessLayers({
 	"item": ["tile"],
@@ -20,7 +21,6 @@ export class CollisionComponent {
 	boundingBox = 0;
 	isStuck = false;
 	enabled = true;
-	shouldUnload = false;
 	layer = "entity";
 
 	onInit() {
@@ -36,10 +36,10 @@ export class CollisionComponent {
 		}));
 	}
 
-	onMove(delta) {
+	onMove(delta: OnMoveProps) {
 		this.checkCollision(delta);
+		this.checkTriggers(delta);
 	}
-
 
 	onUpdate() {
 		if (this.isStuck)
@@ -59,11 +59,26 @@ export class CollisionComponent {
 
 		if (iterations >= MAXIMUM_ITERATIONS) {
 			if (!this.isStuck)
-				this.parent.fireEvent(baseEvent("onStuck"));
+				this.parent.fireEvent("onStuck");
 			this.isStuck = true;
 		} else if (this.isStuck) {
-			this.parent.fireEvent(baseEvent("onUnStuck"));
+			this.parent.fireEvent("onUnStuck");
 			this.isStuck = false;
+		}
+	}
+
+	checkTriggers(delta) {
+		const [colliders] = this.world
+			.withFilter(TriggerFilter(this))
+			.queryEntity(TriggerColliderComponent);
+
+		for (const other of colliders) {
+			const pushVector = SAT(this.worldShape(delta), other.worldShape({x: 0, y: 0}));
+			if (pushVector) {
+				other.enter(this)
+			} else {
+				other.exit(this)
+			}
 		}
 	}
 
@@ -73,19 +88,19 @@ export class CollisionComponent {
 		let mostSignificantLength = 0;
 		for (const other of colliders) {
 			const pushVector = SAT(this.worldShape(delta), other.worldShape({x: 0, y: 0}));
-			if (pushVector) {
-				currentColliders.push(other);
-				const length = Vector2.dot(pushVector, pushVector);
-				if (mostSignificantLength < length) {
-					mostSignificant = pushVector;
-					mostSignificantLength = length;
-				}
+			if (!pushVector)
+				continue;
+			currentColliders.push(other);
+			const length = Vector2.dot(pushVector, pushVector);
+			if (mostSignificantLength < length) {
+				mostSignificant = pushVector;
+				mostSignificantLength = length;
 			}
 		}
 		if (mostSignificant) {
 			this.position.x -= mostSignificant.x;
 			this.position.y -= mostSignificant.y;
-			this.parent.fireEvent(baseEvent("onCollide", mostSignificant));
+			this.parent.fireEvent("onCollide", mostSignificant);
 		}
 		return currentColliders.length
 	}
@@ -99,10 +114,24 @@ function CollisionFilter(self: CollisionComponent): IEntityFilter {
 		if (index < 0)
 			return;
 		groups[index] = (groups[index] as CollisionComponent[])
-		.filter((other) => 
-			other !== self && other.enabled && CollisionMatrix[self.layer][other.layer] &&
-			Math.abs(other.position.x - self.position.x) + Math.abs(other.position.y - self.position.y) < self.boundingBox + other.boundingBox
-		);
+			.filter((other) => 
+				other !== self && other.enabled && CollisionMatrix[self.layer][other.layer] &&
+				Math.abs(other.position.x - self.position.x) + Math.abs(other.position.y - self.position.y) < self.boundingBox + other.boundingBox
+			);
+	}
+}
+
+function TriggerFilter(self: CollisionComponent): IEntityFilter {
+	const id = TriggerColliderComponent.COMPONENT_ID;
+	return (types, groups) => {
+		const index = types.findIndex((type) => type["COMPONENT_ID"] === id);
+		if (index < 0)
+			return;
+		groups[index] = (groups[index] as CollisionComponent[])
+			.filter((other) => 
+				other !== self && other.enabled &&
+				Math.abs(other.position.x - self.position.x) + Math.abs(other.position.y - self.position.y) < self.boundingBox + other.boundingBox
+			);
 	}
 }
 
@@ -123,7 +152,7 @@ function postProcessLayers(matrix: {[key: string]: string[]}): {[key: string]: {
 }
 
 
-type Polygon = IVector2[];
+export type Polygon = IVector2[];
 type Edge = IVector2;
 
 /**

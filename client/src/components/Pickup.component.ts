@@ -1,6 +1,5 @@
 import { Vector2 } from "@dig/math";
 import { Entity, World } from "../entities";
-import { baseEvent } from "../events";
 import { PositionComponent } from "./Position.component";
 import { ItemComponent } from "./item/Item.component";
 import { ItemDBComponent } from "./item/ItemDB.component";
@@ -22,7 +21,7 @@ export class PickupComponent {
 		this.pickupDistance *= this.pickupDistance;
 		const itemDb = this.world.querySingleton(ItemDBComponent);
 		const item = (await itemDb.get(props.item)).getComponent(ItemComponent);
-		this.parent.fireEvent(baseEvent("onSetSprite", { sprite: item.icon }));
+		this.parent.fireEvent("onSetSprite", { sprite: item.icon });
 	}
 
 	onUpdate() {
@@ -33,7 +32,7 @@ export class PickupComponent {
 			const distance = Vector2.dot(delta, delta);
 			if (distance < this.pickupDistance) {
 				this.pickup();
-				this.player.parent.fireEvent(baseEvent("onAddItem", { item: this.item }))
+				this.player.parent.fireEvent("onAddItem", { item: this.item })
 			}
 		}
 	}

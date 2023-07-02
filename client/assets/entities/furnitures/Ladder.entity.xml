@@ -1,4 +1,6 @@
 <Entity id="Ladder">
 	<SpriteComponent src="assets/textures/mushroom/ladder.png" />
+	<TriggerColliderComponent shape="rect 0 0 16 16" />
+	<ClimbableComponent />
 	<Include from="Furniture" />
 </Entity>

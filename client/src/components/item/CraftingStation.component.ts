@@ -1,6 +1,5 @@
 import { CraftingDialog, RecipeProps } from "../../dialogs/CraftingDialog";
 import { Entity, World } from "../../entities";
-import { baseEvent } from "../../events";
 import { RecipeDBComponent } from "./RecipeDB.component";
 
 export class CraftingStationComponent {
@@ -25,13 +24,13 @@ export class CraftingStationComponent {
 			title: this.title,
 			recipes: await Promise.all(this.recipes.map(this.toRecipe.bind(this))),
 			craftLabel: this.craftLabel,
-			onCraft: (recipe) => {
+			onCraft: (recipe, materials) => {
 				recipe.outputs.forEach(({item, amount}) => {
-					source?.fireEvent(baseEvent("onAddItem", { item: item, amount: amount }));
+					source?.fireEvent("onAddItem", { item: item, amount: amount, materials });
 				})
 			},
 			onDropItem: (item) => {
-				source?.fireEvent(baseEvent("onAddItem", { item: item.item, amount: item.amount }));
+				source?.fireEvent("onAddItem", { item: item.item, amount: item.amount });
 			},
 		})
 		this.container.dialog.onClose(() => {

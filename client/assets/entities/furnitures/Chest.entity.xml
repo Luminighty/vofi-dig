@@ -1,4 +1,12 @@
 <Entity id="Chest">
 	<SpriteComponent src="assets/textures/mushroom/chest.png" />
+	<InteractableComponent 
+		event="onToggleDialog"
+	/>
+	<ItemContainerComponent
+		title="Chest"
+		key="chest"
+		slots="4"
+	/>
 	<Include from="Furniture" />
 </Entity>

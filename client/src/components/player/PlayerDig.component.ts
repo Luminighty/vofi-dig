@@ -34,13 +34,18 @@ export class PlayerDigComponent {
 		this.world.renderContainers["foreground"].addChild(this.graphics);
 	}
 
+	onItemSelected({item}) {
+		this.digData.strength = 1;
+		item.fireEvent("getDigData", this.digData);
+	}
+
 	onUpdate({dt}) {
 		this.dig(dt);
 	}
 
 	dig(dt) {
 		this.graphics.clear();
-		if (!Controls.mouse.left) {
+		if (!Controls.isHeld(Controls.mouse.left)) {
 			this.digData.progress = 0;
 			return;
 		}

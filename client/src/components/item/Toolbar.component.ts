@@ -1,9 +1,8 @@
 import { ToolbarDialog } from "../../dialogs/ToolbarDialog/ToolbarDialog";
 import { Entity, World } from "../../entities";
-import { baseEvent } from "../../events";
+import { Serializable } from "../../network";
 import { Controls } from "../../systems/controls";
 import { ItemComponent } from "./Item.component";
-import { ItemContainerComponent } from "./ItemContainer.component";
 import { ItemDBComponent } from "./ItemDB.component";
 
 interface ItemEntry {
@@ -11,6 +10,7 @@ interface ItemEntry {
 	amount: number;
 }
 
+@Serializable("items", "selected")
 export class ToolbarComponent {
 	static readonly COMPONENT_ID = "ToolbarComponent" as const;
 	world!: World;
@@ -25,16 +25,17 @@ export class ToolbarComponent {
 	selected = 0;
 	width = 300;
 
+	get selectedItem() { return this.items[this.selected] }
+
 	get isOpen() { return this.toolbar !== null; }
 
 	onInit() {
 		this.itemDb = this.world.querySingleton(ItemDBComponent);
-		this.onOpenDialog();
 	}
 
 	onUpdate() {
 		this.select();
-		if (Controls.mouse.right)
+		if (Controls.isPressed(Controls.mouse.right))
 			this.use();
 	}
 
@@ -44,6 +45,11 @@ export class ToolbarComponent {
 		const selected = this.toolbar.selected - Controls.mouse.scrollY;
 		this.selected = (selected + this.slots) % this.slots;
 		this.toolbar.selected = this.selected;
+		const item = this.selectedItem;
+		if (!item)
+			return;
+		this.itemDb.get(item.item)
+			.then((item) => this.parent?.fireEvent("onItemSelected", {item}))
 	}
 
 	async use() {
@@ -51,7 +57,7 @@ export class ToolbarComponent {
 		if (!selectedItem)
 			return;
 		const item = await this.itemDb.get(selectedItem.item);
-		item.fireEvent(baseEvent("onUse"));
+		item.fireEvent("onUse");
 	}
 
 	async onOpenDialog() {

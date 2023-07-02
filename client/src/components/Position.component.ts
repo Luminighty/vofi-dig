@@ -1,7 +1,6 @@
 import { IVector2 } from "@dig/math";
 import { GameConfig } from "../config";
 import { Entity, World } from "../entities";
-import { baseEvent } from "../events";
 import { Serializable } from "../network";
 import { ChunkHandlerComponent } from "./ChunkHandler.component";
 
@@ -24,7 +23,7 @@ export class PositionComponent {
 	}
 
 	onLateInit() {
-		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }));
+		this.parent.fireEvent("onPositionChanged", { ...this.position });
 		const chunkX = this.chunk.x;
 		const chunkY = this.chunk.y;
 		if (!isNaN(chunkX) && !isNaN(chunkY))
@@ -45,10 +44,10 @@ export class PositionComponent {
 		this.y = value.y;
 		if (lastChunkX !== this.chunkX || lastChunkY !== this.chunkY) {
 			this.chunkHandler.remove(this, lastChunkX, lastChunkY);
-			this.parent.fireEvent(baseEvent("onChunkChanged", { ...this.chunk }));
+			this.parent.fireEvent("onChunkChanged", { ...this.chunk });
 			this.chunkHandler.add(this, this.chunkX, this.chunkY);
 		}
-		this.parent.fireEvent(baseEvent("onPositionChanged", { ...this.position }))
+		this.parent.fireEvent("onPositionChanged", { ...this.position })
 	}
 
 	get position() {

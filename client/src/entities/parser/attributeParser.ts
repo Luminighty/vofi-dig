@@ -4,14 +4,14 @@ export const ParseLookup = {
 	"CollisionComponent": {
 		"shape": parseShape,
 	},
+	"TriggerColliderComponent": {
+		"shape": parseShape,
+	},
 	"DebugRectComponent": {
 		"fillColor": parseInt,
 	},
 	"ClientActorComponent": {
 		"sync": parseArray,
-	},
-	"PlayerToolbarComponent": {
-		"entities": parseArray,
 	},
 	"CraftingStationComponent": {
 		"recipes": parseArray,

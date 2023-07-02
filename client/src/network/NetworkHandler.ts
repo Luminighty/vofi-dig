@@ -1,7 +1,6 @@
 import { Socket } from "socket.io-client";
 import { Entity, World } from "../entities";
 import { ServerActorComponent } from "../components/network/ServerActor.component";
-import { baseEvent } from "../events";
 import { ILoadingBar } from "../dialogs/LoadingBar";
 import { IVector2 } from "@dig/math";
 import { PositionToChunk } from "../config";
@@ -68,7 +67,7 @@ export class NetworkHandler {
 		for (const entity of this.world.entities.values()) {
 			if (entity.id !== id)
 				continue;
-				entity.fireEvent(baseEvent(event, props));
+				entity.fireEvent(event, props);
 			return;
 		}
 		console.log(`Entity ${id} not found! (${event}, ${props})`);

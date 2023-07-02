@@ -15,8 +15,6 @@ export class BuildableItemComponent {
 	}
 
 	build() {
-		if (!Controls.mouse.right)
-			return;
 		const mouse = PositionToTile(Controls.mouse);
 		const chunk = PositionToChunk(Controls.mouse);
 		const [positions] = this.world

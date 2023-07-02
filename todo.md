@@ -3,13 +3,13 @@ Neon
 
 Lumi
  - [ ] Ladders
- - [ ] Inventory
- - [ ] Ores
- - [ ] Building from inventory
- - [ ] Prevent multiple instances
- - [ ] load chunks
+ - [X] Inventory
+ - [X] Ores
+ - [X] Building from inventory
+ - [X] Prevent multiple instances
+ - [X] load chunks
  - [ ] Reset player state on errors
- - [ ] Reset state/cache on version change
+ - [X] Reset state/cache on version change
 
 Ali
  - [ ] Enviromental hazards

@@ -1,6 +1,5 @@
 import { Application, Container } from "pixi.js";
 import { EntitiesBlueprints, Entity } from "./entity";
-import { Event, baseEvent } from "../events";
 import { GameConfig, RenderLayerKey } from "../config";
 import { Component } from "../components";
 import { IEntityFilter } from "./filter";
@@ -22,9 +21,9 @@ export class World {
 	private filters: IEntityFilter[] = [];
 	private networkSynced = false;
 
-	fireEvent(event: Event) {
+	fireEvent(event: string, props = {}) {
 		for (const entity of this.entities.values()) {
-			entity.fireEvent(event);
+			entity.fireEvent(event, props);
 		}
 	}
 
@@ -44,8 +43,8 @@ export class World {
 		this.networkSynced = false;
 
 		this.entities.add(entity);
-		entity.fireEvent(baseEvent("onInit", props));
-		entity.fireEvent(baseEvent("onLateInit", props));
+		entity.fireEvent("onInit", props);
+		entity.fireEvent("onLateInit", props);
 		return entity;
 	}
 
@@ -54,7 +53,7 @@ export class World {
 			this.networkHandler.destroyEntity(entity);
 		this.networkSynced = false;
 		this.entities.delete(entity);
-		entity.fireEvent(baseEvent("onDestroy"));
+		entity.fireEvent("onDestroy");
 		entity.removeAllComponents();
 	}
 

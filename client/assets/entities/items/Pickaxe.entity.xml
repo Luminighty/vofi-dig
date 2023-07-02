@@ -4,4 +4,7 @@
 		icon="assets/textures/items/pickaxe.png" 
 		tags="TOOL"
 	/>
+	<DiggingItemComponent
+		strength="3"
+	/>
 </Entity>

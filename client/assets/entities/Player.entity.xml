@@ -9,6 +9,7 @@
 	<PlayerComponent />
 	<PlayerDigComponent />
 	<VelocityComponent />
+	<ClimbingComponent />
 	<CollisionComponent shape="rect -4 6 8 10" />
 	<PositionComponent />
 	<HealthComponent />

@@ -6,8 +6,11 @@ import { VelocityComponent } from "../Velocity.component";
 import { CameraComponent } from "../Camera.component";
 import { LocalStorage } from "../../systems/storage";
 import { ItemContainerComponent } from "../item/ItemContainer.component";
-import { baseEvent } from "../../events";
 import { ChunkHandlerComponent } from "../ChunkHandler.component";
+import { OnChunk } from "../../entities/filter";
+import { PositionToChunk, PositionToTile } from "../../config";
+import { Vector2 } from "@dig/math";
+import { InteractableComponent } from "../Interactable.component";
 
 
 export class PlayerComponent {
@@ -21,7 +24,6 @@ export class PlayerComponent {
 	position!: PositionComponent;
 	camera!: CameraComponent;
 	graphics!: Graphics;
-	toolbar!: Entity;
 
 	inventory!: ItemContainerComponent;
 	chunkHandler!: ChunkHandlerComponent;
@@ -54,29 +56,45 @@ export class PlayerComponent {
 		}
 	}
 
-	private lastControls = {
-		inventory: false
-	};
 	onUpdate({dt}) {
 		this.move();
-
-		if (!this.lastControls.inventory && Controls.inventory) {
+		this.interact();
+		if (Controls.isPressed(Controls.inventory)) {
 			if (this.inventory.isOpen) {
-				this.parent.fireEvent(baseEvent("onCloseDialog"));
+				this.parent.fireEvent("onCloseDialog");
 			} else {
-				this.parent.fireEvent(baseEvent("onOpenDialog", { source: this.parent }));
+				this.parent.fireEvent("onOpenDialog", { source: this.parent });
 			}
 		}
+	}
+
+	interact() {
+		if (!Controls.isPressed(Controls.mouse.right))
+			return;
+		const playerPosition = this.position.grid;
+		const mouse = PositionToTile(Controls.mouse);
+		const chunk = PositionToChunk(Controls.mouse);
+		const distance = Vector2.blockLength(Vector2.sub(mouse, playerPosition));
+		if (distance > 2.5)
+			return;
+		const [interactables, positions] = this.world
+			.withFilter(OnChunk(chunk.x, chunk.y))
+			.queryEntity(InteractableComponent, PositionComponent);
 		
-		this.lastControls = {...Controls};
+			for (let i = 0; i < interactables.length; i++) {
+				const grid = positions[i].grid;
+				if (grid.x === mouse.x && grid.y === mouse.y) {
+					interactables[i].interact(this.parent);
+					break;
+				}
+			}
 	}
 
 	move() {
 		this.velocity.velocity.x = Controls.x * this.speed;
-		if (Controls.jumping && this.canJump) {
+		if (Controls.isPressed(Controls.jumping) && this.canJump) {
 			this.velocity.velocity.y = this.jumpSize;
 			this.canJump = false;
-			Controls.jumping = false;
 		}
 	}
 

@@ -1,17 +1,19 @@
 import HTML from "./ItemContainerDialog.html";
 import CSS from "./ItemContainerDialog.css";
-import { BaseDialog, withDialog } from "../Dialog/Dialog";
+import { BaseDialog, DialogProps, withDialog } from "../Dialog/Dialog";
 import { ItemProp, ItemSlot, createItemSlot } from "../ItemSlot/ItemSlot";
 import { injectCustomElement } from "../utils";
 
 interface ItemContainerProps {
 	title: string;
+	key?: string;
 	count: number;
 	items: (ItemProp | undefined)[];
 	width?: number,
 	allowedTags?: string[],
 	onItemsChanged: (items: (ItemProp | undefined)[]) => void;
 }
+
 
 @withDialog({title: "Container", width: 300, key: "container"})
 export class ItemContainerDialog extends HTMLElement {
@@ -27,7 +29,7 @@ export class ItemContainerDialog extends HTMLElement {
 		this.container = root.querySelector(".container") as HTMLElement;
 	}
 
-	static open(props: ItemContainerProps) {
+	static open(props: ItemContainerProps & DialogProps) {
 		const container = document.createElement("item-container") as ItemContainerDialog;
 		container.slotCount = props.count;
 		container.allowedTags = props.allowedTags ?? [];

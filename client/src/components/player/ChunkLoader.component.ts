@@ -1,6 +1,5 @@
 import { World } from "../../entities";
 import { OnChunk } from "../../entities/filter";
-import { baseEvent } from "../../events";
 import { ChunkHandlerComponent } from "../ChunkHandler.component";
 import { PositionComponent } from "../Position.component";
 
@@ -31,10 +30,10 @@ export class ChunkLoaderComponent {
 		for (const position of positions) {
 			const delta = Math.max(Math.abs(position.chunkX - x), Math.abs(position.chunkY - y));
 			if (delta > this.maxChunkDistance) {
-				position.parent.fireEvent(baseEvent("onUnload"));
+				position.parent.fireEvent("onUnload");
 				count++;
 			} else {
-				position.parent.fireEvent(baseEvent("onLoad"));
+				position.parent.fireEvent("onLoad");
 			}
 		}
 		console.log(`Unloaded ${count}/${positions.length}`);
@@ -49,9 +48,9 @@ export class ChunkLoaderComponent {
 		for (const position of positions) {
 			const shouldUnload = Math.max(Math.abs(position.chunkX - x), Math.abs(position.chunkY - y)) > this.maxChunkDistance;
 			if (shouldUnload) {
-				position.parent.fireEvent(baseEvent("onUnload"));
+				position.parent.fireEvent("onUnload");
 			} else {
-				position.parent.fireEvent(baseEvent("onLoad"));
+				position.parent.fireEvent("onLoad");
 			}
 		}
 	}
