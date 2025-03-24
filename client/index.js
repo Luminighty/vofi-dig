@@ -5,13 +5,13 @@ var cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const router = require("./routes");
+const serviceRouter = require("./service");
 
 app.use(cors())
 app.set('trust proxy', true);
 
 app.use(express.static(path.join(__dirname, './dist')));
-app.use(router);
+app.use("/assets", serviceRouter);
 app.use(express.static(path.join(__dirname, './assets')));
 
 

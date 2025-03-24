@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import HTML from "./Dialog.html";
 import CSS from "./Dialog.css";
 import { Drag, Drop } from "../DragContext";

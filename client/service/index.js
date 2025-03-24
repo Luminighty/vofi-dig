@@ -3,6 +3,6 @@ const router = express.Router();
 
 const EntityRouter = require("./entities");
 
-router.use("/assets", EntityRouter);
+router.use("/entity", EntityRouter);
 
 module.exports = router;

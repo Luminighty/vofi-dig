@@ -54,7 +54,7 @@ document.body.addEventListener("mousemove", (event) => {
 	dragContext.current.style.top = `${event.clientY - dragContext.y}px`;
 });
 
-document.body.addEventListener("mouseup", (event) => {
+document.body.addEventListener("mouseup", () => {
 	if (dragContext.current)
 		Drop(dragContext.current);
 })

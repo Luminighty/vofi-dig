@@ -1,4 +1,4 @@
-import { Entity, World } from "../../entities";
+import { World } from "../../entities";
 import { RecipeComponent } from "./Recipe.component";
 
 export class RecipeDBComponent {

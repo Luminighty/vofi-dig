@@ -1,5 +1,5 @@
 import { IVector2 } from "@dig/math";
-import { Entity, World } from "../entities";
+import { World } from "../entities";
 import { PositionComponent } from "./Position.component";
 
 export class ChunkHandlerComponent {

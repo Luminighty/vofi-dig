@@ -50,8 +50,6 @@ export async function Init(app: Application, socket: Socket) {
 		updateControls();
 	});
 
-	const recipes = world.querySingleton(RecipeDBComponent);
-
 	initDebug(world, player);
 
 	document.addEventListener("visibilitychange", () => {

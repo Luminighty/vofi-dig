@@ -1,4 +1,4 @@
-import { Application, Assets } from "pixi.js";
+import { Application } from "pixi.js";
 import { AppConfig } from "./config";
 import { Init } from "./Game";
 import io from 'socket.io-client';

@@ -1,7 +1,6 @@
 import { PositionComponent } from "./components/Position.component";
 import { ClientActorComponent } from "./components/network/ClientActor.component";
 import { ChunkLoaderComponent } from "./components/player/ChunkLoader.component";
-import { ToolbarDialog } from "./dialogs/ToolbarDialog/ToolbarDialog";
 import { Entity, World } from "./entities";
 import { LocalStorage } from "./systems/storage";
 
